@@ -1,9 +1,7 @@
-import { redirect } from 'next/navigation'
-import { createServerSupabaseClient } from '@/lib/supabase-server'
 import Link from 'next/link'
-import { Zap, LayoutDashboard, Building2, Globe, Globe2, Mail, BarChart2, TrendingUp } from 'lucide-react'
-
-const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim())
+import { Zap, LayoutDashboard, Building2, Globe, Globe2, Mail, TrendingUp, LogOut } from 'lucide-react'
+import { requireAdminSession } from '@/lib/admin-auth'
+import AdminLogoutButton from '@/components/admin-logout-button'
 
 const NAV = [
   { href: '/admin',            icon: LayoutDashboard, label: 'Overview' },
@@ -16,12 +14,7 @@ const NAV = [
 ]
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const supabase = createServerSupabaseClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user || !ADMIN_EMAILS.includes(user.email || '')) {
-    redirect('/dashboard')
-  }
+  requireAdminSession()
 
   return (
     <div className="min-h-screen bg-warm-gray-50 flex">
@@ -47,10 +40,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             </Link>
           ))}
         </nav>
-        <div className="p-3 border-t border-warm-gray-100">
+        <div className="p-3 border-t border-warm-gray-100 space-y-2">
           <Link href="/dashboard" className="text-xs text-warm-gray-400 hover:text-ink px-3 py-2 block">
             ← User dashboard
           </Link>
+          <AdminLogoutButton />
         </div>
       </aside>
       <main className="flex-1 ml-52">{children}</main>
