@@ -4,19 +4,18 @@ import { createClient } from '@supabase/supabase-js'
 export async function POST(req: NextRequest) {
   const CRAWLER_API_URL  = process.env.CRAWLER_API_URL  || ''
   const ADMIN_API_SECRET = process.env.ADMIN_API_SECRET || ''
-  const ADMIN_EMAILS     = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim())
+
+  // Check for admin session cookie
+  const sessionCookie = req.cookies.get('admin_session')
+  if (!sessionCookie?.value) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_KEY!,
     { auth: { persistSession: false } }
   )
-
-  const { createServerSupabaseClient } = await import('@/lib/supabase-server')
-  const serverClient = createServerSupabaseClient()
-  const { data: { user } } = await serverClient.auth.getUser()
-  if (!user || !ADMIN_EMAILS.includes(user.email || '')) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
 
   const formData = await req.formData()
   const city     = (formData.get('city')     as string) || 'Austin'

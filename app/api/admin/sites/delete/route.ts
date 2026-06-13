@@ -1,20 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-
 export async function POST(req: NextRequest) {
-  const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim())
+  // Check for admin session cookie
+  const sessionCookie = req.cookies.get('admin_session')
+  if (!sessionCookie?.value) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_KEY!,
     { auth: { persistSession: false } }
   )
-  const { createServerSupabaseClient } = await import('@/lib/supabase-server')
-  const serverClient = createServerSupabaseClient()
-  const { data: { user } } = await serverClient.auth.getUser()
-  if (!user || !ADMIN_EMAILS.includes(user.email || '')) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
 
   const formData  = await req.formData()
   const websiteId = formData.get('website_id') as string

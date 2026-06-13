@@ -2,13 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const GENERATOR_API_URL = process.env.GENERATOR_API_URL || ''
 const ADMIN_API_SECRET  = process.env.ADMIN_API_SECRET  || ''
-const ADMIN_EMAILS      = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim())
 
 export async function POST(req: NextRequest) {
-  const { createServerSupabaseClient } = await import('@/lib/supabase-server')
-  const serverClient = createServerSupabaseClient()
-  const { data: { user } } = await serverClient.auth.getUser()
-  if (!user || !ADMIN_EMAILS.includes(user.email || '')) {
+  // Check for admin session cookie
+  const sessionCookie = req.cookies.get('admin_session')
+  if (!sessionCookie?.value) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
