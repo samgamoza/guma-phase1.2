@@ -29,10 +29,10 @@ export async function POST(req: NextRequest) {
     const { data: dbJob, error: dbErr } = await supabase
       .from('crawl_jobs')
       .insert({
-        source:   'yellowpages',
-        category: industry,
-        region:   `${city}, ${state}`,
-        status:   'pending',
+        city,
+        state,
+        industry,
+        status: 'pending',
       })
       .select()
       .single()
