@@ -1,0 +1,2526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barber's Cut Classic Barbershop — Manila's Trusted Barbershop</title>
+<meta name="description" content="Old-school barbershop with modern style. Haircuts, hot towel shaves, beard trims, and kids cuts. No appointment needed.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --color-primary: #C0392B;
+  --color-secondary: #E67E22;
+  --color-accent: #F39C12;
+  --color-dark: #1A0A00;
+  --color-darker: #0D0500;
+  --color-light: #FFF8F0;
+  --color-warm-gray: #F5EDE0;
+  --color-text: #2C1810;
+  --color-text-muted: #7A5C4F;
+  --color-white: #FFFFFF;
+  --color-claim-bg: #1A0A00;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --nav-height: 72px;
+  --claim-height: 44px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.15);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.2);
+  --shadow-xl: 0 20px 60px rgba(0,0,0,0.3);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── CLAIM BANNER ─── */
+#claim-banner {
+  background: var(--color-claim-bg);
+  color: var(--color-white);
+  text-align: center;
+  padding: 0 48px;
+  height: var(--claim-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  position: relative;
+  z-index: 1000;
+  transition: var(--transition);
+}
+
+#claim-banner a {
+  color: var(--color-secondary);
+  text-decoration: none;
+  font-weight: 700;
+  border-bottom: 1px solid transparent;
+  transition: var(--transition);
+}
+
+#claim-banner a:hover { border-bottom-color: var(--color-secondary); }
+
+#claim-banner .banner-close {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+#claim-banner .banner-close:hover { color: var(--color-white); background: rgba(255,255,255,0.1); }
+
+#claim-banner.hidden { height: 0; padding: 0; overflow: hidden; }
+
+.banner-spark {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-right: 4px;
+}
+
+/* ─── STICKY NAV ─── */
+#main-nav {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: rgba(255, 248, 240, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(192, 57, 43, 0.08);
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  transition: var(--transition);
+}
+
+#main-nav.scrolled {
+  background: rgba(255, 248, 240, 0.98);
+  box-shadow: 0 2px 20px rgba(192, 57, 43, 0.1);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-brand-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.nav-brand-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.nav-brand-category {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: block;
+}
+
+.nav-links {
+  display: none;
+  list-style: none;
+  gap: 6px;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 100px;
+  transition: var(--transition);
+  letter-spacing: 0.01em;
+}
+
+.nav-links a:hover {
+  color: var(--color-primary);
+  background: rgba(192, 57, 43, 0.07);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.lang-toggle {
+  display: flex;
+  background: rgba(0,0,0,0.06);
+  border-radius: 100px;
+  padding: 2px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  overflow: hidden;
+}
+
+.lang-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 100px;
+  color: var(--color-text-muted);
+  transition: var(--transition);
+  font-weight: 600;
+  font-size: 0.72rem;
+}
+
+.lang-btn.active {
+  background: var(--color-white);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: var(--transition);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: var(--color-white);
+  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.45);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.btn-secondary:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+  transform: translateY(-2px);
+}
+
+.btn-outline-white {
+  background: transparent;
+  color: var(--color-white);
+  border: 2px solid rgba(255,255,255,0.7);
+  backdrop-filter: blur(4px);
+}
+
+.btn-outline-white:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: white;
+  transform: translateY(-2px);
+}
+
+.btn-large {
+  padding: 16px 36px;
+  font-size: 1rem;
+  border-radius: 100px;
+}
+
+.btn-claim {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  animation: pulse-glow 2.5s ease-in-out infinite;
+  box-shadow: 0 4px 20px rgba(192, 57, 43, 0.4);
+}
+
+.btn-claim:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(192, 57, 43, 0.55);
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 4px 20px rgba(192, 57, 43, 0.4); }
+  50% { box-shadow: 0 4px 35px rgba(230, 126, 34, 0.65), 0 0 0 6px rgba(192, 57, 43, 0.1); }
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 6px;
+  border: none;
+  background: none;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--color-text);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+
+/* ─── MOBILE MENU ─── */
+#mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(26, 10, 0, 0.97);
+  z-index: 9998;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#mobile-menu.open { transform: translateX(0); }
+
+#mobile-menu a {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--color-white);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  transition: var(--transition);
+}
+
+#mobile-menu a:hover { color: var(--color-secondary); }
+
+.mobile-menu-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 8px;
+}
+
+/* ─── HERO ─── */
+#hero {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--color-darker);
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=1600&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.05);
+  transition: transform 8s ease;
+}
+
+#hero:hover .hero-bg { transform: scale(1.02); }
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(0,0,0,0.7) 0%,
+    rgba(26,10,0,0.6) 40%,
+    rgba(192,57,43,0.25) 100%
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 40px 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-secondary);
+  border-radius: 50%;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 8vw, 6.5rem);
+  font-weight: 900;
+  color: var(--color-white);
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--color-secondary);
+  display: block;
+}
+
+.hero-tagline {
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: rgba(255,255,255,0.85);
+  line-height: 1.6;
+  max-width: 560px;
+  margin: 0 auto 36px;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+}
+
+.hero-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 48px;
+}
+
+.hero-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.hero-stat {
+  text-align: center;
+  color: rgba(255,255,255,0.85);
+}
+
+.hero-stat-number {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-white);
+  line-height: 1;
+  display: block;
+}
+
+.hero-stat-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+  margin-top: 4px;
+  display: block;
+}
+
+.hero-stat-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255,255,255,0.2);
+}
+
+.stars-row {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.star { color: var(--color-accent); font-size: 0.9rem; }
+
+.scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  animation: bounce-hint 2s ease-in-out infinite;
+  z-index: 2;
+}
+
+.scroll-hint-arrow {
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+}
+
+@keyframes bounce-hint {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+/* ─── MARQUEE TICKER ─── */
+.ticker-section {
+  background: linear-gradient(135deg, var(--color-primary), #9B2335);
+  padding: 16px 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 30s linear infinite;
+}
+
+.ticker-track:hover { animation-play-state: paused; }
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 28px;
+  color: rgba(255,255,255,0.95);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ticker-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ─── SECTION COMMONS ─── */
+section { padding: 80px 24px; }
+
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 14px;
+}
+
+.section-kicker::before,
+.section-kicker::after {
+  content: '';
+  width: 24px;
+  height: 1.5px;
+  background: var(--color-primary);
+  opacity: 0.5;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.section-title em {
+  font-style: italic;
+  color: var(--color-primary);
+}
+
+.section-sub {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.container { max-width: 1200px; margin: 0 auto; }
+
+/* ─── SIGNATURE DISHES ─── */
+#dishes {
+  background: var(--color-light);
+  position: relative;
+}
+
+#dishes::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+}
+
+.dishes-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dish-card {
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  cursor: pointer;
+  position: relative;
+}
+
+.dish-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.dish-card-img-wrap {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+}
+
+.dish-card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.dish-card:hover .dish-card-img-wrap img { transform: scale(1.08); }
+
+.dish-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.dish-card-body {
+  padding: 20px;
+}
+
+.dish-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.dish-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.dish-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dish-price {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.dish-order-btn {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  box-shadow: 0 2px 8px rgba(192,57,43,0.3);
+}
+
+.dish-order-btn:hover {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 4px 15px rgba(192,57,43,0.4);
+}
+
+/* ─── ABOUT / STORY ─── */
+#about {
+  background: var(--color-white);
+  overflow: hidden;
+}
+
+.about-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.about-images {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  height: 400px;
+}
+
+.about-img {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  position: relative;
+}
+
+.about-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-img-main {
+  grid-row: span 2;
+  height: 100%;
+}
+
+.about-img-secondary { height: 190px; }
+
+.about-img-accent {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  height: 190px;
+}
+
+.about-accent-text {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: white;
+  line-height: 1;
+}
+
+.about-accent-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: center;
+  margin-top: 6px;
+}
+
+.about-text .section-header { text-align: left; margin-bottom: 24px; }
+.about-text .section-header .section-kicker::after { display: none; }
+.about-text .section-header .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+
+.about-description {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.about-description strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.trust-points {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 28px 0;
+}
+
+.trust-point {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.trust-point-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, rgba(192,57,43,0.1), rgba(230,126,34,0.1));
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* ─── GALLERY ─── */
+#gallery {
+  padding: 0 0 80px;
+  background: var(--color-white);
+}
+
+.gallery-header {
+  padding: 80px 24px 48px;
+  text-align: center;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+
+.gallery-item {
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  position: relative;
+  cursor: pointer;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.gallery-item:hover img { transform: scale(1.06); }
+
+.gallery-item-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(26,10,0,0.6) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+}
+
+.gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+.gallery-item-label {
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* ─── HOURS & LOCATION ─── */
+#location {
+  background: var(--color-dark);
+  color: var(--color-white);
+  position: relative;
+  overflow: hidden;
+}
+
+#location::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(192,57,43,0.2), transparent 70%);
+  pointer-events: none;
+}
+
+#location::after {
+  content: '';
+  position: absolute;
+  bottom: -100px;
+  left: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(230,126,34,0.15), transparent 70%);
+  pointer-events: none;
+}
+
+.location-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 60px;
+  position: relative;
+  z-index: 1;
+}
+
+.location-info .section-header { text-align: left; margin-bottom: 36px; }
+.location-info .section-kicker { color: var(--color-secondary); }
+.location-info .section-kicker::before,
+.location-info .section-kicker::after { background: var(--color-secondary); }
+.location-info .section-title { color: white; }
+
+.info-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.info-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: var(--transition);
+}
+
+.info-card:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(230,126,34,0.3);
+}
+
+.info-card-icon {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, rgba(192,57,43,0.3), rgba(230,126,34,0.3));
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.info-card-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-secondary);
+  margin-bottom: 4px;
+}
+
+.info-card-value {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.hours-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.hours-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 0.9rem;
+}
+
+.hours-row:last-child { border-bottom: none; }
+
+.hours-day {
+  color: rgba(255,255,255,0.6);
+  font-weight: 500;
+}
+
+.hours-row.today .hours-day {
+  color: var(--color-secondary);
+  font-weight: 600;
+}
+
+.hours-time {
+  color: rgba(255,255,255,0.9);
+  font-weight: 600;
+}
+
+.hours-row.today .hours-time {
+  color: var(--color-accent);
+}
+
+.open-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(39, 174, 96, 0.15);
+  border: 1px solid rgba(39, 174, 96, 0.3);
+  color: #5dce8a;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-top: 8px;
+}
+
+.open-dot {
+  width: 6px;
+  height: 6px;
+  background: #5dce8a;
+  border-radius: 50%;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+.map-placeholder {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+
+.map-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(192,57,43,0.05), rgba(230,126,34,0.05));
+}
+
+.map-placeholder:hover { border-color: rgba(230,126,34,0.3); }
+
+.map-icon {
+  font-size: 2.5rem;
+  filter: grayscale(0);
+}
+
+.map-address {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+  padding: 0 24px;
+}
+
+.map-cta {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ─── CONTACT ─── */
+#contact {
+  background: var(--color-warm-gray);
+  position: relative;
+}
+
+.contact-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 60px;
+}
+
+.contact-text .section-header { text-align: left; margin-bottom: 24px; }
+.contact-text .section-header .section-kicker::after { display: none; }
+
+.contact-description {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: var(--transition);
+  padding: 12px 16px;
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-sm);
+}
+
+.contact-link:hover {
+  color: var(--color-primary);
+  border-color: rgba(192,57,43,0.2);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
+}
+
+.contact-link-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, rgba(192,57,43,0.1), rgba(230,126,34,0.1));
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.contact-form {
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  padding: 36px 28px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.contact-form h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 7px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  background: var(--color-light);
+  transition: var(--transition);
+  outline: none;
+  appearance: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--color-primary);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.08);
+}
+
+.form-group textarea { min-height: 100px; resize: vertical; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ─── FREE vs PRO TABLE ─── */
+#pricing {
+  background: var(--color-white);
+  padding: 80px 24px;
+}
+
+.pricing-inner { max-width: 900px; margin: 0 auto; }
+
+.pricing-table {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(0,0,0,0.08);
+  margin-top: 48px;
+}
+
+.pricing-header-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background: var(--color-dark);
+}
+
+.pricing-col-header {
+  padding: 24px 20px;
+  text-align: center;
+}
+
+.pricing-col-header:first-child { text-align: left; border-right: 1px solid rgba(255,255,255,0.08); }
+.pricing-col-header:last-child { background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); }
+
+.pricing-col-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 6px;
+}
+
+.pricing-col-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: white;
+}
+
+.pricing-col-price {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.6);
+  margin-top: 4px;
+}
+
+.pricing-col-price strong {
+  color: var(--color-accent);
+  font-size: 1rem;
+}
+
+.pricing-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  transition: var(--transition);
+}
+
+.pricing-row:last-child { border-bottom: none; }
+.pricing-row:hover { background: rgba(192,57,43,0.02); }
+
+.pricing-row:nth-child(even) { background: rgba(0,0,0,0.015); }
+.pricing-row:nth-child(even):hover { background: rgba(192,57,43,0.03); }
+
+.pricing-feature {
+  padding: 16px 20px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--color-text);
+  border-right: 1px solid rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pricing-feature-icon { font-size: 1rem; }
+
+.pricing-cell {
+  padding: 16px 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.pricing-cell:last-child {
+  background: rgba(192,57,43,0.03);
+}
+
+.check { color: #27ae60; font-size: 1.1rem; }
+.cross { color: #bdc3c7; font-size: 1.1rem; }
+
+.pricing-cta-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background: var(--color-warm-gray);
+  padding: 24px 20px;
+  gap: 12px;
+}
+
+.pricing-cta-row > div { display: flex; align-items: center; }
+.pricing-cta-row > div:last-child { justify-content: center; }
+
+.pricing-claim-text {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  grid-column: 1 / 3;
+}
+
+.social-proof-nudge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 16px;
+  justify-content: center;
+}
+
+.social-proof-avatars {
+  display: flex;
+}
+
+.social-proof-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid white;
+  margin-right: -8px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  color: white;
+  font-weight: 700;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--color-darker);
+  color: rgba(255,255,255,0.7);
+  padding: 48px 24px 32px;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.footer-brand-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.footer-brand-name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+}
+
+.footer-tagline {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  color: rgba(255,255,255,0.5);
+}
+
+.footer-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.footer-nav-section h4 {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 14px;
+}
+
+.footer-nav-section ul { list-style: none; }
+
+.footer-nav-section ul li + li { margin-top: 10px; }
+
+.footer-nav-section a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: var(--transition);
+}
+
+.footer-nav-section a:hover { color: var(--color-secondary); }
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-copyright {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.35);
+}
+
+.siteforge-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.siteforge-badge:hover {
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.8);
+}
+
+.siteforge-badge-icon { font-size: 0.9rem; }
+
+/* ─── MOBILE BOTTOM BAR ─── */
+#mobile-claim-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 997;
+  background: var(--color-dark);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 12px 20px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+#mobile-claim-bar p {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.3;
+  flex: 1;
+}
+
+#mobile-claim-bar p strong { color: white; }
+
+/* ─── RESPONSIVE 768px+ ─── */
+@media (min-width: 768px) {
+  section { padding: 100px 40px; }
+
+  .nav-links { display: flex; }
+  .hamburger { display: none; }
+
+  .hero-actions { flex-direction: row; justify-content: center; }
+
+  .dishes-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .about-inner { grid-template-columns: 1fr 1fr; }
+
+  .location-inner { grid-template-columns: 1fr 1fr; }
+
+  .contact-inner { grid-template-columns: 1fr 1fr; }
+
+  .info-cards { grid-template-columns: 1fr 1fr; }
+
+  .footer-inner { grid-template-columns: 1fr 1fr 1fr; }
+
+  .footer-bottom { flex-direction: row; justify-content: space-between; }
+
+  #mobile-claim-bar { display: flex; }
+  body { padding-bottom: 72px; }
+}
+
+@media (min-width: 1024px) {
+  .dishes-grid { grid-template-columns: repeat(3, 1fr); }
+  .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ─── ANIMATIONS / REVEAL ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ─── FIL LANGUAGE OVERRIDES ─── */
+[data-lang="fil"] .en-text { display: none; }
+[data-lang="fil"] .fil-text { display: inline; }
+[data-lang="en"] .fil-text { display: none; }
+[data-lang="en"] .en-text { display: inline; }
+</style>
+</head>
+
+<body data-lang="en">
+
+<!-- ─── CLAIM BANNER ─── -->
+<div id="claim-banner" role="banner">
+  <span class="banner-spark">Free</span>
+  <span class="en-text">This site was built for you by SiteForge — claim it free ·</span>
+  <span class="fil-text">Ginawa ng SiteForge ang site na ito para sa iyo — i-claim nang libre ·</span>
+  <a href="https://siteforge.io/claim/barbers-cut-classic-barbershop-manila-ph">
+    <span class="en-text">Claim my site →</span>
+    <span class="fil-text">I-claim ang aking site →</span>
+  </a>
+  <button class="banner-close" id="banner-close" aria-label="Dismiss banner">✕</button>
+</div>
+
+<!-- ─── STICKY NAV ─── -->
+<nav id="main-nav" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-brand">
+    <div class="nav-brand-icon">🍽️</div>
+    <div>
+      <span class="nav-brand-name">Barber's Cut Classic Barbershop</span>
+      <span class="nav-brand-category">{{CUISINE_TYPE}}</span>
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#dishes" class="en-text">Menu</a><a href="#dishes" class="fil-text" style="display:none">Menu</a></li>
+    <li><a href="#about" class="en-text">Our Story</a><a href="#about" class="fil-text" style="display:none">Aming Kuwento</a></li>
+    <li><a href="#gallery" class="en-text">Gallery</a><a href="#gallery" class="fil-text" style="display:none">Galeria</a></li>
+    <li><a href="#location" class="en-text">Hours & Location</a><a href="#location" class="fil-text" style="display:none">Oras at Lokasyon</a></li>
+    <li><a href="#contact" class="en-text">Contact</a><a href="#contact" class="fil-text" style="display:none">Makipag-ugnayan</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <div class="lang-toggle" id="lang-toggle">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="fil">FIL</button>
+    </div>
+    <a href="tel:+63 2 8521 3300" class="btn btn-primary" style="display:none" id="nav-cta-desktop">
+      <span class="en-text">Order Now</span>
+      <span class="fil-text">Umorder Na</span>
+    </a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ─── MOBILE MENU ─── -->
+<div id="mobile-menu" role="dialog" aria-label="Mobile navigation">
+  <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">✕</button>
+  <a href="#dishes" class="mobile-nav-link">Menu</a>
+  <a href="#about" class="mobile-nav-link">Our Story</a>
+  <a href="#gallery" class="mobile-nav-link">Gallery</a>
+  <a href="#location" class="mobile-nav-link">Find Us</a>
+  <a href="#contact" class="mobile-nav-link">Contact</a>
+  <a href="tel:+63 2 8521 3300" class="btn btn-primary btn-large" style="margin-top:12px">📞 Call to Order</a>
+</div>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      <span>Barbershop · Manila</span>
+    </div>
+
+    <h1 class="hero-title">
+      Barber's Cut Classic Barbershop
+      <em>Manila's Trusted Barbershop</em>
+    </h1>
+
+    <p class="hero-tagline en-text">Manila's Trusted Barbershop</p>
+    <p class="hero-tagline fil-text">Ang inyong Barbershop sa Manila</p>
+
+    <div class="hero-actions">
+      <a href="tel:+63 2 8521 3300" class="btn btn-primary btn-large btn-claim">
+        <span>🛒</span>
+        <span class="en-text">Order Now</span>
+        <span class="fil-text">Umorder Na</span>
+      </a>
+      <a href="#dishes" class="btn btn-outline-white btn-large">
+        <span class="en-text">View Menu</span>
+        <span class="fil-text">Tingnan ang Menu</span>
+      </a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="stars-row">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <span class="hero-stat-number">4.9</span>
+        <span class="hero-stat-label">523 Reviews</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <span class="hero-stat-number">Manila</span>
+        <span class="hero-stat-label">Serving Locally</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <span class="hero-stat-number">🏆</span>
+        <span class="hero-stat-label">{{CUISINE_TYPE}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <div class="scroll-hint-arrow">↓</div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ─── MARQUEE TICKER ─── -->
+<div class="ticker-section" aria-label="Menu highlights">
+  <div class="ticker-track" id="ticker-track">
+    <!-- JS will populate -->
+  </div>
+</div>
+
+<!-- ─── SIGNATURE DISHES ─── -->
+<section id="dishes">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-kicker">🍴 Signature Dishes</div>
+      <h2 class="section-title">
+        Made with <em>love</em> &<br>fresh ingredients
+      </h2>
+      <p class="section-sub">Every dish tells a story. Crafted daily using time-honoured recipes and locally sourced ingredients.</p>
+    </div>
+
+    <div class="dishes-grid" id="dishes-grid">
+      <!-- JS renders from GALLERY images + DISHES data -->
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT / STORY ─── -->
+<section id="about">
+  <div class="about-inner container">
+    <div class="about-images reveal">
+      <div class="about-img about-img-main">
+        <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&auto=format&fit=crop" alt="Barber's Cut Classic Barbershop kitchen" loading="lazy">
+      </div>
+      <div class="about-img about-img-secondary">
+        <img src="https://images.unsplash.com/photo-1580518337843-f959e992563b?w=600&auto=format&fit=crop" alt="Fresh ingredients" loading="lazy">
+      </div>
+      <div class="about-img about-img-accent">
+        <div class="about-accent-text" id="about-years">10+</div>
+        <div class="about-accent-label">Years of Passion</div>
+      </div>
+    </div>
+
+    <div class="about-text">
+      <div class="section-header">
+        <div class="section-kicker">📖 Our Story</div>
+        <h2 class="section-title">Where every <em>meal</em> feels like home</h2>
+      </div>
+
+      <p class="about-description reveal reveal-delay-1">
+        Old-school barbershop with modern style. Haircuts, hot towel shaves, beard trims, and kids cuts. No appointment needed.
+      </p>
+
+      <p class="about-description reveal reveal-delay-2">
+        <strong>Rooted in Manila</strong>, we believe that food is the greatest connector — bridging families, friends, and strangers around one shared table.
+      </p>
+
+      <div class="trust-points" id="trust-points-list">
+        <!-- JS renders -->
+      </div>
+
+      <div class="reveal reveal-delay-4" style="display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;">
+        <a href="#contact" class="btn btn-primary">
+          <span class="en-text">Reserve a Table</span>
+          <span class="fil-text">Mag-reserve ng Mesa</span>
+        </a>
+        <a href="#location" class="btn btn-secondary">
+          <span class="en-text">Find Us</span>
+          <span class="fil-text">Hanapin Kami</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── GALLERY ─── -->
+<section id="gallery" style="padding:0 0 80px;">
+  <div class="gallery-header">
+    <div class="section-kicker reveal" style="justify-content:center; display:inline-flex;">📸 Gallery</div>
+    <h2 class="section-title reveal" style="margin-top:8px;">A taste of the <em>experience</em></h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&auto=format&fit=crop" alt="Gallery 1" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Fresh Daily</span></div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-1">
+      <img src="https://images.unsplash.com/photo-1580518337843-f959e992563b?w=600&auto=format&fit=crop" alt="Gallery 2" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Our Kitchen</span></div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-2">
+      <img src="https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=600&auto=format&fit=crop" alt="Gallery 3" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Signature Dishes</span></div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-3">
+      <img src="https://images.unsplash.com/photo-1634302086687-ee4fae17a786?w=600&auto=format&fit=crop" alt="Gallery 4" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Special Occasions</span></div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-4">
+      <img src="https://images.unsplash.com/photo-1541533848490-bc8115cd6522?w=600&auto=format&fit=crop" alt="Gallery 5" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Community</span></div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-5">
+      <img src="https://images.unsplash.com/photo-1512864084360-7c0d369d9a74?w=600&auto=format&fit=crop" alt="Gallery 6" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Crafted With Love</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── HOURS & LOCATION ─── -->
+<section id="location">
+  <div class="location-inner">
+    <div class="location-info">
+      <div class="section-header">
+        <div class="section-kicker">📍 Find Us</div>
+        <h2 class="section-title">Hours &<br><em>Location</em></h2>
+      </div>
+
+      <div class="info-cards reveal">
+        <div class="info-card">
+          <div class="info-card-icon">📍</div>
+          <div>
+            <div class="info-card-label">Address</div>
+            <div class="info-card-value">9 Remedios St, Malate, Manila</div>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">📞</div>
+          <div>
+            <div class="info-card-label">Phone</div>
+            <div class="info-card-value"><a href="tel:+63 2 8521 3300" style="color:inherit;text-decoration:none;">+63 2 8521 3300</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:32px;" class="reveal reveal-delay-1">
+        <div class="info-card-label" style="color:var(--color-secondary); font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:16px; display:block;">Operating Hours</div>
+        <div class="hours-grid">
+          <div class="hours-row today">
+            <span class="hours-day">Today</span>
+            <span class="hours-time">Tue–Sun: 9am–8pm</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Monday – Friday</span>
+            <span class="hours-time">Tue–Sun: 9am–8pm</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Saturday – Sunday</span>
+            <span class="hours-time">Tue–Sun: 9am–8pm</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Holidays</span>
+            <span class="hours-time">Call to confirm</span>
+          </div>
+        </div>
+        <div class="open-badge">
+          <div class="open-dot"></div>
+          Open Now
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <a href="https://maps.google.com/?q=9 Remedios St, Malate, Manila" target="_blank" rel="noopener" class="map-placeholder">
+        <div class="map-icon">🗺️</div>
+        <div class="map-address">9 Remedios St, Malate, Manila<br>Manila, PH</div>
+        <div class="map-cta">Open in Google Maps →</div>
+      </a>
+
+      <div style="margin-top:24px; display:flex; flex-direction:column; gap:12px;">
+        <a href="tel:+63 2 8521 3300" class="btn btn-primary btn-large" style="justify-content:center;">
+          <span>📞</span>
+          <span class="en-text">Call to Order</span>
+          <span class="fil-text">Tumawag para Umorder</span>
+        </a>
+        <a href="#contact" class="btn" style="background:rgba(255,255,255,0.08); color:white; border:1px solid rgba(255,255,255,0.15); justify-content:center;">
+          <span class="en-text">Send a Message</span>
+          <span class="fil-text">Magpadala ng Mensahe</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="contact-inner container">
+    <div class="contact-text">
+      <div class="section-header">
+        <div class="section-kicker">✉️ Contact</div>
+        <h2 class="section-title">Get in <em>Touch</em></h2>
+      </div>
+
+      <p class="contact-description">
+        Have a question, want to make a reservation, or planning a special event? We'd love to hear from you. Our team is here to make every visit memorable.
+      </p>
+
+      <div class="contact-links">
+        <a href="tel:+63 2 8521 3300" class="contact-link">
+          <div class="contact-link-icon">📞</div>
+          +63 2 8521 3300
+        </a>
+        <a href="#location" class="contact-link">
+          <div class="contact-link-icon">📍</div>
+          9 Remedios St, Malate, Manila
+        </a>
+        <a href="#location" class="contact-link">
+          <div class="contact-link-icon">⏰</div>
+          Tue–Sun: 9am–8pm
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-form reveal reveal-delay-2">
+      <h3>
+        <span class="en-text">Make a Reservation</span>
+        <span class="fil-text">Mag-reserve ng Mesa</span>
+      </h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Juan">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Dela Cruz">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Phone / Email</label>
+        <input type="text" placeholder="09XX-XXX-XXXX">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date">
+        </div>
+        <div class="form-group">
+          <label>Party Size</label>
+          <select>
+            <option>1–2 guests</option>
+            <option>3–4 guests</option>
+            <option>5–8 guests</option>
+            <option>9+ guests</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Special Requests</label>
+        <textarea placeholder="Allergies, celebrations, seating preferences..."></textarea>
+      </div>
+      <button type="button" class="btn btn-primary" style="width:100%; justify-content:center; padding:14px;">
+        <span class="en-text">Send Reservation Request</span>
+        <span class="fil-text">Ipadala ang Kahilingan</span>
+      </button>
+      <p style="font-size:0.75rem; color:var(--color-text-muted); margin-top:10px; text-align:center;">We'll confirm your reservation within 1 hour</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FREE vs PRO TABLE ─── -->
+<section id="pricing">
+  <div class="pricing-inner container">
+    <div class="section-header reveal">
+      <div class="section-kicker" style="justify-content:center; display:inline-flex;">⚡ SiteForge Plans</div>
+      <h2 class="section-title">Your site, <em>your way</em></h2>
+      <p class="section-sub">This site is live and free forever. Upgrade to Pro to unlock powerful tools that grow your business.</p>
+    </div>
+
+    <div class="pricing-table reveal reveal-delay-1">
+      <div class="pricing-header-row">
+        <div class="pricing-col-header">
+          <div class="pricing-col-label">Compare</div>
+          <div class="pricing-col-name" style="color:rgba(255,255,255,0.5);">Features</div>
+        </div>
+        <div class="pricing-col-header">
+          <div class="pricing-col-label">Current Plan</div>
+          <div class="pricing-col-name">Free</div>
+          <div class="pricing-col-price">Forever free</div>
+        </div>
+        <div class="pricing-col-header">
+          <div class="pricing-col-label">Most Popular</div>
+          <div class="pricing-col-name">Pro</div>
+          <div class="pricing-col-price"><strong>$29</strong>/month</div>
+        </div>
+      </div>
+
+      <div class="pricing-row">
+        <div class="pricing-feature"><span class="pricing-feature-icon">🌐</span> Beautiful website</div>
+        <div class="pricing-cell"><span class="check">✓</span></div>
+        <div class="pricing-cell"><span class="check">✓</span></div>
+      </div>
+      <div class="pricing-row">
+        <div class="pricing-feature"><span class="pricing-feature-icon">📱</span> Mobile responsive</div>
+        <div class="pricing-cell"><span class="check">✓</span></div>
+        <div class="pricing-cell"><span class="check">✓</span></div>
+      </div>
+      <div class="pricing-row">
+        <div class="pricing-feature"><span class="pricing-feature-icon">🔗</span> Custom domain</div>
+        <div class="pricing-cell"><span class="cross">—</span></div>
+        <div class="pricing-cell"><span class="check">✓</span></div>
+      </div>
+      <div class="pricing-row">
+        <div class="pricing-feature"><span class="pricing-feature-icon">✏️</span> Drag-and-drop editor</div>
+        <div class="pricing-cell"><span class="cross">—</span></div>
+        <div class="pricing-cell"><span class="check">✓</span></div>
+      </div>
+      <div class="pricing-row">
+        <div class="pricing-feature"><span class="pricing-feature-icon">📅</span> Online booking form</div>
+        <div class="pricing-cell"><span class="cross">—</span></div>
+        <div class="pricing-cell"><span class="check">✓</span></div>
+      </div>
+      <div class="pricing-row">
+        <div class="pricing-feature"><span class="pricing-feature-icon">🏷️</span> Remove SiteForge badge</div>
+        <div class="pricing-cell"><span class="cross">—</span></div>
+        <div class="pricing-cell"><span class="check">✓</span></div>
+      </div>
+      <div class="pricing-row">
+        <div class="pricing-feature"><span class="pricing-feature-icon">📊</span> Analytics dashboard</div>
+        <div class="pricing-cell"><span class="cross">—</span></div>
+        <div class="pricing-cell"><span class="check">✓</span></div>
+      </div>
+      <div class="pricing-row">
+        <div class="pricing-feature"><span class="pricing-feature-icon">⭐</span> Priority support</div>
+        <div class="pricing-cell"><span class="cross">—</span></div>
+        <div class="pricing-cell"><span class="check">✓</span></div>
+      </div>
+
+      <div class="pricing-cta-row">
+        <div class="pricing-claim-text">
+          <p style="font-weight:600; color:var(--color-text); margin-bottom:4px;">Is this your restaurant?</p>
+          <p style="font-size:0.8rem; color:var(--color-text-muted);">Claim this free site and start customising in minutes.</p>
+        </div>
+        <div></div>
+        <div>
+          <a href="https://siteforge.io/claim/barbers-cut-classic-barbershop-manila-ph" class="btn btn-claim btn-large" style="width:100%; justify-content:center;">
+            <span class="en-text">Claim Free Site →</span>
+            <span class="fil-text">I-claim Nang Libre →</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="social-proof-nudge">
+      <div class="social-proof-avatars">
+        <div class="social-proof-avatar">JD</div>
+        <div class="social-proof-avatar">ML</div>
+        <div class="social-proof-avatar">RS</div>
+      </div>
+      <span>
+        <strong id="social-proof-count" style="color:var(--color-text);">47</strong> businesses claimed their site this week
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner container">
+    <div>
+      <div class="footer-brand">
+        <div class="footer-brand-icon">🍽️</div>
+        <div class="footer-brand-name">Barber's Cut Classic Barbershop</div>
+      </div>
+      <p class="footer-tagline">Manila's Trusted Barbershop</p>
+      <p style="font-size:0.82rem; color:rgba(255,255,255,0.35);">Manila, PH</p>
+    </div>
+
+    <div class="footer-nav">
+      <div class="footer-nav-section">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="#dishes">Menu</a></li>
+          <li><a href="#about">Our Story</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#location">Find Us</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav-section">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+63 2 8521 3300">+63 2 8521 3300</a></li>
+          <li><a href="#location">9 Remedios St, Malate, Manila</a></li>
+          <li><a href="#location">Tue–Sun: 9am–8pm</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div>
+      <h4 style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:rgba(255,255,255,0.4); margin-bottom:14px;">Own this business?</h4>
+      <a href="https://siteforge.io/claim/barbers-cut-classic-barbershop-manila-ph" class="btn btn-claim" style="width:100%; justify-content:center; margin-bottom:16px;">
+        <span class="en-text">Claim Your Free Site</span>
+        <span class="fil-text">I-claim ang Iyong Site</span>
+      </a>
+      <p style="font-size:0.75rem; color:rgba(255,255,255,0.3); line-height:1.5;">Get your own professional website at no cost. Built by SiteForge.</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom container">
+    <p class="footer-copyright">© 2026 Barber's Cut Classic Barbershop. All rights reserved.</p>
+    <a href="https://siteforge.io" class="siteforge-badge" target="_blank" rel="noopener">
+      <span class="siteforge-badge-icon">⚡</span>
+      Powered by SiteForge
+    </a>
+  </div>
+</footer>
+
+<!-- ─── MOBILE BOTTOM BAR ─── -->
+<div id="mobile-claim-bar">
+  <p>
+    <strong class="en-text">Is this your restaurant?</strong>
+    <strong class="fil-text">Ito ba ang iyong restaurant?</strong><br>
+    <span class="en-text" style="font-size:0.75rem; color:rgba(255,255,255,0.6);">Claim your free website today</span>
+    <span class="fil-text" style="font-size:0.75rem; color:rgba(255,255,255,0.6);">I-claim ang iyong libreng website ngayon</span>
+  </p>
+  <a href="https://siteforge.io/claim/barbers-cut-classic-barbershop-manila-ph" class="btn btn-claim" style="flex-shrink:0; font-size:0.8rem; padding:10px 16px;">
+    <span class="en-text">Claim Free →</span>
+    <span class="fil-text">I-claim →</span>
+  </a>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ─── CONFIG ───────────────────────────────────────────────────────
+  const CONFIG = {
+    heroImage: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=1600&auto=format&fit=crop',
+    menuItems: 'hero · about · menu_highlights · hours_location · contact',
+    dishes: '{{DISHES}}',
+    signatureItems: '{{SIGNATURE_ITEMS}}',
+    trustPoints: 'star rating|number of reviews|years in business|cuisine type',
+    gallery: [
+      'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&auto=format&fit=crop','https://images.unsplash.com/photo-1580518337843-f959e992563b?w=600&auto=format&fit=crop','https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=600&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1634302086687-ee4fae17a786?w=600&auto=format&fit=crop','https://images.unsplash.com/photo-1541533848490-bc8115cd6522?w=600&auto=format&fit=crop','https://images.unsplash.com/photo-1512864084360-7c0d369d9a74?w=600&auto=format&fit=crop'
+    ]
+  };
+
+  // ─── TRANSLATIONS ─────────────────────────────────────────────────
+  const TRANSLATIONS = {
+    en: {
+      bannerText: 'This site was built for you by SiteForge — claim it free ·',
+      bannerCTA: 'Claim my site →',
+      navMenu: 'Menu',
+      navStory: 'Our Story',
+      navGallery: 'Gallery',
+      navHours: 'Hours & Location',
+      navContact: 'Contact',
+      heroCTA: 'Order Now',
+      heroMenuCTA: 'View Menu',
+      reserveTable: 'Reserve a Table',
+      findUs: 'Find Us',
+      callOrder: 'Call to Order',
+      sendMsg: 'Send a Message',
+      claimFree: 'Claim Free Site →',
+    },
+    fil: {
+      bannerText: 'Ginawa ng SiteForge ang site na ito para sa iyo — i-claim nang libre ·',
+      bannerCTA: 'I-claim ang aking site →',
+      navMenu: 'Menu',
+      navStory: 'Aming Kuwento',
+      navGallery: 'Galeria',
+      navHours: 'Oras at Lokasyon',
+      navContact: 'Makipag-ugnayan',
+      heroCTA: 'Umorder Na',
+      heroMenuCTA: 'Tingnan ang Menu',
+      reserveTable: 'Mag-reserve ng Mesa',
+      findUs: 'Hanapin Kami',
+      callOrder: 'Tumawag para Umorder',
+      sendMsg: 'Magpadala ng Mensahe',
+      claimFree: 'I-claim Nang Libre →',
+    }
+  };
+
+  // ─── HERO IMAGE ───────────────────────────────────────────────────
+  const heroBg = document.getElementById('hero-bg');
+  if (heroBg && CONFIG.heroImage && !CONFIG.heroImage.includes('{{')) {
+    heroBg.style.backgroundImage = `url('${CONFIG.heroImage}')`;
+  } else if (heroBg) {
+    heroBg.style.background = 'linear-gradient(135deg, #2c1810 0%, #c0392b 50%, #e67e22 100%)';
+  }
+
+  // ─── TICKER ───────────────────────────────────────────────────────
+  function buildTicker() {
+    const track = document.getElementById('ticker-track');
+    if (!track) return;
+
+    let items = [];
+    if (CONFIG.menuItems && !CONFIG.menuItems.includes('{{')) {
+      items = CONFIG.menuItems.split('|').map(s => s.trim()).filter(Boolean);
+    }
+
+    if (!items.length) {
+      items = [
+        'Breakfast Specials', 'Fresh Baked Daily', 'Seasonal Menu', 'Family Meals',
+        'Catering Available', 'Dine-In & Takeout', 'Local Ingredients', 'Chef\'s Special',
+        'Sweet Treats', 'Hot Beverages', 'Group Discounts', 'Weekend Brunch'
+      ];
+    }
+
+    const emojis = ['🍽️','🍳','☕','🥐','🍜','🥗','🍰','🥩','🍲','🥘','🍝','🧁'];
+    const doubledItems = [...items, ...items]; // for seamless loop
+
+    const html = doubledItems.map((item, i) => `
+      <div class="ticker-item">
+        <span>${emojis[i % emojis.length]}</span>
+        <span>${item}</span>
+        <span class="ticker-dot"></span>
+      </div>
+    `).join('');
+
+    track.innerHTML = html;
+  }
+
+  // ─── DISHES GRID ──────────────────────────────────────────────────
+  function buildDishesGrid() {
+    const grid = document.getElementById('dishes-grid');
+    if (!grid) return;
+
+    let signatures = [];
+    if (CONFIG.signatureItems && !CONFIG.signatureItems.includes('{{')) {
+      signatures = CONFIG.signatureItems.split('|').map(s => s.trim()).filter(Boolean);
+    }
+
+    if (!signatures.length) {
+      signatures = [
+        'House Special', 'Chef\'s Favourite', 'Classic Breakfast', 'Weekend Brunch',
+        'Family Platter', 'Sweet Ending'
+      ];
+    }
+
+    const descriptions = [
+      'A beloved classic crafted with the finest local ingredients, slow-cooked to perfection.',
+      'Our chef\'s personal favourite — a harmonious blend of bold flavours and fresh herbs.',
+      'Start your morning right with our hearty, wholesome breakfast selection.',
+      'The perfect weekend indulgence. Served hot with seasonal accompaniments.',
+      'Generous portions made for sharing. Perfect for gatherings and celebrations.',
+      'End on a sweet note with our house-made dessert, baked fresh every day.'
+    ];
+
+    const prices = ['₱180', '₱240', '₱150', '₱320', '₱450', '₱120'];
+    const badges = ['Best Seller', 'Chef\'s Pick', 'New', 'Popular', 'Family Fave', 'Daily Fresh'];
+    const galleryImages = CONFIG.gallery;
+
+    const dishHtml = signatures.slice(0, 6).map((name, i) => {
+      const img = galleryImages[i] || galleryImages[0];
+      const imgSrc = (img && !img.includes('{{')) ? img : '';
+      const imgTag = imgSrc
+        ? `<img src="${imgSrc}" alt="${name}" loading="lazy">`
+        : `<div style="width:100%;height:100%;background:linear-gradient(135deg,#c0392b,#e67e22);display:flex;align-items:center;justify-content:center;font-size:3rem;">🍽️</div>`;
+
+      return `
+        <article class="dish-card reveal reveal-delay-${i % 3}">
+          <div class="dish-card-img-wrap">
+            ${imgTag}
+            <div class="dish-badge">${badges[i]}</div>
+          </div>
+          <div class="dish-card-body">
+            <h3 class="dish-name">${name}</h3>
+            <p class="dish-desc">${descriptions[i]}</p>
+            <div class="dish-footer">
+              <span class="dish-price">${prices[i]}</span>
+              <button class="dish-order-btn" aria-label="Add ${name} to order">+</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    grid.innerHTML = dishHtml;
+    initReveal();
+  }
+
+  // ─── TRUST POINTS ─────────────────────────────────────────────────
+  function buildTrustPoints() {
+    const container = document.getElementById('trust-points-list');
+    if (!container) return;
+
+    let points = [];
+    if (CONFIG.trustPoints && !CONFIG.trustPoints.includes('{{')) {
+      points = CONFIG.trustPoints.split('|').map(s => s.trim()).filter(Boolean);
+    }
+
+    if (!points.length) {
+      points = ['Locally Sourced Ingredients', 'Family Recipes Since Day One', 'Community-Loved & Trusted'];
+    }
+
+    const icons = ['🌿', '👨‍🍳', '⭐', '🏆', '💚', '🤝'];
+
+    container.innerHTML = points.slice(0, 4).map((point, i) => `
+      <div class="trust-point reveal reveal-delay-${i + 2}">
+        <div class="trust-point-icon">${icons[i % icons.length]}</div>
+        <span>${point}</span>
+      </div>
+    `).join('');
+  }
+
+  // ─── SCROLL REVEAL ────────────────────────────────────────────────
+  function initReveal() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }
+
+  // ─── NAV SCROLL ───────────────────────────────────────────────────
+  function initNavScroll() {
+    const nav = document.getElementById('main-nav');
+    const navCTA = document.getElementById('nav-cta-desktop');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 80) {
+        nav.classList.add('scrolled');
+        if (navCTA) navCTA.style.display = 'inline-flex';
+      } else {
+        nav.classList.remove('scrolled');
+        if (navCTA) navCTA.style.display = 'none';
+      }
+    }, { passive: true });
+  }
+
+  // ─── CLAIM BANNER CLOSE ───────────────────────────────────────────
+  function initBanner() {
+    const banner = document.getElementById('claim-banner');
+    const closeBtn = document.getElementById('banner-close');
+    if (!banner || !closeBtn) return;
+
+    closeBtn.addEventListener('click', () => {
+      banner.classList.add('hidden');
+    });
+  }
+
+  // ─── MOBILE MENU ──────────────────────────────────────────────────
+  function initMobileMenu() {
+    const hamburger = document.getElementById('hamburger-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeBtn = document.getElementById('mobile-menu-close');
+
+    if (!hamburger || !mobileMenu || !closeBtn) return;
+
+    function openMenu() {
+      mobileMenu.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', openMenu);
+    closeBtn.addEventListener('click', closeMenu);
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+  }
+
+  // ─── LANGUAGE TOGGLE ──────────────────────────────────────────────
+  function initLangToggle() {
+    const body = document.body;
+    const langBtns = document.querySelectorAll('.lang-btn');
+
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+        body.dataset.lang = lang;
+
+        langBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Sync fil/en text visibility manually for duplicate nav links
+        const enTexts = document.querySelectorAll('.en-text');
+        const filTexts = document.querySelectorAll('.fil-text');
+
+        if (lang === 'fil') {
+          enTexts.forEach(el => el.style.display = 'none');
+          filTexts.forEach(el => el.style.display = 'inline');
+        } else {
+          enTexts.forEach(el => el.style.display = 'inline');
+          filTexts.forEach(el => el.style.display = 'none');
+        }
+      });
+    });
+  }
+
+  // ─── SOCIAL PROOF COUNT ───────────────────────────────────────────
+  function animateSocialProof() {
+    const el = document.getElementById('social-proof-count');
+    if (!el) return;
+
+    const target = 47;
+    let count = 30;
+    const interval = setInterval(() => {
+      count++;
+      el.textContent = count;
+      if (count >= target) clearInterval(interval);
+    }, 80);
+  }
+
+  // ─── SMOOTH SCROLL ────────────────────────────────────────────────
+  function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) {
+          const offset = 80;
+          const top = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+  }
+
+  // ─── ABOUT YEARS COUNTER ──────────────────────────────────────────
+  function initYearsCounter() {
+    const el = document.getElementById('about-years');
+    if (!el) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        let count = 0;
+        const target = 10;
+        const interval = setInterval(() => {
+          count++;
+          el.textContent = count + '+';
+          if (count >= target) clearInterval(interval);
+        }, 80);
+        observer.disconnect();
+      }
+    });
+    observer.observe(el);
+  }
+
+  // ─── DISH CARD ORDER BUTTON ───────────────────────────────────────
+  function initDishButtons() {
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.dish-order-btn')) {
+        const btn = e.target.closest('.dish-order-btn');
+        const original = btn.innerHTML;
+        btn.innerHTML = '✓';
+        btn.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
+        setTimeout(() => {
+          btn.innerHTML = original;
+          btn.style.background = '';
+        }, 1500);
+      }
+    });
+  }
+
+  // ─── CONTACT FORM SUBMIT ──────────────────────────────────────────
+  function initContactForm() {
+    const form = document.querySelector('.contact-form button[type="button"]');
+    if (!form) return;
+
+    form.addEventListener('click', () => {
+      const original = form.innerHTML;
+      form.innerHTML = '<span>✓</span> <span>Request Sent! We\'ll confirm soon.</span>';
+      form.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
+      setTimeout(() => {
+        form.innerHTML = original;
+        form.style.background = '';
+      }, 3000);
+    });
+  }
+
+  // ─── INIT ─────────────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    buildTicker();
+    buildDishesGrid();
+    buildTrustPoints();
+    initReveal();
+    initNavScroll();
+    initBanner();
+    initMobileMenu();
+    initLangToggle();
+    initSmoothScroll();
+    initYearsCounter();
+    initDishButtons();
+    initContactForm();
+
+    // Delayed social proof animation
+    setTimeout(animateSocialProof, 1200);
+
+    // Trigger fil-text hide on load (default EN)
+    document.querySelectorAll('.fil-text').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.en-text').forEach(el => el.style.display = 'inline');
+  });
+
+})();
+</script>
+</body>
+</html>

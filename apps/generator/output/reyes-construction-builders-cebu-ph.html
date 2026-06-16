@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Reyes Construction & Builders — Full-service construction firm specialising in residential homes, commercial fit-outs, and renovation works across Cebu and Visayas.">
+<title>Reyes Construction & Builders | Cebu City</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: #FAFAFA;
+    color: #1A252F;
+    line-height: 1.6;
+  }
+
+  /* ─── CLAIM BANNER ─── */
+  #claim-banner {
+    background: #2C3E50;
+    color: #ECF0F1;
+    font-size: 12px;
+    text-align: center;
+    padding: 8px 40px 8px 16px;
+    position: relative;
+    z-index: 1000;
+  }
+  #claim-banner a {
+    color: #F39C12;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  #claim-banner a:hover { text-decoration: underline; }
+  #claim-banner-close {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #ECF0F1;
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 6px;
+    opacity: 0.8;
+  }
+  #claim-banner-close:hover { opacity: 1; }
+
+  /* ─── STICKY NAV ─── */
+  #main-nav {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background: #2C3E50;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+  .nav-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    gap: 12px;
+  }
+  .nav-logo {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #ECF0F1;
+    text-decoration: none;
+    letter-spacing: -0.3px;
+    flex-shrink: 0;
+  }
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: #BDC3C7;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+  .nav-links a:hover { color: #ECF0F1; }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .btn-nav-cta {
+    background: #F39C12;
+    color: #1A252F;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 20px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .btn-nav-cta:hover { background: #E67E22; transform: translateY(-1px); }
+
+  /* Language toggle */
+  .lang-toggle {
+    display: flex;
+    gap: 4px;
+  }
+  .lang-btn {
+    background: transparent;
+    border: 1px solid #BDC3C7;
+    color: #BDC3C7;
+    border-radius: 6px;
+    padding: 5px 9px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .lang-btn.active, .lang-btn:hover {
+    background: #ECF0F1;
+    color: #2C3E50;
+    border-color: #ECF0F1;
+  }
+
+  /* Hamburger */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #ECF0F1;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+  }
+  .mobile-menu {
+    display: none;
+    background: #34495E;
+    padding: 16px 20px;
+  }
+  .mobile-menu.open { display: block; }
+  .mobile-menu ul { list-style: none; }
+  .mobile-menu ul li { border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .mobile-menu ul li:last-child { border-bottom: none; }
+  .mobile-menu ul li a {
+    display: block;
+    padding: 12px 0;
+    color: #ECF0F1;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 90vh;
+    background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.50);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    color: #fff;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(243,156,18,0.2);
+    border: 1px solid rgba(243,156,18,0.5);
+    color: #F39C12;
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
+  .hero-stars {
+    color: #F39C12;
+    margin-right: 4px;
+  }
+  .hero-title {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 18px;
+    letter-spacing: -0.5px;
+  }
+  .hero-title span { color: #F39C12; }
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: rgba(255,255,255,0.88);
+    max-width: 580px;
+    margin-bottom: 32px;
+    line-height: 1.7;
+  }
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+  .btn-primary {
+    background: #F39C12;
+    color: #1A252F;
+    border: none;
+    border-radius: 10px;
+    padding: 16px 40px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s ease;
+    animation: pulse 2.5s infinite;
+  }
+  .btn-primary:hover {
+    background: #E67E22;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(243,156,18,0.4);
+    animation: none;
+  }
+  .btn-secondary {
+    background: transparent;
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.7);
+    border-radius: 10px;
+    padding: 16px 40px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s ease;
+  }
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: #fff;
+    transform: translateY(-2px);
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(243,156,18,0.5); }
+    50% { box-shadow: 0 0 0 12px rgba(243,156,18,0); }
+  }
+  .hero-urgency {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.7);
+    margin-top: -8px;
+  }
+  .hero-social-proof {
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .proof-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.9);
+  }
+  .proof-item strong { color: #F39C12; font-size: 1rem; }
+
+  /* ─── SECTION BASE ─── */
+  section { padding: 80px 20px; }
+  .section-inner { max-width: 960px; margin: 0 auto; }
+  .section-tag {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #F39C12;
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    color: #2C3E50;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .section-desc {
+    color: #5D6D7E;
+    max-width: 600px;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  .divider {
+    width: 48px;
+    height: 4px;
+    background: #F39C12;
+    border-radius: 2px;
+    margin: 16px 0 32px;
+  }
+
+  /* ─── ABOUT ─── */
+  #about { background: #fff; }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .about-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 200px 200px;
+    gap: 12px;
+  }
+  .about-img-wrap {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+  .about-img-wrap:first-child {
+    grid-row: 1 / 3;
+  }
+  .about-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .about-img-wrap:hover img { transform: scale(1.04); }
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .stat-card {
+    background: #FAFAFA;
+    border: 1px solid #ECF0F1;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-card .stat-num {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #2C3E50;
+    line-height: 1;
+  }
+  .stat-card .stat-label {
+    font-size: 0.78rem;
+    color: #7F8C8D;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  .values-list {
+    list-style: none;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .values-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.95rem;
+    color: #34495E;
+  }
+  .values-list li::before {
+    content: '✓';
+    background: #F39C12;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ─── SERVICES ─── */
+  #services { background: #FAFAFA; }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 8px;
+  }
+  .service-card {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    transition: all 0.2s ease;
+    border: 1px solid #ECF0F1;
+  }
+  .service-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  }
+  .service-img-wrap {
+    height: 180px;
+    overflow: hidden;
+  }
+  .service-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .service-card:hover .service-img-wrap img { transform: scale(1.05); }
+  .service-body {
+    padding: 20px;
+  }
+  .service-icon {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .service-body h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #2C3E50;
+    margin-bottom: 8px;
+  }
+  .service-body p {
+    font-size: 0.88rem;
+    color: #7F8C8D;
+    line-height: 1.6;
+  }
+
+  /* ─── GALLERY ─── */
+  #gallery { background: #2C3E50; padding: 80px 20px; }
+  #gallery .section-title { color: #ECF0F1; }
+  #gallery .section-tag { color: #F39C12; }
+  #gallery .divider { background: #F39C12; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .gallery-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .gallery-item:hover img { transform: scale(1.06); }
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(44,62,80,0.5);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-overlay span {
+    color: #fff;
+    font-size: 1.5rem;
+  }
+
+  /* ─── PRICING / COMPARISON ─── */
+  #compare { background: #fff; }
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 12px;
+  }
+  .compare-card {
+    border-radius: 16px;
+    padding: 32px;
+    border: 2px solid #ECF0F1;
+  }
+  .compare-card.pro {
+    border-color: #F39C12;
+    background: #FEFAF3;
+    position: relative;
+    overflow: hidden;
+  }
+  .compare-card.pro::before {
+    content: 'MOST POPULAR';
+    position: absolute;
+    top: 14px;
+    right: -28px;
+    background: #F39C12;
+    color: #1A252F;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 4px 36px;
+    transform: rotate(45deg);
+  }
+  .compare-card h3 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #2C3E50;
+    margin-bottom: 6px;
+  }
+  .compare-card .price {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #2C3E50;
+    margin-bottom: 4px;
+  }
+  .compare-card .price span {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #7F8C8D;
+  }
+  .compare-card .price-note {
+    font-size: 0.8rem;
+    color: #7F8C8D;
+    margin-bottom: 20px;
+  }
+  .compare-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .compare-features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #34495E;
+  }
+  .compare-features li .check { color: #27AE60; font-weight: 700; }
+  .compare-features li .cross { color: #E74C3C; font-weight: 700; }
+  .btn-compare {
+    display: block;
+    text-align: center;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-compare.free {
+    background: #ECF0F1;
+    color: #2C3E50;
+  }
+  .btn-compare.free:hover { background: #D5DBDB; }
+  .btn-compare.upgrade {
+    background: #F39C12;
+    color: #1A252F;
+  }
+  .btn-compare.upgrade:hover {
+    background: #E67E22;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(243,156,18,0.35);
+  }
+
+  /* ─── HOURS & CONTACT ─── */
+  #hours-location { background: #FAFAFA; }
+  #contact { background: #2C3E50; padding: 80px 20px; }
+  #contact .section-title { color: #ECF0F1; }
+  #contact .section-tag { color: #F39C12; }
+  #contact .divider { background: #F39C12; }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+  .contact-info { display: flex; flex-direction: column; gap: 20px; }
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .contact-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .contact-item-body h4 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #F39C12;
+    margin-bottom: 4px;
+  }
+  .contact-item-body p,
+  .contact-item-body a {
+    color: #ECF0F1;
+    font-size: 0.95rem;
+    text-decoration: none;
+    line-height: 1.5;
+  }
+  .contact-item-body a:hover { color: #F39C12; }
+  .hours-table {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .hours-table h3 {
+    color: #ECF0F1;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hours-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.9rem;
+  }
+  .hours-row:last-child { border-bottom: none; }
+  .hours-day { color: #BDC3C7; }
+  .hours-time { color: #ECF0F1; font-weight: 600; }
+  .hours-time.closed { color: #E74C3C; }
+  .cta-contact-box {
+    background: rgba(243,156,18,0.1);
+    border: 1px solid rgba(243,156,18,0.3);
+    border-radius: 14px;
+    padding: 28px;
+    margin-top: 20px;
+    text-align: center;
+  }
+  .cta-contact-box p {
+    color: #BDC3C7;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+  .btn-cta-contact {
+    display: inline-block;
+    background: #F39C12;
+    color: #1A252F;
+    border-radius: 10px;
+    padding: 13px 32px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  .btn-cta-contact:hover {
+    background: #E67E22;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(243,156,18,0.35);
+  }
+
+  /* ─── HOURS SECTION ─── */
+  .hl-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .hl-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    border: 1px solid #ECF0F1;
+  }
+  .hl-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2C3E50;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hl-hours-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #F0F3F4;
+    font-size: 0.9rem;
+  }
+  .hl-hours-row:last-child { border-bottom: none; }
+  .hl-hours-day { color: #5D6D7E; }
+  .hl-hours-time { font-weight: 600; color: #2C3E50; }
+  .hl-hours-time.closed { color: #E74C3C; }
+  .map-placeholder {
+    background: #ECF0F1;
+    border-radius: 12px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+    font-size: 0.85rem;
+    color: #7F8C8D;
+  }
+  .map-placeholder span:first-child { font-size: 2rem; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: #1A252F;
+    color: #BDC3C7;
+    padding: 40px 20px 24px;
+  }
+  .footer-inner {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .footer-brand h2 {
+    color: #ECF0F1;
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .footer-brand p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    max-width: 300px;
+    color: #7F8C8D;
+  }
+  .footer-links h4 {
+    color: #ECF0F1;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .footer-links ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .footer-links ul a {
+    color: #7F8C8D;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
+  }
+  .footer-links ul a:hover { color: #ECF0F1; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: #5D6D7E;
+  }
+  .siteforge-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 0.75rem;
+    color: #7F8C8D;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  .siteforge-badge:hover {
+    background: rgba(255,255,255,0.1);
+    color: #ECF0F1;
+  }
+  .siteforge-badge .sf-dot {
+    width: 8px;
+    height: 8px;
+    background: #F39C12;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* ─── MOBILE STICKY BAR ─── */
+  #mobile-claim-bar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #2C3E50;
+    border-top: 2px solid #F39C12;
+    padding: 12px 20px;
+    z-index: 9999;
+    text-align: center;
+  }
+  #mobile-claim-bar a {
+    color: #F39C12;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  #mobile-claim-bar a:hover { color: #E67E22; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    section { padding: 60px 16px; }
+    #hero { min-height: 90vh; }
+    .hero-content { padding: 48px 16px; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    .btn-nav-cta { display: none; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-images {
+      grid-template-rows: 160px 160px;
+    }
+    .services-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .hl-grid { grid-template-columns: 1fr; }
+    .footer-top { flex-direction: column; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    #mobile-claim-bar { display: block; }
+    body { padding-bottom: 60px; }
+    .lang-toggle { gap: 3px; }
+    .lang-btn { padding: 4px 7px; font-size: 0.7rem; }
+  }
+
+  @media (max-width: 480px) {
+    .gallery-grid { grid-template-columns: 1fr; }
+    .about-stats { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Rating stars */
+  .stars { color: #F39C12; letter-spacing: 1px; }
+</style>
+  <link rel="canonical" href="http://localhost:3000/sites/reyes-construction-builders-cebu-ph">
+</head>
+<body>
+
+<!-- ─── CLAIM BANNER ─── -->
+<div id="claim-banner" role="banner">
+  <span>This site was built for you by SiteForge — claim it free to customise &nbsp;·&nbsp;
+    <a href="https://siteforge.io/claim/reyes-construction-builders-cebu-ph" data-i18n="claim_link">Claim my site →</a>
+  </span>
+  <button id="claim-banner-close" aria-label="Dismiss banner">✕</button>
+</div>
+
+<!-- ─── STICKY NAV ─── -->
+<nav id="main-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">Reyes Construction</a>
+    <ul class="nav-links" role="list">
+      <li><a href="#about" data-i18n="nav_about">About</a></li>
+      <li><a href="#services" data-i18n="nav_services">Services</a></li>
+      <li><a href="#gallery" data-i18n="nav_gallery">Gallery</a></li>
+      <li><a href="#hours-location" data-i18n="nav_hours">Hours</a></li>
+      <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang-toggle" role="group" aria-label="Language selector">
+        <button class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
+        <button class="lang-btn" data-lang="fil" aria-pressed="false">FIL</button>
+        <button class="lang-btn" data-lang="ceb" aria-pressed="false">CEB</button>
+      </div>
+      <a href="#contact" class="btn-nav-cta" data-i18n="nav_cta">Get in Touch</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger-btn" aria-label="Toggle mobile menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobile-menu" role="menu">
+    <ul>
+      <li><a href="#about" data-i18n="nav_about">About</a></li>
+      <li><a href="#services" data-i18n="nav_services">Services</a></li>
+      <li><a href="#gallery" data-i18n="nav_gallery">Gallery</a></li>
+      <li><a href="#hours-location" data-i18n="nav_hours">Hours</a></li>
+      <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero" aria-label="Hero">
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-stars" aria-hidden="true">★★★★★</span>
+      <span>4.6 Stars &nbsp;·&nbsp; 134 Reviews &nbsp;·&nbsp; Cebu City</span>
+    </div>
+    <h1 class="hero-title" data-i18n="hero_title">Building Dreams,<br><span>One Structure at a Time.</span></h1>
+    <p class="hero-sub" data-i18n="hero_sub">Full-service construction firm specialising in residential homes, commercial fit-outs, and renovation works across Cebu and the Visayas. Quality craftsmanship, on time, every time.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary" data-i18n="cta_primary">Get in Touch</a>
+      <a href="#about" class="btn-secondary" data-i18n="cta_secondary">Learn More</a>
+    </div>
+    <p class="hero-urgency" data-i18n="urgency">Free forever — takes 30 seconds to claim your site</p>
+    <div class="hero-social-proof">
+      <div class="proof-item">
+        <strong>83</strong>
+        <span data-i18n="proof_claimed">businesses claimed their site this week</span>
+      </div>
+      <div class="proof-item">
+        <strong>10+</strong>
+        <span data-i18n="proof_years">Years in Cebu</span>
+      </div>
+      <div class="proof-item">
+        <span class="stars" aria-hidden="true">★★★★★</span>
+        <span>4.6 / 5.0 (134)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section id="about" aria-labelledby="about-title">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-images" aria-hidden="true">
+        <div class="about-img-wrap">
+          <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&auto=format&fit=crop" alt="Construction project in Cebu by Reyes Construction">
+        </div>
+        <div class="about-img-wrap">
+          <img src="https://images.unsplash.com/photo-1545259742-f9e8f9a9f3e1?w=600&auto=format&fit=crop" alt="Residential building project">
+        </div>
+        <div class="about-img-wrap">
+          <img src="https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=600&auto=format&fit=crop" alt="Commercial construction work">
+        </div>
+      </div>
+      <div class="about-text">
+        <p class="section-tag" data-i18n="about_tag">About Us</p>
+        <h2 class="section-title" id="about-title" data-i18n="about_title">Cebu's Trusted Construction Partner</h2>
+        <div class="divider" aria-hidden="true"></div>
+        <p class="section-desc" data-i18n="about_desc">Reyes Construction & Builders has been at the forefront of Cebu's building industry for over a decade. From modest family homes to large-scale commercial developments, our team brings precision, dedication, and pride to every project. We work hand-in-hand with our clients from blueprint to turnover, ensuring that every peso invested delivers lasting value.</p>
+        <ul class="values-list" aria-label="Our values">
+          <li data-i18n="val_1">Licensed engineers and skilled tradespeople on every project</li>
+          <li data-i18n="val_2">Transparent pricing — no hidden costs or surprises</li>
+          <li data-i18n="val_3">On-time delivery commitment backed by contract</li>
+          <li data-i18n="val_4">Serving Cebu City and all of Visayas</li>
+        </ul>
+        <div class="about-stats" aria-label="Key statistics">
+          <div class="stat-card">
+            <div class="stat-num">10+</div>
+            <div class="stat-label" data-i18n="stat_years">Years in Business</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">200+</div>
+            <div class="stat-label" data-i18n="stat_projects">Projects Completed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">4.6★</div>
+            <div class="stat-label" data-i18n="stat_rating">Star Rating</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">134</div>
+            <div class="stat-label" data-i18n="stat_reviews">Happy Clients</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICES ─── -->
+<section id="services" aria-labelledby="services-title">
+  <div class="section-inner">
+    <p class="section-tag" data-i18n="services_tag">What We Do</p>
+    <h2 class="section-title" id="services-title" data-i18n="services_title">Our Construction Services</h2>
+    <div class="divider" aria-hidden="true"></div>
+    <p class="section-desc" data-i18n="services_desc">From the ground up or a complete renovation, we bring the expertise and equipment to deliver outstanding results.</p>
+    <div class="services-grid">
+      <article class="service-card">
+        <div class="service-img-wrap">
+          <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&auto=format&fit=crop" alt="Residential home construction">
+        </div>
+        <div class="service-body">
+          <span class="service-icon" aria-hidden="true">🏠</span>
+          <h3 data-i18n="svc1_title">Residential Construction</h3>
+          <p data-i18n="svc1_desc">Custom-built homes tailored to your vision and budget. From single-family houses to multi-storey residences across Cebu and Visayas.</p>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-img-wrap">
+          <img src="https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=600&auto=format&fit=crop" alt="Commercial fit-out work">
+        </div>
+        <div class="service-body">
+          <span class="service-icon" aria-hidden="true">🏢</span>
+          <h3 data-i18n="svc2_title">Commercial Fit-Outs</h3>
+          <p data-i18n="svc2_desc">Office spaces, retail stores, restaurants, and more. We transform raw spaces into functional, professional environments that impress.</p>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-img-wrap">
+          <img src="https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=600&auto=format&fit=crop" alt="Renovation and remodelling">
+        </div>
+        <div class="service-body">
+          <span class="service-icon" aria-hidden="true">🔨</span>
+          <h3 data-i18n="svc3_title">Renovation & Remodelling</h3>
+          <p data-i18n="svc3_desc">Breathe new life into your existing property. Kitchen overhauls, bathroom upgrades, full-building renovations — done right the first time.</p>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-img-wrap">
+          <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&auto=format&fit=crop" alt="Project management services">
+        </div>
+        <div class="service-body">
+          <span class="service-icon" aria-hidden="true">📋</span>
+          <h3 data-i18n="svc4_title">Project Management</h3>
+          <p data-i18n="svc4_desc">End-to-end project oversight including permits, procurement, scheduling, and site supervision. We handle the complexity so you don't have to.</p>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-img-wrap">
+          <img src="https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=600&auto=format&fit=crop" alt="Structural and civil works">
+        </div>
+        <div class="service-body">
+          <span class="service-icon" aria-hidden="true">🏗️</span>
+          <h3 data-i18n="svc5_title">Structural & Civil Works</h3>
+          <p data-i18n="svc5_desc">Foundation laying, structural steel, concrete works, and civil infrastructure. Built to Philippine code and engineered to last decades.</p>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-img-wrap">
+          <img src="https://images.unsplash.com/photo-1545259742-f9e8f9a9f3e1?w=600&auto=format&fit=crop" alt="Architectural design consultation">
+        </div>
+        <div class="service-body">
+          <span class="service-icon" aria-hidden="true">📐</span>
+          <h3 data-i18n="svc6_title">Design & Consultation</h3>
+          <p data-i18n="svc6_desc">Architectural planning, cost estimation, and design consultation. We help you plan smartly before a single brick is laid.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ─── GALLERY ─── -->
+<section id="gallery" aria-labelledby="gallery-title">
+  <div class="section-inner">
+    <p class="section-tag" data-i18n="gallery_tag">Our Work</p>
+    <h2 class="section-title" id="gallery-title" data-i18n="gallery_title">Project Gallery</h2>
+    <div class="divider" aria-hidden="true"></div>
+    <div class="gallery-grid" role="list" aria-label="Project gallery images">
+      <div class="gallery-item" role="listitem">
+        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&auto=format&fit=crop" alt="Reyes Construction project 1 — residential build">
+        <div class="gallery-overlay" aria-hidden="true"><span>🔍</span></div>
+      </div>
+      <div class="gallery-item" role="listitem">
+        <img src="https://images.unsplash.com/photo-1545259742-f9e8f9a9f3e1?w=600&auto=format&fit=crop" alt="Reyes Construction project 2 — structural work">
+        <div class="gallery-overlay" aria-hidden="true"><span>🔍</span></div>
+      </div>
+      <div class="gallery-item" role="listitem">
+        <img src="https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=600&auto=format&fit=crop" alt="Reyes Construction project 3 — commercial fit-out">
+        <div class="gallery-overlay" aria-hidden="true"><span>🔍</span></div>
+      </div>
+      <div class="gallery-item" role="listitem">
+        <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&auto=format&fit=crop" alt="Reyes Construction project 4 — renovation works">
+        <div class="gallery-overlay" aria-hidden="true"><span>🔍</span></div>
+      </div>
+      <div class="gallery-item" role="listitem">
+        <img src="https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=600&auto=format&fit=crop" alt="Reyes Construction project 5 — interior finish">
+        <div class="gallery-overlay" aria-hidden="true"><span>🔍</span></div>
+      </div>
+      <div class="gallery-item" role="listitem">
+        <img src="https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=600&auto=format&fit=crop" alt="Reyes Construction project 6 — completed build">
+        <div class="gallery-overlay" aria-hidden="true"><span>🔍</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FREE vs PRO COMPARISON ─── -->
+<section id="compare" aria-labelledby="compare-title">
+  <div class="section-inner">
+    <p class="section-tag" data-i18n="compare_tag">Own This Site</p>
+    <h2 class="section-title" id="compare-title" data-i18n="compare_title">Free Site vs. SiteForge Pro</h2>
+    <div class="divider" aria-hidden="true"></div>
+    <p class="section-desc" data-i18n="compare_desc">This page is already live and free forever. Upgrade to Pro to unlock your full online presence.</p>
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h3 data-i18n="free_plan">Free Plan</h3>
+        <div class="price">₱0 <span data-i18n="forever">/ forever</span></div>
+        <p class="price-note" data-i18n="free_note">This site, as you see it now</p>
+        <ul class="compare-features" aria-label="Free plan features">
+          <li><span class="check" aria-label="Included">✓</span> <span data-i18n="f1">Beautiful business website</span></li>
+          <li><span class="check" aria-label="Included">✓</span> <span data-i18n="f2">Mobile responsive design</span></li>
+          <li><span class="check" aria-label="Included">✓</span> <span data-i18n="f3">Contact info & hours listed</span></li>
+          <li><span class="check" aria-label="Included">✓</span> <span data-i18n="f4">Hosted free by SiteForge</span></li>
+          <li><span class="cross" aria-label="Not included">✗</span> <span data-i18n="f5">Custom domain (e.g. reyesbuilders.ph)</span></li>
+          <li><span class="cross" aria-label="Not included">✗</span> <span data-i18n="f6">Edit your content anytime</span></li>
+          <li><span class="cross" aria-label="Not included">✗</span> <span data-i18n="f7">Booking / inquiry form</span></li>
+          <li><span class="cross" aria-label="Not included">✗</span> <span data-i18n="f8">Remove SiteForge badge</span></li>
+        </ul>
+        <a href="https://siteforge.io/claim/reyes-construction-builders-cebu-ph" class="btn-compare free" data-i18n="claim_free">Claim Free Site →</a>
+      </div>
+      <div class="compare-card pro">
+        <h3 data-i18n="pro_plan">Pro Plan</h3>
+        <div class="price">$29 <span data-i18n="per_mo">/ mo</span></div>
+        <p class="price-note" data-i18n="pro_note">Everything in Free, plus:</p>
+        <ul class="compare-features" aria-label="Pro plan features">
+          <li><span class="check" aria-label="Included">✓</span> <span data-i18n="p1">Everything in Free</span></li>
+          <li><span class="check" aria-label="Included">✓</span> <span data-i18n="p2">Custom domain included</span></li>
+          <li><span class="check" aria-label="Included">✓</span> <span data-i18n="p3">Full content editor (no code)</span></li>
+          <li><span class="check" aria-label="Included">✓</span> <span data-i18n="p4">Booking & quote request form</span></li>
+          <li><span class="check" aria-label="Included">✓</span> <span data-i18n="p5">Remove "Powered by SiteForge" badge</span></li>
+          <li><span class="check" aria-label="Included">✓</span> <span data-i18n="p6">Priority support</span></li>
+          <li><span class="check" aria-label="Included">✓</span> <span data-i18n="p7">Analytics dashboard</span></li>
+          <li><span class="check" aria-label="Included">✓</span> <span data-i18n="p8">Google Business sync</span></li>
+        </ul>
+        <a href="https://siteforge.io/upgrade/reyes-construction-builders-cebu-ph" class="btn-compare upgrade" data-i18n="upgrade_pro">Upgrade to Pro →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── HOURS & LOCATION ─── -->
+<section id="hours-location" aria-labelledby="hours-title">
+  <div class="section-inner">
+    <p class="section-tag" data-i18n="hours_tag">Find Us</p>
+    <h2 class="section-title" id="hours-title" data-i18n="hours_title">Hours & Location</h2>
+    <div class="divider" aria-hidden="true"></div>
+    <div class="hl-grid">
+      <div class="hl-card">
+        <h3>🕐 <span data-i18n="opening_hours">Opening Hours</span></h3>
+        <div class="hl-hours-row">
+          <span class="hl-hours-day" data-i18n="mon_sat">Monday – Saturday</span>
+          <span class="hl-hours-time">8:00 AM – 5:00 PM</span>
+        </div>
+        <div class="hl-hours-row">
+          <span class="hl-hours-day" data-i18n="sunday">Sunday</span>
+          <span class="hl-hours-time closed" data-i18n="closed">Closed</span>
+        </div>
+        <div style="margin-top:20px; padding-top:16px; border-top:1px solid #ECF0F1;">
+          <p style="font-size:0.85rem;color:#7F8C8D;" data-i18n="hours_note">Project site visits by appointment. Call us to schedule a consultation.</p>
+        </div>
+      </div>
+      <div class="hl-card">
+        <h3>📍 <span data-i18n="our_location">Our Location</span></h3>
+        <p style="font-size:0.95rem;color:#34495E;margin-bottom:16px;">45 Osmena Blvd, Cebu City, Cebu 6000, Philippines</p>
+        <div class="map-placeholder" role="img" aria-label="Map placeholder for 45 Osmena Blvd Cebu City">
+          <span aria-hidden="true">🗺️</span>
+          <span data-i18n="map_label">45 Osmena Blvd, Cebu City</span>
+          <span style="font-size:0.75rem;" data-i18n="map_sub">Cebu 6000, Philippines</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact" aria-labelledby="contact-title">
+  <div class="section-inner">
+    <p class="section-tag" data-i18n="contact_tag">Get In Touch</p>
+    <h2 class="section-title" id="contact-title" data-i18n="contact_title">Contact Reyes Construction</h2>
+    <div class="divider" aria-hidden="true"></div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item">
+          <span class="contact-icon" aria-hidden="true">📞</span>
+          <div class="contact-item-body">
+            <h4 data-i18n="phone_label">Phone</h4>
+            <a href="tel:+63324128800">+63 32 412 8800</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon" aria-hidden="true">✉️</span>
+          <div class="contact-item-body">
+            <h4 data-i18n="email_label">Email</h4>
+            <a href="mailto:kimpdlc24@gmail.com">kimpdlc24@gmail.com</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon" aria-hidden="true">📍</span>
+          <div class="contact-item-body">
+            <h4 data-i18n="address_label">Address</h4>
+            <p>45 Osmena Blvd, Cebu City, Cebu 6000</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon" aria-hidden="true">🕐</span>
+          <div class="contact-item-body">
+            <h4 data-i18n="hours_label">Business Hours</h4>
+            <p data-i18n="hours_val">Mon–Sat: 8:00 AM – 5:00 PM</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="hours-table" aria-label="Quick contact summary">
+          <h3>⭐ <span data-i18n="why_choose">Why Choose Reyes?</span></h3>
+          <div class="hours-row">
+            <span class="hours-day" data-i18n="trust1">Licensed Engineers</span>
+            <span class="hours-time">✓</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day" data-i18n="trust2">10+ Years Experience</span>
+            <span class="hours-time">✓</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day" data-i18n="trust3">200+ Projects Done</span>
+            <span class="hours-time">✓</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day" data-i18n="trust4">Serving All Visayas</span>
+            <span class="hours-time">✓</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day" data-i18n="trust5">4.6 Star Rating</span>
+            <span class="hours-time" style="color:#F39C12;">★★★★★</span>
+          </div>
+        </div>
+        <div class="cta-contact-box">
+          <p data-i18n="cta_box_desc">Ready to start your project? Reach out today for a free consultation and quote. We'd love to bring your vision to life.</p>
+          <a href="mailto:kimpdlc24@gmail.com" class="btn-cta-contact" data-i18n="cta_box_btn">Send Us an Email →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h2>Reyes Construction & Builders</h2>
+        <p>Full-service construction firm serving Cebu City and the Visayas. Quality you can build on.</p>
+        <p style="margin-top:10px;font-size:0.82rem;">📍 45 Osmena Blvd, Cebu City, Cebu 6000<br>📞 <a href="tel:+63324128800" style="color:#7F8C8D;text-decoration:none;">+63 32 412 8800</a></p>
+      </div>
+      <div class="footer-links">
+        <h4 data-i18n="footer_nav">Navigation</h4>
+        <ul>
+          <li><a href="#about" data-i18n="nav_about">About</a></li>
+          <li><a href="#services" data-i18n="nav_services">Services</a></li>
+          <li><a href="#gallery" data-i18n="nav_gallery">Gallery</a></li>
+          <li><a href="#hours-location" data-i18n="nav_hours">Hours</a></li>
+          <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4 data-i18n="footer_services">Services</h4>
+        <ul>
+          <li><a href="#services" data-i18n="svc1_title">Residential Construction</a></li>
+          <li><a href="#services" data-i18n="svc2_title">Commercial Fit-Outs</a></li>
+          <li><a href="#services" data-i18n="svc3_title">Renovation & Remodelling</a></li>
+          <li><a href="#services" data-i18n="svc4_title">Project Management</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Reyes Construction & Builders. All rights reserved.</span>
+      <a href="https://siteforge.io" class="siteforge-badge" target="_blank" rel="noopener noreferrer" aria-label="Powered by SiteForge">
+        <span class="sf-dot" aria-hidden="true"></span>
+        Powered by SiteForge
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── MOBILE STICKY CLAIM BAR ─── -->
+<div id="mobile-claim-bar" role="complementary" aria-label="Claim your business site">
+  <a href="https://siteforge.io/claim/reyes-construction-builders-cebu-ph" data-i18n="mobile_claim">
+    <span aria-hidden="true">🏗️</span>
+    <span data-i18n="mobile_claim_text">Is this your business? Claim it free →</span>
+  </a>
+</div>
+
+<script>
+  // ─── TRANSLATIONS ───
+  const translations = {
+    en: {
+      nav_about: "About",
+      nav_services: "Services",
+      nav_gallery: "Gallery",
+      nav_hours: "Hours",
+      nav_contact: "Contact",
+      nav_cta: "Get in Touch",
+      hero_title: "Building Dreams,<br><span>One Structure at a Time.</span>",
+      hero_sub: "Full-service construction firm specialising in residential homes, commercial fit-outs, and renovation works across Cebu and the Visayas. Quality craftsmanship, on time, every time.",
+      cta_primary: "Get in Touch",
+      cta_secondary: "Learn More",
+      urgency: "Free forever — takes 30 seconds to claim your site",
+      proof_claimed: "businesses claimed their site this week",
+      proof_years: "Years in Cebu",
+      about_tag: "About Us",
+      about_title: "Cebu's Trusted Construction Partner",
+      about_desc: "Reyes Construction & Builders has been at the forefront of Cebu's building industry for over a decade. From modest family homes to large-scale commercial developments, our team brings precision, dedication, and pride to every project.",
+      val_1: "Licensed engineers and skilled tradespeople on every project",
+      val_2: "Transparent pricing — no hidden costs or surprises",
+      val_3: "On-time delivery commitment backed by contract",
+      val_4: "Serving Cebu City and all of Visayas",
+      stat_years: "Years in Business",
+      stat_projects: "Projects Completed",
+      stat_rating: "Star Rating",
+      stat_reviews: "Happy Clients",
+      services_tag: "What We Do",
+      services_title: "Our Construction Services",
+      services_desc: "From the ground up or a complete renovation, we bring the expertise and equipment to deliver outstanding results.",
+      svc1_title: "Residential Construction",
+      svc1_desc: "Custom-built homes tailored to your vision and budget. From single-family houses to multi-storey residences across Cebu and Visayas.",
+      svc2_title: "Commercial Fit-Outs",
+      svc2_desc: "Office spaces, retail stores, restaurants, and more. We transform raw spaces into functional, professional environments that impress.",
+      svc3_title: "Renovation & Remodelling",
+      svc3_desc: "Breathe new life into your existing property. Kitchen overhauls, bathroom upgrades, full-building renovations — done right the first time.",
+      svc4_title: "Project Management",
+      svc4_desc: "End-to-end project oversight including permits, procurement, scheduling, and site supervision. We handle the complexity so you don't have to.",
+      svc5_title: "Structural & Civil Works",
+      svc5_desc: "Foundation laying, structural steel, concrete works, and civil infrastructure. Built to Philippine code and engineered to last decades.",
+      svc6_title: "Design & Consultation",
+      svc6_desc: "Architectural planning, cost estimation, and design consultation. We help you plan smartly before a single brick is laid.",
+      gallery_tag: "Our Work",
+      gallery_title: "Project Gallery",
+      compare_tag: "Own This Site",
+      compare_title: "Free Site vs. SiteForge Pro",
+      compare_desc: "This page is already live and free forever. Upgrade to Pro to unlock your full online presence.",
+      free_plan: "Free Plan",
+      forever: "/ forever",
+      free_note: "This site, as you see it now",
+      f1: "Beautiful business website",
+      f2: "Mobile responsive design",
+      f3: "Contact info & hours listed",
+      f4: "Hosted free by SiteForge",
+      f5: "Custom domain (e.g. reyesbuilders.ph)",
+      f6: "Edit your content anytime",
+      f7: "Booking / inquiry form",
+      f8: "Remove SiteForge badge",
+      claim_free: "Claim Free Site →",
+      pro_plan: "Pro Plan",
+      per_mo: "/ mo",
+      pro_note: "Everything in Free, plus:",
+      p1: "Everything in Free",
+      p2: "Custom domain included",
+      p3: "Full content editor (no code)",
+      p4: "Booking & quote request form",
+      p5: "Remove \"Powered by SiteForge\" badge",
+      p6: "Priority support",
+      p7: "Analytics dashboard",
+      p8: "Google Business sync",
+      upgrade_pro: "Upgrade to Pro →",
+      hours_tag: "Find Us",
+      hours_title: "Hours & Location",
+      opening_hours: "Opening Hours",
+      mon_sat: "Monday – Saturday",
+      sunday: "Sunday",
+      closed: "Closed",
+      hours_note: "Project site visits by appointment. Call us to schedule a consultation.",
+      our_location: "Our Location",
+      map_label: "45 Osmena Blvd, Cebu City",
+      map_sub: "Cebu 6000, Philippines",
+      contact_tag: "Get In Touch",
+      contact_title: "Contact Reyes Construction",
+      phone_label: "Phone",
+      email_label: "Email",
+      address_label: "Address",
+      hours_label: "Business Hours",
+      hours_val: "Mon–Sat: 8:00 AM – 5:00 PM",
+      why_choose: "Why Choose Reyes?",
+      trust1: "Licensed Engineers",
+      trust2: "10+ Years Experience",
+      trust3: "200+ Projects Done",
+      trust4: "Serving All Visayas",
+      trust5: "4.6 Star Rating",
+      cta_box_desc: "Ready to start your project? Reach out today for a free consultation and quote. We'd love to bring your vision to life.",
+      cta_box_btn: "Send Us an Email →",
+      footer_nav: "Navigation",
+      footer_services: "Services",
+      claim_link: "Claim my site →",
+      mobile_claim_text: "Is this your business? Claim it free →"
+    },
+    fil: {
+      nav_about: "Tungkol",
+      nav_services: "Serbisyo",
+      nav_gallery: "Galerya",
+      nav_hours: "Oras",
+      nav_contact: "Makipag-ugnayan",
+      nav_cta: "Makipag-ugnayan",
+      hero_title: "Nagtatayo ng Pangarap,<br><span>Isang Istruktura sa Isang Pagkakataon.</span>",
+      hero_sub: "Kumpletong serbisyo sa konstruksyon para sa bahay, komersyal na espasyo, at renovasyon sa buong Cebu at Visayas. Kalidad na gawa, on time, sa bawat oras.",
+      cta_primary: "Makipag-ugnayan",
+      cta_secondary: "Matuto Pa",
+      urgency: "Libre magpakailanman — 30 segundo lang para i-claim ang iyong site",
+      proof_claimed: "na negosyo ang nag-claim ng site ngayong linggo",
+      proof_years: "Taon sa Cebu",
+      about_tag: "Tungkol sa Amin",
+      about_title: "Pinagkakatiwalaang Konstruksyon sa Cebu",
+      about_desc: "Ang Reyes Construction & Builders ay nangunguna sa industriya ng konstruksyon ng Cebu sa loob ng mahigit isang dekada. Mula sa simpleng tahanan hanggang malalaking komersyal na gusali, dalubhasaan at dedikasyon ang dala namin sa bawat proyekto.",
+      val_1: "Lisensyadong inhinyero at bihasang manggagawa sa bawat proyekto",
+      val_2: "Malinaw na presyo — walang nakatagong bayad",
+      val_3: "Pangako sa on-time na paghahatid, sinusuportahan ng kontrata",
+      val_4: "Naglilingkod sa Cebu City at buong Visayas",
+      stat_years: "Taon sa Negosyo",
+      stat_projects: "Proyektong Natapos",
+      stat_rating: "Bituin na Rating",
+      stat_reviews: "Masasayang Kliyente",
+      services_tag: "Ang Aming Ginagawa",
+      services_title: "Aming mga Serbisyo sa Konstruksyon",
+      services_desc: "Mula sa simula o kumpletong renovasyon, dala namin ang kaalaman at kagamitan para sa natatanging resulta.",
+      svc1_title: "Residential na Konstruksyon",
+      svc1_desc: "Mga bahay na itinayo ayon sa inyong bisyon at badyet. Mula single-family hanggang multi-storey sa Cebu at Visayas.",
+      svc2_title: "Komersyal na Fit-Outs",
+      svc2_desc: "Opisina, tindahan, restaurant, at higit pa. Binabago namin ang mga espasyo sa functional na kapaligiran.",
+      svc3_title: "Renovasyon at Remodelling",
+      svc3_desc: "Bigyan ng bagong buhay ang inyong ari-arian. Kusina, banyo, buong gusali — tama sa unang pagkakataon.",
+      svc4_title: "Pamamahala ng Proyekto",
+      svc4_desc: "Buong pamamahala ng proyekto kabilang ang mga permit, pagbili, at pangangasiwa ng site.",
+      svc5_title: "Istruktura at Sibil na Gawa",
+      svc5_desc: "Pundasyon, bakal, semento, at sibil na imprastruktura. Itinayo ayon sa Philippine code.",
+      svc6_title: "Disenyo at Konsultasyon",
+      svc6_desc: "Arkitekturang pagpaplano, pagtatantya ng gastos, at konsultasyon sa disenyo bago magsimula.",
+      gallery_tag: "Aming Gawa",
+      gallery_title: "Galerya ng Proyekto",
+      compare_tag: "Ariin ang Site na Ito",
+      compare_title: "Libreng Site vs. SiteForge Pro",
+      compare_desc: "Ang pahinang ito ay live na at libre magpakailanman. I-upgrade sa Pro para sa mas kumpletong presensya online.",
+      free_plan: "Libreng Plano",
+      forever: "/ magpakailanman",
+      free_note: "Ang site na ito, tulad ng nakikita mo ngayon",
+      f1: "Magandang business website",
+      f2: "Mobile responsive na disenyo",
+      f3: "Impormasyon sa pakikipag-ugnayan at oras",
+      f4: "I-host nang libre ng SiteForge",
+      f5: "Custom domain (hal. reyesbuilders.ph)",
+      f6: "I-edit ang nilalaman anumang oras",
+      f7: "Form ng booking / katanungan",
+      f8: "Alisin ang SiteForge badge",
+      claim_free: "I-claim ang Libreng Site →",
+      pro_plan: "Pro na Plano",
+      per_mo: "/ buwan",
+      pro_note: "Lahat sa Libre, dagdag pa:",
+      p1: "Lahat ng nasa Libreng Plano",
+      p2: "Kasama ang custom domain",
+      p3: "Buong content editor (walang code)",
+      p4: "Form ng booking at quote",
+      p5: "Alisin ang \"Powered by SiteForge\" badge",
+      p6: "Priority support",
+      p7: "Analytics dashboard",
+      p8: "Google Business sync",
+      upgrade_pro: "I-upgrade sa Pro →",
+      hours_tag: "Hanapin Kami",
+      hours_title: "Oras at Lokasyon",
+      opening_hours: "Oras ng Pagbubukas",
+      mon_sat: "Lunes – Sabado",
+      sunday: "Linggo",
+      closed: "Sarado",
+      hours_note: "Ang pagbisita sa site ng proyekto ay sa appointment. Tawagan kami para mag-iskedyul ng konsultasyon.",
+      our_location: "Aming Lokasyon",
+      map_label: "45 Osmena Blvd, Cebu City",
+      map_sub: "Cebu 6000, Pilipinas",
+      contact_tag: "Makipag-ugnayan",
+      contact_title: "Makipag-ugnayan sa Reyes Construction",
+      phone_label: "Telepono",
+      email_label: "Email",
+      address_label: "Address",
+      hours_label: "Oras ng Negosyo",
+      hours_val: "Lunes–Sabado: 8:00 AM – 5:00 PM",
+      why_choose: "Bakit Pumili ng Reyes?",
+      trust1: "Lisensyadong Inhinyero",
+      trust2: "10+ Taon ng Karanasan",
+      trust3: "200+ Proyektong Natapos",
+      trust4: "Naglilingkod sa Buong Visayas",
+      trust5: "4.6 Bituin na Rating",
+      cta_box_desc: "Handa na bang simulan ang inyong proyekto? Makipag-ugnayan ngayon para sa libreng konsultasyon at quote.",
+      cta_box_btn: "Magpadala ng Email →",
+      footer_nav: "Nabigasyon",
+      footer_services: "Serbisyo",
+      claim_link: "I-claim ang aking site →",
+      mobile_claim_text: "Ito ba ang inyong negosyo? I-claim nang libre →"
+    },
+    ceb: {
+      nav_about: "Bahin Kanamo",
+      nav_services: "Serbisyo",
+      nav_gallery: "Galerya",
+      nav_hours: "Oras",
+      nav_contact: "Kontaka Kami",
+      nav_cta: "Kontaka Kami",
+      hero_title: "Nagtukod sa mga Damgo,<br><span>Usa ka Istruktura sa Matag Higayon.</span>",
+      hero_sub: "Tibuok serbisyo sa konstruksyon alang sa mga balay, komersyal nga espasyo, ug renovasyon sa tibuok Cebu ug Visayas. Kalidad nga pagtrabaho, sa oras, sa matag higayon.",
+      cta_primary: "Kontaka Kami",
+      cta_secondary: "Hibal-i Pa",
+      urgency: "Libre sa kahangturan — 30 segundo lang aron i-claim ang imong site",
+      proof_claimed: "ka negosyo ang nag-claim sa ilang site niining semanaha",
+      proof_years: "Katuigan sa Cebu",
+      about_tag: "Bahin Kanamo",
+      about_title: "Pinagkakatiwalaang Konstruksyon sa Cebu",
+      about_desc: "Ang Reyes Construction & Builders nagpanguna sa industriya sa konstruksyon sa Cebu sulod sa kapin sa usa ka dekada. Gikan sa simpleng balay hangtud sa dagkong komersyal nga bilding, kalidad ug dedikasyon ang among gidala sa matag proyekto.",
+      val_1: "Lisensyadong inhinyero ug hanas nga manggagawa sa matag proyekto",
+      val_2: "Klaro nga presyo — walay nagtago nga bayad",
+      val_3: "Pangako sa on-time nga paghatod, gisuportahan sa kontrata",
+      val_4: "Nagsilbi sa Cebu City ug tibuok Visayas",
+      stat_years: "Katuigan sa Negosyo",
+      stat_projects: "Nakumpleto nga Proyekto",
+      stat_rating: "Rating nga Bitoon",
+      stat_reviews: "Malipayon nga Kliyente",
+      services_tag: "Unsay Atong Gibuhat",
+      services_title: "Atong mga Serbisyo sa Konstruksyon",
+      services_desc: "Gikan sa pundasyon o tibuok renovasyon, among gidala ang kahibalo ug kagamitan alang sa talagsaon nga resulta.",
+      svc1_title: "Residential nga Konstruksyon",
+      svc1_desc: "Mga balay nga gitukod sumala sa imong bisyon ug badyet. Gikan sa single-family hangtud multi-storey sa Cebu ug Visayas.",
+      svc2_title: "Komersyal nga Fit-Outs",
+      svc2_desc: "Opisina, tindahan, restawran, ug uban pa. Gibalhin namo ang mga espasyo ngadto sa functional nga palibot.",
+      svc3_title: "Renovasyon ug Remodelling",
+      svc3_desc: "Bag-o nga kinabuhi sa imong kabtangan. Kusina, banyo, tibuok bilding — husto sa unang higayon.",
+      svc4_title: "Pagdumala sa Proyekto",
+      svc4_desc: "Tibuok pagdumala sa proyekto lakip ang mga permit, pagpalit, ug pagbantay sa site.",
+      svc5_title: "Istruktura ug Sibil nga Trabaho",
+      svc5_desc: "Pundasyon, puthaw, semento, ug sibil nga imprastraktura. Gitukod sumala sa Philippine code.",
+      svc6_title: "Disenyo ug Konsultasyon",
+      svc6_desc: "Arkitektura nga pagplano, pagtantya sa gasto, ug konsultasyon sa disenyo sa wala pa magsugod.",
+      gallery_tag: "Atong Gipanghimo",
+      gallery_title: "Galerya sa Proyekto",
+      compare_tag: "Angkona kining Site",
+      compare_title: "Libre nga Site vs. SiteForge Pro",
+      compare_desc: "Kining panid buhi na ug libre sa kahangturan. I-upgrade sa Pro para sa mas kompleto nga presensya online.",
+      free_plan: "Libreng Plano",
+      forever: "/ sa kahangturan",
+      free_note: "Kining site, sama sa imong nakita karon",
+      f1: "Matahum nga business website",
+      f2: "Mobile responsive nga disenyo",
+      f3: "Impormasyon sa kontak ug oras",
+      f4: "Gi-host nga libre sa SiteForge",
+      f5: "Custom domain (hal. reyesbuilders.ph)",
+      f6: "I-edit ang sulod bisan kanoha",
+      f7: "Form sa booking / pangutana",
+      f8: "Tangtanga ang SiteForge badge",
+      claim_free: "I-claim ang Libre nga Site →",
+      pro_plan: "Pro nga Plano",
+      per_mo: "/ bulan",
+      pro_note: "Tanan sa Libre, dugang pa:",
+      p1: "Tanan sa Libre nga Plano",
+      p2: "Lakip ang custom domain",
+      p3: "Tibuok content editor (walay code)",
+      p4: "Form sa booking ug quote",
+      p5: "Tangtanga ang \"Powered by SiteForge\" badge",
+      p6: "Priority nga suporta",
+      p7: "Analytics dashboard",
+      p8: "Google Business sync",
+      upgrade_pro: "I-upgrade sa Pro →",
+      hours_tag: "Pangitaa Kami",
+      hours_title: "Oras ug Lokasyon",
+      opening_hours: "Oras sa Pagbukas",
+      mon_sat: "Lunes – Sabado",
+      sunday: "Domingo",
+      closed: "Sirado",
+      hours_note: "Ang pagbisita sa site sa proyekto pinaagi sa appointment. Tawga kami para mag-iskedyul sa konsultasyon.",
+      our_location: "Atong Lokasyon",
+      map_label: "45 Osmena Blvd, Cebu City",
+      map_sub: "Cebu 6000, Pilipinas",
+      contact_tag: "Kontaka Kami",
+      contact_title: "Kontaka ang Reyes Construction",
+      phone_label: "Telepono",
+      email_label: "Email",
+      address_label: "Address",
+      hours_label: "Oras sa Negosyo",
+      hours_val: "Lunes–Sabado: 8:00 AM – 5:00 PM",
+      why_choose: "Ngano Pilion ang Reyes?",
+      trust1: "Lisensyadong Inhinyero",
+      trust2: "10+ Katuigan nga Kasinatian",
+      trust3: "200+ Nakumpleto nga Proyekto",
+      trust4: "Nagsilbi sa Tibuok Visayas",
+      trust5: "4.6 Rating nga Bitoon",
+      cta_box_desc: "Andam na nga sugdan ang imong proyekto? Kontaka kami karon para sa libreng konsultasyon ug quote.",
+      cta_box_btn: "Magpadala ug Email →",
+      footer_nav: "Nabigasyon",
+      footer_services: "Serbisyo",
+      claim_link: "I-claim ang akong site →",
+      mobile_claim_text: "Kini ba ang imong negosyo? I-claim kini nga libre →"
+    }
+  };
+
+  let currentLang = 'en';
+
+  function applyTranslations(lang) {
+    const t = translations[lang];
+    if (!t) return;
+    currentLang = lang;
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.placeholder = t[key];
+        } else if (key === 'hero_title') {
+          el.innerHTML = t[key];
+        } else {
+          el.textContent = t[key];
+        }
+      }
+    });
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+      btn.setAttribute('aria-pressed', btn.dataset.lang === lang ? 'true' : 'false');
+    });
+
+    document.documentElement.lang = lang === 'en' ? 'en' : lang === 'fil' ? 'fil' : 'ceb';
+  }
+
+  // Language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      applyTranslations(btn.dataset.lang);
+    });
+  });
+
+  // ─── CLAIM BANNER CLOSE ───
+  document.getElementById('claim-banner-close').addEventListener('click', function() {
+    const banner = document.getElementById('claim-banner');
+    banner.style.display = 'none';
+  });
+
+  // ─── HAMBURGER MENU ───
+  const hamburger = document.getElementById('hamburger-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  hamburger.addEventListener('click', function() {
+    const isOpen = mobileMenu.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', isOpen);
+  });
+
+  // Close mobile menu on link click
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // ─── STICKY NAV: hide claim banner offset ───
+  window.addEventListener('scroll', function() {
+    const banner = document.getElementById('claim-banner');
+    const nav = document.getElementById('main-nav');
+    if (banner && banner.style.display !== 'none') {
+      const bannerH = banner.offsetHeight;
+      if (window.scrollY > bannerH) {
+        nav.style.top = '0';
+      }
+    }
+  });
+</script>
+</body>
+</html>

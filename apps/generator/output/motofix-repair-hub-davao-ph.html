@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="MotoFix Repair Hub — Trusted motorcycle repair and parts shop in Davao City. Servicing Honda, Yamaha, Suzuki, Kawasaki. Fast turnaround, genuine parts.">
+<title>MotoFix Repair Hub — Davao City Motorcycle Repair & Parts</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: #FDFEFE;
+  color: #1A252F;
+  line-height: 1.6;
+}
+
+/* ── CLAIM BANNER ── */
+#claim-banner {
+  background: #2874A6;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  padding: 8px 40px 8px 16px;
+  position: relative;
+  z-index: 1000;
+}
+#claim-banner a { color: #EBF5FB; font-weight: 700; text-decoration: underline; }
+#claim-banner a:hover { color: #fff; }
+#dismiss-banner {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: #fff; font-size: 16px;
+  cursor: pointer; line-height: 1; padding: 2px 6px; border-radius: 4px;
+  transition: background 0.2s;
+}
+#dismiss-banner:hover { background: rgba(255,255,255,0.2); }
+
+/* ── STICKY NAV ── */
+#main-nav {
+  position: sticky; top: 0; z-index: 999;
+  background: rgba(40,116,166,0.97);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+}
+.nav-inner {
+  max-width: 960px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px;
+  gap: 12px;
+}
+.nav-logo {
+  font-size: 1.25rem; font-weight: 800;
+  color: #fff; text-decoration: none;
+  letter-spacing: -0.5px; white-space: nowrap;
+}
+.nav-logo span { color: #5DADE2; }
+.nav-links {
+  display: flex; align-items: center; gap: 18px;
+  list-style: none;
+}
+.nav-links a {
+  color: #EBF5FB; text-decoration: none; font-size: 0.9rem; font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: #fff; }
+.nav-right {
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-cta {
+  background: #5DADE2; color: #fff; border: none; border-radius: 8px;
+  padding: 8px 18px; font-size: 0.85rem; font-weight: 700;
+  cursor: pointer; text-decoration: none; white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.nav-cta:hover { background: #fff; color: #2874A6; transform: translateY(-1px); }
+.lang-toggle {
+  display: flex; gap: 4px; align-items: center;
+}
+.lang-btn {
+  background: transparent; border: 1.5px solid rgba(255,255,255,0.4);
+  color: #EBF5FB; border-radius: 6px; padding: 4px 9px;
+  font-size: 0.75rem; font-weight: 700; cursor: pointer;
+  transition: all 0.2s;
+}
+.lang-btn.active, .lang-btn:hover {
+  background: #fff; color: #2874A6; border-color: #fff;
+}
+@media (max-width: 700px) {
+  .nav-links { display: none; }
+  .nav-logo { font-size: 1.05rem; }
+}
+
+/* ── HERO ── */
+#hero {
+  position: relative;
+  min-height: 90vh;
+  display: flex; align-items: center; justify-content: center;
+  background: url('https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=1600&auto=format&fit=crop') center center / cover no-repeat;
+  overflow: hidden;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.50);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  text-align: center;
+  max-width: 720px; padding: 40px 24px;
+  animation: fadeUp 0.9s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-badge {
+  display: inline-block;
+  background: rgba(93,173,226,0.25);
+  border: 1.5px solid #5DADE2;
+  color: #EBF5FB; border-radius: 20px;
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 1px;
+  padding: 5px 14px; margin-bottom: 18px; text-transform: uppercase;
+}
+.hero-content h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 900; color: #fff; line-height: 1.15;
+  margin-bottom: 18px; text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+.hero-content h1 span { color: #5DADE2; }
+.hero-sub {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: #EBF5FB; margin-bottom: 28px;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+}
+.hero-btns {
+  display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
+  margin-bottom: 28px;
+}
+.btn-primary {
+  background: #2874A6; color: #fff;
+  border: none; border-radius: 10px;
+  padding: 16px 40px; font-size: 1.05rem; font-weight: 800;
+  cursor: pointer; text-decoration: none;
+  box-shadow: 0 4px 20px rgba(40,116,166,0.5);
+  animation: pulse 2.4s ease-in-out infinite;
+  transition: all 0.2s ease;
+}
+.btn-primary:hover { background: #1a5a8a; transform: translateY(-2px) scale(1.03); animation: none; }
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(40,116,166,0.5); }
+  50%       { box-shadow: 0 4px 34px rgba(93,173,226,0.85); }
+}
+.btn-secondary {
+  background: transparent; color: #fff;
+  border: 2px solid #fff; border-radius: 10px;
+  padding: 14px 36px; font-size: 1.05rem; font-weight: 700;
+  cursor: pointer; text-decoration: none;
+  transition: all 0.2s ease;
+}
+.btn-secondary:hover { background: #fff; color: #2874A6; }
+.hero-social-proof {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  flex-wrap: wrap;
+}
+.proof-pill {
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px; color: #fff; font-size: 0.82rem; font-weight: 600;
+  padding: 6px 14px; backdrop-filter: blur(4px);
+}
+.stars { color: #F4D03F; }
+.urgency-note {
+  margin-top: 22px;
+  color: #EBF5FB; font-size: 0.8rem; font-style: italic;
+  opacity: 0.88;
+}
+
+/* ── SECTION COMMON ── */
+.section-wrap {
+  max-width: 960px; margin: 0 auto; padding: 70px 20px;
+}
+@media (max-width: 600px) { .section-wrap { padding: 44px 16px; } }
+.section-tag {
+  font-size: 0.78rem; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; color: #2874A6; margin-bottom: 8px;
+}
+.section-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 800; color: #1A252F; margin-bottom: 12px;
+}
+.section-sub {
+  font-size: 1rem; color: #4a6275; margin-bottom: 40px; max-width: 560px;
+}
+
+/* ── STATS BAR ── */
+#stats-bar {
+  background: #2874A6;
+}
+.stats-inner {
+  max-width: 960px; margin: 0 auto;
+  display: flex; flex-wrap: wrap; justify-content: space-around;
+  padding: 28px 20px; gap: 16px;
+}
+.stat-item { text-align: center; }
+.stat-num { font-size: 2rem; font-weight: 900; color: #fff; line-height: 1; }
+.stat-label { font-size: 0.8rem; color: #EBF5FB; font-weight: 500; margin-top: 4px; }
+
+/* ── PRODUCTS ── */
+#products { background: #FDFEFE; }
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 22px;
+}
+.product-card {
+  border-radius: 14px; overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 14px rgba(40,116,166,0.09);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+.product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 28px rgba(40,116,166,0.18); }
+.product-img-wrap {
+  width: 100%; aspect-ratio: 4/3; overflow: hidden;
+}
+.product-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.35s ease;
+}
+.product-card:hover .product-img-wrap img { transform: scale(1.06); }
+.product-info {
+  padding: 16px 18px 18px;
+}
+.product-info h3 {
+  font-size: 1rem; font-weight: 800; color: #1A252F; margin-bottom: 6px;
+}
+.product-info p { font-size: 0.88rem; color: #4a6275; line-height: 1.5; }
+.product-tag {
+  display: inline-block; margin-top: 10px;
+  background: #EBF5FB; color: #2874A6;
+  border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+  padding: 3px 10px;
+}
+
+/* ── ABOUT ── */
+#about { background: #EBF5FB; }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 44px; align-items: center;
+}
+@media (max-width: 650px) { .about-grid { grid-template-columns: 1fr; } }
+.about-img-wrap {
+  border-radius: 16px; overflow: hidden;
+  aspect-ratio: 4/3;
+  box-shadow: 0 6px 28px rgba(40,116,166,0.15);
+}
+.about-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.about-text .section-title { margin-bottom: 14px; }
+.about-text p { color: #2c3e50; font-size: 0.97rem; margin-bottom: 14px; line-height: 1.7; }
+.about-chips {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px;
+}
+.chip {
+  background: #2874A6; color: #fff; border-radius: 20px;
+  font-size: 0.78rem; font-weight: 700; padding: 5px 13px;
+}
+
+/* ── HOURS & LOCATION ── */
+#hours { background: #FDFEFE; }
+.hours-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
+}
+@media (max-width: 650px) { .hours-grid { grid-template-columns: 1fr; } }
+.info-card {
+  background: #fff; border-radius: 14px;
+  padding: 28px 24px;
+  box-shadow: 0 2px 14px rgba(40,116,166,0.09);
+}
+.info-card h3 {
+  font-size: 1.05rem; font-weight: 800; color: #2874A6;
+  margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+}
+.info-card .icon { font-size: 1.2rem; }
+.hours-list { list-style: none; }
+.hours-list li {
+  display: flex; justify-content: space-between;
+  padding: 7px 0; border-bottom: 1px solid #EBF5FB;
+  font-size: 0.9rem; color: #1A252F;
+}
+.hours-list li:last-child { border-bottom: none; }
+.hours-list .day { font-weight: 600; }
+.map-link {
+  display: inline-block; margin-top: 16px;
+  background: #2874A6; color: #fff;
+  text-decoration: none; border-radius: 8px;
+  padding: 10px 20px; font-size: 0.85rem; font-weight: 700;
+  transition: all 0.2s;
+}
+.map-link:hover { background: #1a5a8a; transform: translateY(-1px); }
+
+/* ── CONTACT ── */
+#contact { background: #2874A6; }
+#contact .section-title { color: #fff; }
+#contact .section-tag { color: #5DADE2; }
+#contact .section-sub { color: #EBF5FB; }
+.contact-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+.contact-card {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 14px; padding: 22px 20px;
+  transition: background 0.2s;
+}
+.contact-card:hover { background: rgba(255,255,255,0.2); }
+.contact-card .c-icon { font-size: 1.7rem; margin-bottom: 10px; }
+.contact-card h4 { font-size: 0.8rem; font-weight: 800; color: #EBF5FB; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.contact-card p, .contact-card a {
+  color: #fff; font-size: 0.95rem; font-weight: 600;
+  text-decoration: none; word-break: break-word;
+}
+.contact-card a:hover { text-decoration: underline; }
+
+/* ── FREE vs PRO ── */
+#pricing { background: #EBF5FB; }
+.pricing-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 22px; max-width: 680px; margin: 0 auto;
+}
+@media (max-width: 550px) { .pricing-grid { grid-template-columns: 1fr; } }
+.pricing-card {
+  background: #fff; border-radius: 16px;
+  padding: 28px 24px;
+  box-shadow: 0 2px 14px rgba(40,116,166,0.09);
+  position: relative;
+}
+.pricing-card.pro {
+  background: #2874A6; color: #fff;
+  box-shadow: 0 8px 28px rgba(40,116,166,0.3);
+}
+.pricing-card .plan-badge {
+  font-size: 0.7rem; font-weight: 800; letter-spacing: 1.5px;
+  text-transform: uppercase; color: #2874A6;
+  background: #EBF5FB; border-radius: 20px;
+  padding: 3px 10px; display: inline-block; margin-bottom: 10px;
+}
+.pricing-card.pro .plan-badge { background: #5DADE2; color: #fff; }
+.pricing-card h3 { font-size: 1.4rem; font-weight: 900; margin-bottom: 4px; }
+.pricing-card.pro h3 { color: #fff; }
+.pricing-card .price { font-size: 0.95rem; color: #4a6275; margin-bottom: 18px; }
+.pricing-card.pro .price { color: #EBF5FB; }
+.feature-list { list-style: none; }
+.feature-list li {
+  padding: 7px 0; border-bottom: 1px solid #EBF5FB;
+  font-size: 0.88rem; display: flex; align-items: flex-start; gap: 8px;
+}
+.pricing-card.pro .feature-list li { border-color: rgba(255,255,255,0.18); color: #EBF5FB; }
+.feature-list li:last-child { border-bottom: none; }
+.check { color: #27AE60; font-weight: 900; flex-shrink: 0; }
+.pricing-card.pro .check { color: #7FE8A0; }
+.pricing-claim-btn {
+  display: block; width: 100%; margin-top: 20px;
+  background: #5DADE2; color: #fff;
+  border: none; border-radius: 10px;
+  padding: 13px; font-size: 0.95rem; font-weight: 800;
+  cursor: pointer; text-decoration: none; text-align: center;
+  transition: all 0.2s;
+}
+.pricing-claim-btn:hover { background: #1a5a8a; transform: translateY(-2px); }
+.pricing-card.pro .pricing-claim-btn {
+  background: #fff; color: #2874A6;
+}
+.pricing-card.pro .pricing-claim-btn:hover { background: #EBF5FB; }
+.pricing-urgency {
+  text-align: center; margin-top: 16px;
+  font-size: 0.82rem; color: #4a6275; font-style: italic;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: #1A252F;
+  padding: 36px 20px;
+  text-align: center;
+}
+footer p { color: #7f8c8d; font-size: 0.82rem; margin-bottom: 6px; }
+footer a { color: #5DADE2; text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+.siteforge-badge {
+  margin-top: 14px;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 5px 14px;
+  font-size: 0.75rem; color: #95a5a6;
+  text-decoration: none !important;
+  transition: background 0.2s;
+}
+.siteforge-badge:hover { background: rgba(255,255,255,0.12); }
+.siteforge-badge span { color: #5DADE2; font-weight: 700; }
+
+/* ── STICKY MOBILE CLAIM BAR ── */
+#mobile-claim-bar {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+  background: #1A252F;
+  border-top: 2px solid #2874A6;
+  padding: 12px 16px;
+  text-align: center;
+}
+#mobile-claim-bar a {
+  color: #5DADE2; font-size: 0.88rem; font-weight: 800;
+  text-decoration: none;
+}
+#mobile-claim-bar a:hover { color: #fff; }
+@media (max-width: 768px) {
+  #mobile-claim-bar { display: block; }
+  body { padding-bottom: 52px; }
+}
+</style>
+  <link rel="canonical" href="http://localhost:3000/sites/motofix-repair-hub-davao-ph">
+</head>
+<body>
+
+<!-- ── CLAIM BANNER ── -->
+<div id="claim-banner">
+  This site was built for you by SiteForge — claim it free to customise ·
+  <a href="https://siteforge.io/claim/motofix-repair-hub-davao-ph">Claim my site →</a>
+  <button id="dismiss-banner" aria-label="Dismiss banner">✕</button>
+</div>
+
+<!-- ── STICKY NAV ── -->
+<nav id="main-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">Moto<span>Fix</span> Repair Hub</a>
+    <ul class="nav-links">
+      <li><a href="#products" data-i18n="nav_products">Products</a></li>
+      <li><a href="#about" data-i18n="nav_about">About</a></li>
+      <li><a href="#hours" data-i18n="nav_hours">Hours</a></li>
+      <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang-toggle" aria-label="Language selector">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="fil">FIL</button>
+        <button class="lang-btn" data-lang="ceb">CEB</button>
+      </div>
+      <a href="#contact" class="nav-cta" data-i18n="nav_cta">Shop Now</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero" aria-label="Hero section">
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-badge" data-i18n="hero_badge">🏍️ Davao's Trusted Moto Shop</div>
+    <h1 data-i18n="hero_h1">Your <span>Motorcycle</span> Deserves the Best Care</h1>
+    <p class="hero-sub" data-i18n="hero_sub">Genuine parts, expert repairs, and fast turnaround for Honda, Yamaha, Suzuki &amp; Kawasaki — right here in Davao City.</p>
+    <div class="hero-btns">
+      <a href="#products" class="btn-primary" data-i18n="cta_primary">Shop Now</a>
+      <a href="#hours" class="btn-secondary" data-i18n="cta_secondary">Visit Us</a>
+    </div>
+    <div class="hero-social-proof">
+      <div class="proof-pill">
+        <span class="stars">★★★★½</span> 4.5 · 187 Reviews
+      </div>
+      <div class="proof-pill" data-i18n="proof_week">🔥 83 businesses claimed their site this week</div>
+    </div>
+    <p class="urgency-note" data-i18n="urgency">Free forever — takes 30 seconds to claim</p>
+  </div>
+</section>
+
+<!-- ── STATS BAR ── -->
+<div id="stats-bar" aria-label="Key stats">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">10+</div>
+      <div class="stat-label" data-i18n="stat_years">Years in Business</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">4</div>
+      <div class="stat-label" data-i18n="stat_brands">Major Brands Serviced</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">187</div>
+      <div class="stat-label" data-i18n="stat_reviews">Happy Customers</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">100%</div>
+      <div class="stat-label" data-i18n="stat_parts">Genuine Parts</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURED PRODUCTS ── -->
+<section id="products">
+  <div class="section-wrap">
+    <p class="section-tag" data-i18n="prod_tag">What We Offer</p>
+    <h2 class="section-title" data-i18n="prod_title">Products &amp; Services</h2>
+    <p class="section-sub" data-i18n="prod_sub">Everything your motorcycle needs — from routine maintenance to performance upgrades.</p>
+    <div class="products-grid">
+
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=600&auto=format&fit=crop" alt="Engine repair and overhaul service">
+        </div>
+        <div class="product-info">
+          <h3 data-i18n="p1_title">Engine Repair &amp; Overhaul</h3>
+          <p data-i18n="p1_desc">Full engine diagnostics, rebuild, and tuning for all major motorcycle brands.</p>
+          <span class="product-tag" data-i18n="p1_tag">Most Popular</span>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&auto=format&fit=crop" alt="Motorcycle parts and accessories">
+        </div>
+        <div class="product-info">
+          <h3 data-i18n="p2_title">Genuine Parts &amp; Accessories</h3>
+          <p data-i18n="p2_desc">OEM and quality aftermarket parts for Honda, Yamaha, Suzuki, and Kawasaki.</p>
+          <span class="product-tag" data-i18n="p2_tag">In Stock</span>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format&fit=crop" alt="Brake and suspension service">
+        </div>
+        <div class="product-info">
+          <h3 data-i18n="p3_title">Brakes &amp; Suspension</h3>
+          <p data-i18n="p3_desc">Pad replacements, rotor resurfacing, fork seals, and full suspension setups.</p>
+          <span class="product-tag" data-i18n="p3_tag">Safety First</span>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&auto=format&fit=crop" alt="Electrical and wiring repair">
+        </div>
+        <div class="product-info">
+          <h3 data-i18n="p4_title">Electrical &amp; Wiring</h3>
+          <p data-i18n="p4_desc">Battery check, starter motor repair, lighting upgrades, and full rewiring.</p>
+          <span class="product-tag" data-i18n="p4_tag">Expert Techs</span>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1502877338535-766e1452684a?w=600&auto=format&fit=crop" alt="Tires and wheels service">
+        </div>
+        <div class="product-info">
+          <h3 data-i18n="p5_title">Tires &amp; Wheels</h3>
+          <p data-i18n="p5_desc">Wide range of tires for all riding styles — street, trail, and touring.</p>
+          <span class="product-tag" data-i18n="p5_tag">All Brands</span>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=600&auto=format&fit=crop" alt="Routine maintenance and oil change">
+        </div>
+        <div class="product-info">
+          <h3 data-i18n="p6_title">Routine Maintenance</h3>
+          <p data-i18n="p6_desc">Oil changes, air filter, chain lubrication, and full safety inspection.</p>
+          <span class="product-tag" data-i18n="p6_tag">Fast Turnaround</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="section-wrap">
+    <div class="about-grid">
+      <div class="about-img-wrap">
+        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&auto=format&fit=crop" alt="Inside MotoFix Repair Hub shop in Davao City">
+      </div>
+      <div class="about-text">
+        <p class="section-tag" data-i18n="about_tag">Our Story</p>
+        <h2 class="section-title" data-i18n="about_title">Davao-Born, Rider-Owned</h2>
+        <p data-i18n="about_p1">MotoFix Repair Hub was built from a passion for motorcycles right here on Quimpo Blvd, Davao City. For over a decade, we've been the go-to shop for riders across Davao del Sur — whether you ride daily, race on weekends, or cruise the highlands.</p>
+        <p data-i18n="about_p2">We stock only genuine and verified quality parts, and every repair is handled by experienced technicians who ride motorcycles themselves. We treat your bike the way we treat our own.</p>
+        <p data-i18n="about_p3">Not satisfied? We stand behind every job with our hassle-free return and redo policy — your satisfaction is our guarantee.</p>
+        <div class="about-chips">
+          <span class="chip" data-i18n="chip1">Locally Owned</span>
+          <span class="chip" data-i18n="chip2">Genuine Parts</span>
+          <span class="chip" data-i18n="chip3">Return Policy</span>
+          <span class="chip" data-i18n="chip4">All Brands</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOURS & LOCATION ── -->
+<section id="hours">
+  <div class="section-wrap">
+    <p class="section-tag" data-i18n="hours_tag">Find Us</p>
+    <h2 class="section-title" data-i18n="hours_title">Hours &amp; Location</h2>
+    <p class="section-sub" data-i18n="hours_sub">Walk in or call ahead — we're open most of the week for your convenience.</p>
+    <div class="hours-grid">
+      <div class="info-card">
+        <h3><span class="icon">🕐</span> <span data-i18n="hours_card_title">Opening Hours</span></h3>
+        <ul class="hours-list">
+          <li><span class="day" data-i18n="day_monsat">Mon – Sat</span><span>8:00 AM – 6:00 PM</span></li>
+          <li><span class="day" data-i18n="day_sun">Sunday</span><span>9:00 AM – 3:00 PM</span></li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3><span class="icon">📍</span> <span data-i18n="loc_card_title">Our Location</span></h3>
+        <p style="font-size:0.93rem; color:#2c3e50; margin-bottom:8px;">77 Quimpo Blvd, Davao City, Davao del Sur 8000</p>
+        <p style="font-size:0.9rem; color:#4a6275;" data-i18n="loc_landmark">Near the intersection of Quimpo Blvd — easy to spot, plenty of parking.</p>
+        <a href="https://maps.google.com/?q=77+Quimpo+Blvd+Davao+City" target="_blank" rel="noopener" class="map-link" data-i18n="loc_btn">📍 Get Directions</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="section-wrap">
+    <p class="section-tag" data-i18n="contact_tag">Get In Touch</p>
+    <h2 class="section-title" data-i18n="contact_title">Contact Us</h2>
+    <p class="section-sub" data-i18n="contact_sub">Have questions about repairs, parts, or pricing? We'd love to hear from you!</p>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="c-icon">📞</div>
+        <h4 data-i18n="ct_phone">Phone</h4>
+        <a href="tel:+63822259900">+63 82 225 9900</a>
+      </div>
+      <div class="contact-card">
+        <div class="c-icon">✉️</div>
+        <h4 data-i18n="ct_email">Email</h4>
+        <a href="mailto:kimpdlc24@gmail.com">kimpdlc24@gmail.com</a>
+      </div>
+      <div class="contact-card">
+        <div class="c-icon">📍</div>
+        <h4 data-i18n="ct_address">Address</h4>
+        <p>77 Quimpo Blvd, Davao City, Davao del Sur 8000</p>
+      </div>
+      <div class="contact-card">
+        <div class="c-icon">🕐</div>
+        <h4 data-i18n="ct_hours">Hours</h4>
+        <p data-i18n="ct_hours_val">Mon–Sat: 8am–6pm<br>Sun: 9am–3pm</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FREE vs PRO ── -->
+<section id="pricing">
+  <div class="section-wrap">
+    <p class="section-tag" style="text-align:center;">SiteForge</p>
+    <h2 class="section-title" style="text-align:center;" data-i18n="pricing_title">Free vs Pro</h2>
+    <p class="section-sub" style="text-align:center; margin:0 auto 32px;" data-i18n="pricing_sub">You're viewing the free version of this site. Here's what you get now — and what you unlock with Pro.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <span class="plan-badge" data-i18n="plan_free_badge">Free</span>
+        <h3 data-i18n="plan_free_title">This Site</h3>
+        <p class="price" data-i18n="plan_free_price">Free, forever</p>
+        <ul class="feature-list">
+          <li><span class="check">✓</span><span data-i18n="f1">Beautiful business website</span></li>
+          <li><span class="check">✓</span><span data-i18n="f2">Mobile-responsive design</span></li>
+          <li><span class="check">✓</span><span data-i18n="f3">Contact &amp; hours info</span></li>
+          <li><span class="check">✓</span><span data-i18n="f4">Hosted by SiteForge</span></li>
+          <li><span style="color:#bbb;">✗</span><span style="color:#999;" data-i18n="f5">Custom domain</span></li>
+          <li><span style="color:#bbb;">✗</span><span style="color:#999;" data-i18n="f6">Content editor</span></li>
+          <li><span style="color:#bbb;">✗</span><span style="color:#999;" data-i18n="f7">Booking / inquiry form</span></li>
+        </ul>
+        <a href="https://siteforge.io/claim/motofix-repair-hub-davao-ph" class="pricing-claim-btn" data-i18n="claim_free_btn">Claim my free site →</a>
+      </div>
+      <div class="pricing-card pro">
+        <span class="plan-badge" data-i18n="plan_pro_badge">Pro</span>
+        <h3 data-i18n="plan_pro_title">Pro Plan</h3>
+        <p class="price" data-i18n="plan_pro_price">$29 / month</p>
+        <ul class="feature-list">
+          <li><span class="check">✓</span><span data-i18n="p_f1">Everything in Free</span></li>
+          <li><span class="check">✓</span><span data-i18n="p_f2">Custom domain (yourshop.com)</span></li>
+          <li><span class="check">✓</span><span data-i18n="p_f3">Drag-and-drop content editor</span></li>
+          <li><span class="check">✓</span><span data-i18n="p_f4">Booking &amp; inquiry forms</span></li>
+          <li><span class="check">✓</span><span data-i18n="p_f5">Remove SiteForge badge</span></li>
+          <li><span class="check">✓</span><span data-i18n="p_f6">Priority support</span></li>
+          <li><span class="check">✓</span><span data-i18n="p_f7">Analytics dashboard</span></li>
+        </ul>
+        <a href="https://siteforge.io/upgrade/motofix-repair-hub-davao-ph" class="pricing-claim-btn" data-i18n="upgrade_btn">Upgrade to Pro →</a>
+      </div>
+    </div>
+    <p class="pricing-urgency" data-i18n="pricing_urgency">⚡ Free forever — takes 30 seconds to claim. No credit card required.</p>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div style="max-width:960px; margin:0 auto;">
+    <p style="font-size:1rem; font-weight:700; color:#EBF5FB; margin-bottom:4px;">MotoFix Repair Hub</p>
+    <p>77 Quimpo Blvd, Davao City, Davao del Sur 8000</p>
+    <p><a href="tel:+63822259900">+63 82 225 9900</a> · <a href="mailto:kimpdlc24@gmail.com">kimpdlc24@gmail.com</a></p>
+    <p style="margin-top:10px;">© 2025 MotoFix Repair Hub. All rights reserved.</p>
+    <a href="https://siteforge.io" target="_blank" rel="noopener" class="siteforge-badge">
+      ⚙️ Powered by <span>SiteForge</span>
+    </a>
+  </div>
+</footer>
+
+<!-- ── MOBILE CLAIM BAR ── -->
+<div id="mobile-claim-bar" role="complementary" aria-label="Claim site banner">
+  <a href="https://siteforge.io/claim/motofix-repair-hub-davao-ph" data-i18n="mobile_claim">Is this your business? Claim it free →</a>
+</div>
+
+<script>
+// ── TRANSLATIONS ──
+const translations = {
+  en: {
+    nav_products: "Products", nav_about: "About", nav_hours: "Hours", nav_contact: "Contact", nav_cta: "Shop Now",
+    hero_badge: "🏍️ Davao's Trusted Moto Shop",
+    hero_h1: 'Your <span>Motorcycle</span> Deserves the Best Care',
+    hero_sub: "Genuine parts, expert repairs, and fast turnaround for Honda, Yamaha, Suzuki & Kawasaki — right here in Davao City.",
+    cta_primary: "Shop Now", cta_secondary: "Visit Us",
+    proof_week: "🔥 83 businesses claimed their site this week",
+    urgency: "Free forever — takes 30 seconds to claim",
+    stat_years: "Years in Business", stat_brands: "Major Brands Serviced", stat_reviews: "Happy Customers", stat_parts: "Genuine Parts",
+    prod_tag: "What We Offer", prod_title: "Products & Services", prod_sub: "Everything your motorcycle needs — from routine maintenance to performance upgrades.",
+    p1_title: "Engine Repair & Overhaul", p1_desc: "Full engine diagnostics, rebuild, and tuning for all major motorcycle brands.", p1_tag: "Most Popular",
+    p2_title: "Genuine Parts & Accessories", p2_desc: "OEM and quality aftermarket parts for Honda, Yamaha, Suzuki, and Kawasaki.", p2_tag: "In Stock",
+    p3_title: "Brakes & Suspension", p3_desc: "Pad replacements, rotor resurfacing, fork seals, and full suspension setups.", p3_tag: "Safety First",
+    p4_title: "Electrical & Wiring", p4_desc: "Battery check, starter motor repair, lighting upgrades, and full rewiring.", p4_tag: "Expert Techs",
+    p5_title: "Tires & Wheels", p5_desc: "Wide range of tires for all riding styles — street, trail, and touring.", p5_tag: "All Brands",
+    p6_title: "Routine Maintenance", p6_desc: "Oil changes, air filter, chain lubrication, and full safety inspection.", p6_tag: "Fast Turnaround",
+    about_tag: "Our Story", about_title: "Davao-Born, Rider-Owned",
+    about_p1: "MotoFix Repair Hub was built from a passion for motorcycles right here on Quimpo Blvd, Davao City. For over a decade, we've been the go-to shop for riders across Davao del Sur — whether you ride daily, race on weekends, or cruise the highlands.",
+    about_p2: "We stock only genuine and verified quality parts, and every repair is handled by experienced technicians who ride motorcycles themselves. We treat your bike the way we treat our own.",
+    about_p3: "Not satisfied? We stand behind every job with our hassle-free return and redo policy — your satisfaction is our guarantee.",
+    chip1: "Locally Owned", chip2: "Genuine Parts", chip3: "Return Policy", chip4: "All Brands",
+    hours_tag: "Find Us", hours_title: "Hours & Location", hours_sub: "Walk in or call ahead — we're open most of the week for your convenience.",
+    hours_card_title: "Opening Hours", day_monsat: "Mon – Sat", day_sun: "Sunday",
+    loc_card_title: "Our Location", loc_landmark: "Near the intersection of Quimpo Blvd — easy to spot, plenty of parking.", loc_btn: "📍 Get Directions",
+    contact_tag: "Get In Touch", contact_title: "Contact Us", contact_sub: "Have questions about repairs, parts, or pricing? We'd love to hear from you!",
+    ct_phone: "Phone", ct_email: "Email", ct_address: "Address", ct_hours: "Hours", ct_hours_val: "Mon–Sat: 8am–6pm<br>Sun: 9am–3pm",
+    pricing_title: "Free vs Pro", pricing_sub: "You're viewing the free version of this site. Here's what you get now — and what you unlock with Pro.",
+    plan_free_badge: "Free", plan_free_title: "This Site", plan_free_price: "Free, forever",
+    f1: "Beautiful business website", f2: "Mobile-responsive design", f3: "Contact & hours info", f4: "Hosted by SiteForge", f5: "Custom domain", f6: "Content editor", f7: "Booking / inquiry form",
+    claim_free_btn: "Claim my free site →",
+    plan_pro_badge: "Pro", plan_pro_title: "Pro Plan", plan_pro_price: "$29 / month",
+    p_f1: "Everything in Free", p_f2: "Custom domain (yourshop.com)", p_f3: "Drag-and-drop content editor", p_f4: "Booking & inquiry forms", p_f5: "Remove SiteForge badge", p_f6: "Priority support", p_f7: "Analytics dashboard",
+    upgrade_btn: "Upgrade to Pro →",
+    pricing_urgency: "⚡ Free forever — takes 30 seconds to claim. No credit card required.",
+    mobile_claim: "Is this your business? Claim it free →"
+  },
+  fil: {
+    nav_products: "Mga Produkto", nav_about: "Tungkol", nav_hours: "Oras", nav_contact: "Makipag-ugnayan", nav_cta: "Mamili Na",
+    hero_badge: "🏍️ Pinagkakatiwalaang Moto Shop sa Davao",
+    hero_h1: 'Ang Iyong <span>Motorsiklo</span> ay Nararapat sa Pinakamahusay',
+    hero_sub: "Tunay na mga parte, dalubhasang pag-aayos, at mabilis na serbisyo para sa Honda, Yamaha, Suzuki & Kawasaki — dito mismo sa Davao City.",
+    cta_primary: "Mamili Na", cta_secondary: "Bisitahin Kami",
+    proof_week: "🔥 83 na negosyo ang nag-claim ng kanilang site ngayong linggo",
+    urgency: "Libre habang buhay — 30 segundo lang mag-claim",
+    stat_years: "Taon sa Negosyo", stat_brands: "Mga Brand na Siniserbisyuhan", stat_reviews: "Masasayang Customers", stat_parts: "Tunay na Parts",
+    prod_tag: "Ang Aming Inaalok", prod_title: "Mga Produkto at Serbisyo", prod_sub: "Lahat ng kailangan ng iyong motorsiklo — mula sa regular na maintenance hanggang performance upgrades.",
+    p1_title: "Pag-aayos at Overhaul ng Engine", p1_desc: "Kumpletong diagnostics, rebuild, at pag-tune para sa lahat ng brand ng motorsiklo.", p1_tag: "Pinakasikat",
+    p2_title: "Tunay na Parts at Accessories", p2_desc: "OEM at de-kalidad na aftermarket parts para sa Honda, Yamaha, Suzuki, at Kawasaki.", p2_tag: "May Stock",
+    p3_title: "Brakes at Suspension", p3_desc: "Pagpapalit ng pads, rotor, fork seals, at kumpletong suspension setup.", p3_tag: "Kaligtasan Muna",
+    p4_title: "Kuryente at Wiring", p4_desc: "Pagsusuri ng baterya, pag-aayos ng starter motor, at pag-upgrade ng ilaw.", p4_tag: "Dalubhasang Teknik",
+    p5_title: "Gulong at Wheels", p5_desc: "Malawak na seleksyon ng gulong para sa lahat ng uri ng pagsakay.", p5_tag: "Lahat ng Brand",
+    p6_title: "Regular na Maintenance", p6_desc: "Pagpapalit ng langis, air filter, chain lube, at kumpletong safety check.", p6_tag: "Mabilis na Serbisyo",
+    about_tag: "Ang Aming Kwento", about_title: "Gawa sa Davao, Para sa mga Rider",
+    about_p1: "Ang MotoFix Repair Hub ay itinayo mula sa pagmamahal sa motorsiklo dito sa Quimpo Blvd, Davao City. Sa loob ng higit sampung taon, kami na ang go-to shop ng mga rider sa buong Davao del Sur.",
+    about_p2: "Tunay at napatunayang kalidad na parts lang ang aming ginagamit. Bawat pagkukumpuni ay ginagawa ng mga bihasang teknik na rider rin.",
+    about_p3: "Hindi kayo masaya? May return at redo policy kami para sa inyong kaginhawaan — ang inyong kasiyahan ang aming garantiya.",
+    chip1: "Lokal na Pagmamay-ari", chip2: "Tunay na Parts", chip3: "Patakaran sa Pagbabalik", chip4: "Lahat ng Brand",
+    hours_tag: "Hanapin Kami", hours_title: "Oras at Lokasyon", hours_sub: "Pumunta na o tumawag muna — bukas kami halos araw-araw para sa inyong kaginhawaan.",
+    hours_card_title: "Oras ng Pagbubukas", day_monsat: "Lun – Sabado", day_sun: "Linggo",
+    loc_card_title: "Ang Aming Lokasyon", loc_landmark: "Malapit sa intersection ng Quimpo Blvd — madaling hanapin, maraming parking.", loc_btn: "📍 Kumuha ng Direksyon",
+    contact_tag: "Makipag-ugnayan", contact_title: "Makipag-ugnayan sa Amin", contact_sub: "May katanungan tungkol sa pag-aayos, parts, o presyo? Ipaalam sa amin!",
+    ct_phone: "Telepono", ct_email: "Email", ct_address: "Address", ct_hours: "Oras", ct_hours_val: "Lun–Sab: 8am–6pm<br>Linggo: 9am–3pm",
+    pricing_title: "Libre vs Pro", pricing_sub: "Tinitingnan mo ang libreng bersyon ng site na ito. Ito ang makukuha mo ngayon — at ang ma-uunlock mo sa Pro.",
+    plan_free_badge: "Libre", plan_free_title: "Ang Site na Ito", plan_free_price: "Libre, habang buhay",
+    f1: "Magandang website para sa negosyo", f2: "Mobile-responsive na disenyo", f3: "Impormasyon sa contact at oras", f4: "Naka-host ng SiteForge", f5: "Custom na domain", f6: "Content editor", f7: "Booking / inquiry form",
+    claim_free_btn: "I-claim ang aking libreng site →",
+    plan_pro_badge: "Pro", plan_pro_title: "Pro Plan", plan_pro_price: "$29 / buwan",
+    p_f1: "Lahat ng nasa Libre", p_f2: "Custom domain (yourshop.com)", p_f3: "Drag-and-drop content editor", p_f4: "Booking at inquiry forms", p_f5: "Alisin ang SiteForge badge", p_f6: "Priority support", p_f7: "Analytics dashboard",
+    upgrade_btn: "Mag-upgrade sa Pro →",
+    pricing_urgency: "⚡ Libre habang buhay — 30 segundo lang. Hindi kailangan ng credit card.",
+    mobile_claim: "Ikaw ba ang may-ari nito? I-claim nang libre →"
+  },
+  ceb: {
+    nav_products: "Mga Produkto", nav_about: "Bahin Sa Amo", nav_hours: "Oras", nav_contact: "Kontaka Kami", nav_cta: "Palit Na",
+    hero_badge: "🏍️ Pinaka-Gisaligan nga Moto Shop sa Davao",
+    hero_h1: 'Ang Imong <span>Motorsiklo</span> Angay sa Labing Maayo nga Pag-atiman',
+    hero_sub: "Tinuod nga mga parte, hanas nga pag-ayo, ug paspas nga serbisyo para sa Honda, Yamaha, Suzuki & Kawasaki — dinhi mismo sa Davao City.",
+    cta_primary: "Palit Na", cta_secondary: "Bisitaha Kami",
+    proof_week: "🔥 83 ka negosyo ang nag-claim sa ilang site karong semanaha",
+    urgency: "Libre sa kahangturan — 30 segundos lang ang pag-claim",
+    stat_years: "Tuig sa Negosyo", stat_brands: "Mga Brand nga Gi-serbisyuhan", stat_reviews: "Malipayon nga mga Customer", stat_parts: "Tinuod nga Mga Parte",
+    prod_tag: "Ang Among Ginahalad", prod_title: "Mga Produkto ug Serbisyo", prod_sub: "Tanan nga gikinahanglan sa imong motorsiklo — gikan sa regular nga maintenance hangtod sa mga upgrade.",
+    p1_title: "Pag-ayo ug Overhaul sa Engine", p1_desc: "Tibuok engine diagnostics, rebuild, ug pag-tune para sa tanan nga brand sa motorsiklo.", p1_tag: "Pinakasikat",
+    p2_title: "Tinuod nga Mga Parte ug Accessories", p2_desc: "OEM ug kalidad nga aftermarket parts para sa Honda, Yamaha, Suzuki, ug Kawasaki.", p2_tag: "Naa sa Stock",
+    p3_title: "Mga Preno ug Suspension", p3_desc: "Pagbahin sa pads, rotor, fork seals, ug tibuok suspension setup.", p3_tag: "Kaluwasan Una",
+    p4_title: "Kuryente ug Wiring", p4_desc: "Pagsusi sa baterya, pag-ayo sa starter motor, ug pag-upgrade sa suga.", p4_tag: "Hanas nga Teknik",
+    p5_title: "Mga Gulong ug Wheels", p5_desc: "Halapad nga seleksyon sa mga gulong para sa tanan nga klase sa pagsakay.", p5_tag: "Tanan nga Brand",
+    p6_title: "Regular nga Maintenance", p6_desc: "Pagbaylo sa lana, air filter, chain lube, ug tibuok safety inspection.", p6_tag: "Paspas nga Serbisyo",
+    about_tag: "Ang Among Istorya", about_title: "Gikan sa Davao, Para sa mga Rider",
+    about_p1: "Ang MotoFix Repair Hub gitukod gikan sa gugma sa motorsiklo dinhi sa Quimpo Blvd, Davao City. Sobra sa napulo ka tuig, kami na ang go-to shop sa mga rider sa tibuok Davao del Sur.",
+    about_p2: "Tinuod ug napatunayang kalidad nga mga parte lang ang gamiton namo. Matag pag-ayo gihimo sa mga hanas nga teknik nga nagsasakay usab.",
+    about_p3: "Dili kamo malipayon? Aduna kaming return ug redo policy para sa inyong kaginhawaan — ang inyong kasiyahan ang among garantiya.",
+    chip1: "Lokal nga Gipanag-iya", chip2: "Tinuod nga Parte", chip3: "Palisiya sa Pagbalik", chip4: "Tanan nga Brand",
+    hours_tag: "Pangitaa Kami", hours_title: "Oras ug Lokasyon", hours_sub: "Adto na o tawagi una — bukas kami halos matag adlaw para sa inyong kaginhawaan.",
+    hours_card_title: "Oras sa Pagbukas", day_monsat: "Lun – Sabado", day_sun: "Domingo",
+    loc_card_title: "Ang Among Lokasyon", loc_landmark: "Duol sa intersection sa Quimpo Blvd — sayon pangitaon, daghan ug parking.", loc_btn: "📍 Kuha og Direksyon",
+    contact_tag: "Kontaka Kami", contact_title: "Makig-ugnayan sa Amon", contact_sub: "Adunay pangutana bahin sa pag-ayo, parte, o presyo? Ipahibalo sa amon!",
+    ct_phone: "Telepono", ct_email: "Email", ct_address: "Adres", ct_hours: "Oras", ct_hours_val: "Lun–Sab: 8am–6pm<br>Domingo: 9am–3pm",
+    pricing_title: "Libre vs Pro", pricing_sub: "Giatan-aw nimo ang libre nga bersyon sa site. Ania ang makuha mo karon — ug ang ma-unlock sa Pro.",
+    plan_free_badge: "Libre", plan_free_title: "Kini nga Site", plan_free_price: "Libre, sa kahangturan",
+    f1: "Matahum nga website sa negosyo", f2: "Mobile-responsive nga disenyo", f3: "Impormasyon sa contact ug oras", f4: "Gi-host sa SiteForge", f5: "Custom nga domain", f6: "Content editor", f7: "Booking / inquiry form",
+    claim_free_btn: "I-claim ang akong libreng site →",
+    plan_pro_badge: "Pro", plan_pro_title: "Pro Plan", plan_pro_price: "$29 / bulan",
+    p_f1: "Tanan sa Libre", p_f2: "Custom domain (yourshop.com)", p_f3: "Drag-and-drop content editor", p_f4: "Booking ug inquiry forms", p_f5: "Kuhaa ang SiteForge badge", p_f6: "Priority support", p_f7: "Analytics dashboard",
+    upgrade_btn: "Mag-upgrade sa Pro →",
+    pricing_urgency: "⚡ Libre sa kahangturan — 30 segundos lang. Walay kinahanglang credit card.",
+    mobile_claim: "Ikaw ba ang tag-iya niini? I-claim nga libre →"
+  }
+};
+
+let currentLang = 'en';
+
+function applyTranslations(lang) {
+  const t = translations[lang];
+  if (!t) return;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) {
+      el.innerHTML = t[key];
+    }
+  });
+  currentLang = lang;
+}
+
+// Lang buttons
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyTranslations(btn.getAttribute('data-lang'));
+  });
+});
+
+// Dismiss claim banner
+document.getElementById('dismiss-banner').addEventListener('click', () => {
+  const banner = document.getElementById('claim-banner');
+  banner.style.transition = 'all 0.3s ease';
+  banner.style.maxHeight = '0';
+  banner.style.padding = '0';
+  banner.style.overflow = 'hidden';
+  setTimeout(() => banner.style.display = 'none', 320);
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>

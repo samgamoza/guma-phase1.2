@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{BUSINESS_NAME}} — {{TAGLINE}}</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --color-primary: #7D3C98;
+  --color-secondary: #A569BD;
+  --color-accent: #D7BDE2;
+  --color-dark: #0f0b14;
+  --color-dark-mid: #1a1225;
+  --color-text: #2c2c2c;
+  --color-text-light: #6b6b6b;
+  --color-surface: #faf8fc;
+  --color-white: #ffffff;
+  --color-gold: #c9a84c;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --nav-height: 72px;
+  --banner-height: 44px;
+  --radius: 4px;
+  --radius-lg: 12px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-sm: 0 2px 8px rgba(125,60,152,0.08);
+  --shadow-md: 0 8px 32px rgba(125,60,152,0.15);
+  --shadow-lg: 0 24px 64px rgba(125,60,152,0.2);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: var(--color-white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── CLAIM BANNER ─── */
+#claim-banner {
+  background: linear-gradient(90deg, var(--color-dark) 0%, #2d1b45 50%, var(--color-dark) 100%);
+  color: rgba(255,255,255,0.9);
+  height: var(--banner-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  padding: 0 48px;
+  position: relative;
+  z-index: 1000;
+  transition: var(--transition);
+}
+#claim-banner span { opacity: 0.7; margin: 0 8px; }
+#claim-banner a {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(215,189,226,0.4);
+  padding-bottom: 1px;
+  transition: var(--transition);
+}
+#claim-banner a:hover { color: #fff; border-color: #fff; }
+#banner-close {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  font-size: 1.1rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: var(--transition);
+}
+#banner-close:hover { color: #fff; background: rgba(255,255,255,0.1); }
+
+/* ─── STICKY NAV ─── */
+#main-nav {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  height: var(--nav-height);
+  background: rgba(15,11,20,0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(125,60,152,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  gap: 16px;
+}
+.nav-logo {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--color-white);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.nav-logo span { color: var(--color-secondary); }
+.nav-links {
+  display: none;
+  list-style: none;
+  gap: 32px;
+  align-items: center;
+}
+.nav-links a {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  transition: var(--transition);
+}
+.nav-links a:hover { color: var(--color-accent); }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.btn-nav-cta {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition);
+  white-space: nowrap;
+  animation: pulse 3s ease-in-out infinite;
+}
+.btn-nav-cta:hover {
+  background: #9b50b8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(125,60,152,0.5);
+  animation: none;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(125,60,152,0.5); }
+  50% { box-shadow: 0 0 0 8px rgba(125,60,152,0); }
+}
+.lang-toggle {
+  display: flex;
+  gap: 2px;
+  background: rgba(255,255,255,0.08);
+  border-radius: var(--radius);
+  padding: 3px;
+}
+.lang-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 4px 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.lang-btn.active {
+  background: var(--color-primary);
+  color: #fff;
+}
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+
+/* ─── MOBILE MENU ─── */
+#mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--color-dark);
+  z-index: 998;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+#mobile-menu.open { display: flex; }
+#mobile-menu a {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: var(--color-white);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: var(--transition);
+}
+#mobile-menu a:hover { color: var(--color-secondary); }
+#mobile-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+/* ─── SCROLLING TICKER ─── */
+.ticker-wrapper {
+  background: var(--color-primary);
+  overflow: hidden;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.ticker-track {
+  display: flex;
+  white-space: nowrap;
+  animation: ticker 28s linear infinite;
+  gap: 0;
+}
+.ticker-track:hover { animation-play-state: paused; }
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+  padding: 0 32px;
+}
+.ticker-item::after {
+  content: '✦';
+  font-size: 0.5rem;
+  opacity: 0.6;
+}
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ─── HERO ─── */
+#hero {
+  min-height: 90vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('{{HERO_IMAGE}}');
+  background-size: cover;
+  background-position: center 30%;
+  transform: scale(1.05);
+  transition: transform 8s ease-out;
+}
+.hero-bg.loaded { transform: scale(1); }
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(0,0,0,0.72) 0%,
+    rgba(15,11,20,0.6) 40%,
+    rgba(125,60,152,0.25) 100%
+  );
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 24px;
+  max-width: 800px;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 20px;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--color-accent);
+  opacity: 0.6;
+}
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  font-weight: 300;
+  color: var(--color-white);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--color-accent);
+  font-weight: 400;
+}
+.hero-tagline {
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 32px;
+  line-height: 1.5;
+}
+.hero-stars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 36px;
+}
+.stars { color: var(--color-gold); font-size: 0.95rem; letter-spacing: 2px; }
+.rating-text {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.7);
+  font-weight: 400;
+}
+.rating-text strong { color: #fff; font-weight: 600; }
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  padding: 16px 36px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+  animation: pulse 3s ease-in-out infinite;
+}
+.btn-primary:hover {
+  background: #9b50b8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(125,60,152,0.5);
+  animation: none;
+}
+.btn-secondary {
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  padding: 16px 36px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition);
+}
+.btn-secondary:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  transform: translateY(-2px);
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  z-index: 2;
+}
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, rgba(215,189,226,0.6));
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+.scroll-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(215,189,226,0.7);
+}
+
+/* ─── SECTION COMMON ─── */
+section { padding: 96px 0; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.section-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.section-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1.5px;
+  background: var(--color-primary);
+}
+.section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 400;
+  color: var(--color-dark);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.section-title em {
+  font-style: italic;
+  color: var(--color-primary);
+}
+.section-subtitle {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--color-text-light);
+  line-height: 1.7;
+  max-width: 520px;
+  margin-top: 12px;
+}
+
+/* ─── ABOUT STRIP ─── */
+#about {
+  background: var(--color-dark-mid);
+  padding: 72px 0;
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.about-text .section-title { color: #fff; }
+.about-text .section-subtitle { color: rgba(255,255,255,0.6); max-width: 100%; }
+.about-description {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.8;
+  margin-top: 20px;
+}
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+.stat-item { text-align: center; }
+.stat-number {
+  font-family: var(--font-serif);
+  font-size: 2.8rem;
+  font-weight: 300;
+  color: var(--color-accent);
+  line-height: 1;
+  display: block;
+}
+.stat-label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-top: 4px;
+  display: block;
+}
+.trust-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+.trust-chip {
+  background: rgba(125,60,152,0.2);
+  border: 1px solid rgba(125,60,152,0.3);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  letter-spacing: 0.04em;
+}
+
+/* ─── SERVICES ─── */
+#services {
+  background: var(--color-surface);
+}
+.services-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 56px;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+}
+.service-item {
+  background: var(--color-white);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 24px 28px;
+  border-radius: 0;
+  transition: var(--transition);
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+.service-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(125,60,152,0.04), transparent);
+  opacity: 0;
+  transition: var(--transition);
+}
+.service-item:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+.service-item:last-child { border-radius: 0 0 var(--radius) var(--radius); }
+.service-item:hover {
+  border-left-color: var(--color-primary);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
+}
+.service-item:hover::before { opacity: 1; }
+.service-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.service-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.service-name {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--color-dark);
+  letter-spacing: 0.01em;
+}
+.service-desc {
+  font-size: 0.82rem;
+  color: var(--color-text-light);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+.service-price {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-align: right;
+}
+.service-duration {
+  font-size: 0.72rem;
+  color: var(--color-text-light);
+  text-align: right;
+  margin-top: 2px;
+}
+
+/* ─── GALLERY ─── */
+#gallery {
+  background: var(--color-dark);
+  padding: 96px 0;
+}
+#gallery .section-title { color: #fff; }
+.gallery-header { margin-bottom: 48px; }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  aspect-ratio: 4/3;
+  cursor: pointer;
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+}
+.gallery-item:hover img { transform: scale(1.08); }
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15,11,20,0.7) 0%, transparent 50%);
+  opacity: 0;
+  transition: var(--transition);
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+}
+.gallery-item:hover .gallery-overlay { opacity: 1; }
+.gallery-label {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-style: italic;
+  color: rgba(255,255,255,0.9);
+}
+.gallery-item:nth-child(1) { grid-row: span 1; }
+
+/* ─── TEAM ─── */
+#team {
+  background: var(--color-white);
+}
+.team-header { margin-bottom: 56px; }
+.team-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+.team-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.team-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+.team-img-wrap {
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+}
+.team-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.team-card:hover .team-img-wrap img { transform: scale(1.05); }
+.team-badge {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 100px;
+}
+.team-info {
+  padding: 24px;
+}
+.team-name {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--color-dark);
+}
+.team-role {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-top: 4px;
+}
+.team-specialty {
+  font-size: 0.88rem;
+  color: var(--color-text-light);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+.team-socials {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.social-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(125,60,152,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: var(--transition);
+}
+.social-dot:hover { background: var(--color-primary); }
+
+/* ─── BOOKING CTA ─── */
+#booking {
+  background: linear-gradient(135deg, var(--color-dark) 0%, #2d1b45 50%, #1a0e2e 100%);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+#booking::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(125,60,152,0.2), transparent 60%);
+  pointer-events: none;
+}
+.booking-content { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+.booking-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 16px;
+}
+.booking-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 300;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+.booking-title em { font-style: italic; color: var(--color-accent); }
+.booking-subtitle {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+.booking-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.social-proof-nudge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.45);
+}
+.nudge-avatars {
+  display: flex;
+}
+.nudge-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border: 2px solid var(--color-dark);
+  margin-right: -8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  color: #fff;
+  font-weight: 700;
+}
+.nudge-text { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+.nudge-text strong { color: var(--color-accent); }
+
+/* ─── CONTACT ─── */
+#contact {
+  background: var(--color-surface);
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+}
+.contact-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(125,60,152,0.08);
+}
+.contact-card-title {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--color-dark);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.contact-card-title span { font-size: 1.2rem; }
+.contact-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.contact-row:last-child { border-bottom: none; }
+.contact-icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(125,60,152,0.08);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.contact-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  margin-bottom: 2px;
+}
+.contact-value {
+  font-size: 0.95rem;
+  color: var(--color-dark);
+  font-weight: 500;
+  text-decoration: none;
+  transition: var(--transition);
+}
+a.contact-value:hover { color: var(--color-primary); }
+
+/* Map placeholder */
+.map-placeholder {
+  background: linear-gradient(135deg, #1a1225, #2d1b45);
+  border-radius: var(--radius-lg);
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 1px solid rgba(125,60,152,0.2);
+}
+.map-placeholder:hover { border-color: var(--color-primary); }
+.map-pin { font-size: 2.5rem; }
+.map-text {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.7);
+  font-style: italic;
+}
+.map-sub {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ─── FREE vs PRO TABLE ─── */
+#pricing {
+  background: var(--color-dark-mid);
+  padding: 96px 0;
+}
+.pricing-header { text-align: center; margin-bottom: 56px; }
+.pricing-header .section-title { color: #fff; }
+.pricing-header .section-subtitle { margin: 0 auto; color: rgba(255,255,255,0.55); }
+.pricing-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(125,60,152,0.2);
+}
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  min-width: 480px;
+}
+.pricing-table thead {
+  background: rgba(125,60,152,0.15);
+}
+.pricing-table th {
+  padding: 20px 24px;
+  text-align: left;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  border-bottom: 1px solid rgba(125,60,152,0.2);
+}
+.pricing-table th:nth-child(2),
+.pricing-table th:nth-child(3) {
+  text-align: center;
+  min-width: 140px;
+}
+.pricing-table th:nth-child(3) {
+  color: var(--color-accent);
+  position: relative;
+}
+.pro-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 0.6rem;
+  padding: 2px 8px;
+  border-radius: 100px;
+  margin-left: 6px;
+  vertical-align: middle;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.pricing-table td {
+  padding: 16px 24px;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.75);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.pricing-table tr:last-child td { border-bottom: none; }
+.pricing-table td:nth-child(2),
+.pricing-table td:nth-child(3) { text-align: center; }
+.pricing-table tr:hover td { background: rgba(125,60,152,0.05); }
+.check { color: #4caf50; font-size: 1.1rem; }
+.cross { color: rgba(255,255,255,0.2); font-size: 1.1rem; }
+.pricing-cta {
+  text-align: center;
+  margin-top: 40px;
+}
+.btn-claim {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: #fff;
+  border: none;
+  padding: 18px 48px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--transition);
+  animation: pulse 3s ease-in-out infinite;
+}
+.btn-claim:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(125,60,152,0.5);
+  animation: none;
+}
+.pricing-note {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.3);
+  margin-top: 16px;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--color-dark);
+  padding: 56px 0 32px;
+  border-top: 1px solid rgba(125,60,152,0.15);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+.footer-brand-name {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.footer-brand-tag {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.6;
+  max-width: 240px;
+}
+.footer-heading {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 16px;
+}
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.footer-links a {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+  transition: var(--transition);
+}
+.footer-links a:hover { color: var(--color-accent); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-copy {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.3);
+}
+.footer-copy a {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+.siteforge-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(125,60,152,0.15);
+  border: 1px solid rgba(125,60,152,0.25);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: var(--transition);
+}
+.siteforge-badge:hover {
+  background: rgba(125,60,152,0.25);
+  border-color: var(--color-primary);
+}
+
+/* ─── STICKY MOBILE BAR ─── */
+#mobile-claim-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  padding: 14px 20px;
+  z-index: 997;
+  text-align: center;
+  box-shadow: 0 -4px 24px rgba(125,60,152,0.4);
+}
+#mobile-claim-bar a {
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (min-width: 560px) {
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .about-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 768px) {
+  .nav-links { display: flex; }
+  .hamburger { display: none; }
+  .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+  .team-grid { grid-template-columns: repeat(4, 1fr); }
+  .services-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; }
+  .about-grid { grid-template-columns: 1.2fr 0.8fr; }
+  .footer-grid { grid-template-columns: 2fr 1fr 1fr; }
+}
+
+@media (max-width: 767px) {
+  #mobile-claim-bar { display: block; }
+  body { padding-bottom: 60px; }
+  .services-grid { grid-template-columns: 1fr; }
+  section { padding: 72px 0; }
+}
+
+@media (min-width: 1024px) {
+  .team-grid { grid-template-columns: repeat(4, 1fr); }
+  .contact-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+
+/* ─── ANIMATIONS ─── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-up.delay-1 { transition-delay: 0.1s; }
+.fade-up.delay-2 { transition-delay: 0.2s; }
+.fade-up.delay-3 { transition-delay: 0.3s; }
+.fade-up.delay-4 { transition-delay: 0.4s; }
+
+/* ─── GALLERY LIGHTBOX ─── */
+#lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#lightbox.open { display: flex; }
+#lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: var(--radius);
+}
+#lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+#lightbox-close:hover { background: rgba(255,255,255,0.2); }
+
+/* Decorative elements */
+.deco-line {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-primary), transparent);
+  margin: 20px 0;
+}
+.highlight-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(125,60,152,0.1);
+  border: 1px solid rgba(125,60,152,0.2);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  letter-spacing: 0.04em;
+  margin-bottom: 24px;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ CLAIM BANNER ═══ -->
+<div id="claim-banner">
+  <span data-en="✦ This site was built for you by SiteForge — claim it free ·" data-fil="✦ Ginawa ang site na ito para sa inyo ng SiteForge — i-claim nang libre ·">✦ This site was built for you by SiteForge — claim it free ·</span>
+  <a href="{{CLAIM_URL}}" data-en="Claim my site →" data-fil="I-claim ang aking site →">Claim my site →</a>
+  <button id="banner-close" aria-label="Dismiss">✕</button>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav id="main-nav">
+  <a href="#" class="nav-logo">{{BUSINESS_NAME}}</a>
+  <ul class="nav-links">
+    <li><a href="#about" data-en="About" data-fil="Tungkol">About</a></li>
+    <li><a href="#services" data-en="Services" data-fil="Serbisyo">Services</a></li>
+    <li><a href="#gallery" data-en="Gallery" data-fil="Galeri">Gallery</a></li>
+    <li><a href="#team" data-en="Team" data-fil="Koponan">Team</a></li>
+    <li><a href="#contact" data-en="Contact" data-fil="Makipag-ugnayan">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-toggle">{{LANG_TOGGLE}}</div>
+    <a href="#booking" class="btn-nav-cta" data-en="Book Appointment" data-fil="{{FIL_CTA}}">Book Appointment</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ MOBILE MENU ═══ -->
+<div id="mobile-menu">
+  <button id="mobile-close">✕</button>
+  <a href="#about" data-en="About" data-fil="Tungkol">About</a>
+  <a href="#services" data-en="Services" data-fil="Serbisyo">Services</a>
+  <a href="#gallery" data-en="Gallery" data-fil="Galeri">Gallery</a>
+  <a href="#team" data-en="Team" data-fil="Koponan">Team</a>
+  <a href="#contact" data-en="Contact" data-fil="Makipag-ugnayan">Contact</a>
+  <a href="#booking" class="btn-primary" data-en="Book Appointment" data-fil="{{FIL_CTA}}">Book Appointment</a>
+</div>
+
+<!-- ═══ TICKER ═══ -->
+<div class="ticker-wrapper" aria-hidden="true">
+  <div class="ticker-track" id="ticker-track">
+    <!-- JS fills this -->
+  </div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span data-en="{{CATEGORY}} · {{CITY}}" data-fil="{{CATEGORY}} · {{CITY}}">{{CATEGORY}} · {{CITY}}</span>
+    </div>
+    <h1 class="hero-title">{{BUSINESS_NAME}}<br><em data-en="{{TAGLINE}}" data-fil="{{FIL_TAGLINE}}">{{TAGLINE}}</em></h1>
+    <p class="hero-tagline" data-en="{{TAGLINE}}" data-fil="{{FIL_TAGLINE}}">{{TAGLINE}}</p>
+    <div class="hero-stars">
+      <div class="stars">★★★★★</div>
+      <div class="rating-text"><strong>{{RATING}}</strong> · {{REVIEW_COUNT}} reviews</div>
+    </div>
+    <div class="hero-actions">
+      <a href="#booking" class="btn-primary" data-en="Book Appointment" data-fil="{{FIL_CTA}}">✦ Book Appointment</a>
+      <a href="#services" class="btn-secondary" data-en="See Services" data-fil="Tingnan ang Serbisyo">See Services</a>
+    </div>
+  </div>
+  <div class="hero-scroll" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+    <div class="scroll-line"></div>
+    <div class="scroll-label">Scroll</div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text fade-up">
+        <div class="section-eyebrow">Our Story</div>
+        <h2 class="section-title">Where <em>Beauty</em><br>Meets Craft</h2>
+        <div class="deco-line"></div>
+        <p class="about-description">{{DESCRIPTION}}</p>
+        <div class="trust-chips" id="trust-chips">
+          <!-- JS fills from {{TRUST_POINTS}} -->
+        </div>
+      </div>
+      <div class="about-stats fade-up delay-2">
+        <div class="stat-item">
+          <span class="stat-number">{{RATING}}</span>
+          <span class="stat-label">Star Rating</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{REVIEW_COUNT}}</span>
+          <span class="stat-label">Reviews</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">10+</span>
+          <span class="stat-label">Years Active</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES ═══ -->
+<section id="services">
+  <div class="container">
+    <div class="services-header">
+      <div class="fade-up">
+        <div class="section-eyebrow">What We Offer</div>
+        <h2 class="section-title">Our <em>Services</em></h2>
+        <p class="section-subtitle">Thoughtfully curated treatments designed to elevate your confidence.</p>
+      </div>
+      <a href="#booking" class="btn-primary fade-up delay-2" data-en="Book Now" data-fil="Mag-book Na">Book Now →</a>
+    </div>
+    <div class="services-grid fade-up" id="services-grid">
+      <!-- JS renders from {{SERVICES}} -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GALLERY ═══ -->
+<section id="gallery">
+  <div class="container">
+    <div class="gallery-header fade-up">
+      <div class="section-eyebrow" style="color:var(--color-accent)">Our Work</div>
+      <h2 class="section-title">The <em>Lookbook</em></h2>
+    </div>
+    <div class="gallery-grid fade-up delay-1">
+      <div class="gallery-item" data-src="{{GALLERY_1}}">
+        <img src="{{GALLERY_1}}" alt="Gallery 1" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-label">Signature Style</span></div>
+      </div>
+      <div class="gallery-item" data-src="{{GALLERY_2}}">
+        <img src="{{GALLERY_2}}" alt="Gallery 2" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-label">Hair Artistry</span></div>
+      </div>
+      <div class="gallery-item" data-src="{{GALLERY_3}}">
+        <img src="{{GALLERY_3}}" alt="Gallery 3" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-label">Color & Tone</span></div>
+      </div>
+      <div class="gallery-item" data-src="{{GALLERY_4}}">
+        <img src="{{GALLERY_4}}" alt="Gallery 4" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-label">Skincare Glow</span></div>
+      </div>
+      <div class="gallery-item" data-src="{{GALLERY_5}}">
+        <img src="{{GALLERY_5}}" alt="Gallery 5" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-label">Nail Art</span></div>
+      </div>
+      <div class="gallery-item" data-src="{{GALLERY_6}}">
+        <img src="{{GALLERY_6}}" alt="Gallery 6" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-label">Full Glam</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TEAM ═══ -->
+<section id="team">
+  <div class="container">
+    <div class="team-header fade-up">
+      <div class="section-eyebrow">The Experts</div>
+      <h2 class="section-title">Meet the <em>Team</em></h2>
+      <p class="section-subtitle">Passionate professionals dedicated to making you look and feel extraordinary.</p>
+    </div>
+    <div class="team-grid" id="team-grid">
+      <!-- JS renders from {{TEAM_MEMBERS}} -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BOOKING CTA ═══ -->
+<section id="booking">
+  <div class="container">
+    <div class="booking-content fade-up">
+      <div class="booking-eyebrow" data-en="Ready for Your Transformation?" data-fil="Handa Ka Na Ba?">Ready for Your Transformation?</div>
+      <h2 class="booking-title">Book Your <em>Visit</em> Today</h2>
+      <p class="booking-subtitle">{{DESCRIPTION}}</p>
+      <div class="booking-actions">
+        <a href="tel:{{PHONE}}" class="btn-primary" data-en="📞 Call to Book" data-fil="📞 Tumawag para Mag-book">📞 Call to Book</a>
+        <a href="#contact" class="btn-secondary" data-en="Get Directions" data-fil="Kunin ang Direksyon">Get Directions</a>
+      </div>
+      <div class="social-proof-nudge">
+        <div class="nudge-avatars">
+          <div class="nudge-avatar">A</div>
+          <div class="nudge-avatar">B</div>
+          <div class="nudge-avatar">C</div>
+        </div>
+        <span class="nudge-text"><strong>{{SOCIAL_PROOF_COUNT}}</strong> businesses claimed their site this week</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="container">
+    <div class="fade-up" style="margin-bottom:48px">
+      <div class="section-eyebrow">Find Us</div>
+      <h2 class="section-title">Get in <em>Touch</em></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="fade-up delay-1">
+        <div class="contact-card">
+          <div class="contact-card-title"><span>📍</span> Visit Us</div>
+          <div class="contact-row">
+            <div class="contact-icon">📍</div>
+            <div>
+              <div class="contact-label">Address</div>
+              <div class="contact-value">{{ADDRESS}}</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">📞</div>
+            <div>
+              <div class="contact-label">Phone</div>
+              <a href="tel:{{PHONE}}" class="contact-value">{{PHONE}}</a>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">🕐</div>
+            <div>
+              <div class="contact-label">Hours</div>
+              <div class="contact-value">{{HOURS}}</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">🌐</div>
+            <div>
+              <div class="contact-label">City</div>
+              <div class="contact-value">{{CITY}}, {{COUNTRY}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fade-up delay-2">
+        <div class="map-placeholder" onclick="window.open('https://maps.google.com/?q={{ADDRESS}}','_blank')">
+          <div class="map-pin">📍</div>
+          <div class="map-text">{{BUSINESS_NAME}}</div>
+          <div class="map-sub">{{ADDRESS}}</div>
+          <div style="margin-top:12px;font-size:0.78rem;color:rgba(215,189,226,0.6);letter-spacing:0.06em;">Click to open in Maps →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FREE vs PRO ═══ -->
+<section id="pricing">
+  <div class="container">
+    <div class="pricing-header fade-up">
+      <div class="highlight-pill">🔓 Own Your Site</div>
+      <h2 class="section-title">Free <em>Forever</em> vs. Pro</h2>
+      <p class="section-subtitle">Your site is live — upgrade anytime to unlock powerful tools that grow your business.</p>
+    </div>
+    <div class="pricing-table-wrap fade-up delay-1">
+      <table class="pricing-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Free</th>
+            <th>Pro <span class="pro-badge">$29/mo</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Live public website</td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Business info & gallery</td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>SiteForge subdomain</td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Custom domain (yourbiz.com)</td>
+            <td><span class="cross">—</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Drag-and-drop editor</td>
+            <td><span class="cross">—</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Online booking form</td>
+            <td><span class="cross">—</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Remove SiteForge badge</td>
+            <td><span class="cross">—</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Priority support</td>
+            <td><span class="cross">—</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Analytics dashboard</td>
+            <td><span class="cross">—</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pricing-cta fade-up delay-2">
+      <a href="{{CLAIM_URL}}" class="btn-claim">🔓 Claim My Free Site Now →</a>
+      <p class="pricing-note">No credit card required · Free forever plan available · Upgrade anytime</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">{{BUSINESS_NAME}}</div>
+        <p class="footer-brand-tag">{{TAGLINE}}<br>{{CITY}}, {{COUNTRY}}</p>
+        <div style="margin-top:20px;display:flex;gap:10px">
+          <a href="#" class="social-dot" aria-label="Facebook">f</a>
+          <a href="#" class="social-dot" aria-label="Instagram">✦</a>
+          <a href="#" class="social-dot" aria-label="TikTok">▶</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#team">Our Team</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Contact</div>
+        <ul class="footer-links">
+          <li><a href="tel:{{PHONE}}">{{PHONE}}</a></li>
+          <li><a href="#">{{ADDRESS}}</a></li>
+          <li><a href="#">{{HOURS}}</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© {{YEAR}} <strong>{{BUSINESS_NAME}}</strong>. All rights reserved. · <a href="{{CLAIM_URL}}">Claim this site</a></div>
+      <a href="{{SITE_URL}}" class="siteforge-badge" target="_blank">⚡ Powered by SiteForge</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ MOBILE CLAIM BAR ═══ -->
+<div id="mobile-claim-bar">
+  <a href="{{CLAIM_URL}}">
+    🔓 Is this your business? Claim it free →
+  </a>
+</div>
+
+<!-- ═══ LIGHTBOX ═══ -->
+<div id="lightbox">
+  <button id="lightbox-close">✕</button>
+  <img id="lightbox-img" src="" alt="Gallery">
+</div>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script>
+(function() {
+
+  /* ── DATA ── */
+  const servicesRaw = "{{SERVICES}}";
+  const menuItemsRaw = "{{MENU_ITEMS}}";
+  const trustPointsRaw = "{{TRUST_POINTS}}";
+  const teamMembersRaw = "{{TEAM_MEMBERS}}";
+
+  const serviceIcons = ['✂️','💅','🧴','💆','✨','🪒','💄','🧖','💇','🌸'];
+  const serviceDescs = [
+    'Professional precision cut & style',
+    'Gel, acrylic, and nail art',
+    'Deep hydration treatment',
+    'Relaxing full-body massage',
+    'Premium facial & glow',
+    'Classic or hot towel shave',
+    'Full glam application',
+    'Rejuvenating body wrap',
+    'Color, highlights & tone',
+    'Aromatherapy session'
+  ];
+  const servicePrices = ['₱350','₱450','₱600','₱800','₱700','₱400','₱550','₱950','₱1,200','₱500'];
+  const serviceDurations = ['45 min','60 min','30 min','90 min','75 min','30 min','60 min','120 min','90 min','60 min'];
+
+  /* ── TRANSLATIONS ── */
+  const i18n = {
+    en: {
+      'About': 'About',
+      'Services': 'Services',
+      'Gallery': 'Gallery',
+      'Team': 'Team',
+      'Contact': 'Contact',
+      'Book Appointment': 'Book Appointment',
+      'See Services': 'See Services',
+      'Book Now': 'Book Now →',
+      'Get Directions': 'Get Directions',
+      '📞 Call to Book': '📞 Call to Book',
+      'Ready for Your Transformation?': 'Ready for Your Transformation?',
+      'claim-banner-text': '✦ This site was built for you by SiteForge — claim it free ·',
+      'claim-banner-link': 'Claim my site →',
+    },
+    fil: {
+      'About': 'Tungkol',
+      'Services': 'Serbisyo',
+      'Gallery': 'Galeri',
+      'Team': 'Koponan',
+      'Contact': 'Makipag-ugnayan',
+      'Book Appointment': '{{FIL_CTA}}',
+      'See Services': 'Tingnan ang Serbisyo',
+      'Book Now': 'Mag-book Na →',
+      'Get Directions': 'Kunin ang Direksyon',
+      '📞 Call to Book': '📞 Tumawag para Mag-book',
+      'Ready for Your Transformation?': 'Handa Ka Na Ba?',
+      'claim-banner-text': '✦ Ginawa ang site na ito para sa inyo ng SiteForge — i-claim nang libre ·',
+      'claim-banner-link': 'I-claim ang aking site →',
+    }
+  };
+
+  /* ── RENDER TICKER ── */
+  const tickerTrack = document.getElementById('ticker-track');
+  const menuItems = menuItemsRaw.split('|').filter(Boolean);
+  const tickerItems = menuItems.length ? menuItems : servicesRaw.split('|').filter(Boolean);
+  const doubled = [...tickerItems, ...tickerItems];
+  tickerTrack.innerHTML = doubled.map(item =>
+    `<div class="ticker-item">${item}</div>`
+  ).join('');
+
+  /* ── RENDER SERVICES ── */
+  const servicesGrid = document.getElementById('services-grid');
+  const services = servicesRaw.split('|').filter(Boolean);
+  if (services.length) {
+    servicesGrid.innerHTML = services.map((s, i) => `
+      <div class="service-item" style="animation-delay:${i*0.07}s">
+        <div class="service-left">
+          <div class="service-icon">${serviceIcons[i % serviceIcons.length]}</div>
+          <div>
+            <div class="service-name">${s}</div>
+            <div class="service-desc">${serviceDescs[i % serviceDescs.length]}</div>
+          </div>
+        </div>
+        <div>
+          <div class="service-price">${servicePrices[i % servicePrices.length]}</div>
+          <div class="service-duration">${serviceDurations[i % serviceDurations.length]}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  /* ── RENDER TRUST CHIPS ── */
+  const trustChips = document.getElementById('trust-chips');
+  const trustPoints = trustPointsRaw.split('|').filter(Boolean);
+  if (trustPoints.length) {
+    trustChips.innerHTML = trustPoints.map(t =>
+      `<div class="trust-chip">✓ ${t}</div>`
+    ).join('');
+  }
+
+  /* ── RENDER TEAM ── */
+  const teamGrid = document.getElementById('team-grid');
+  const teamMembers = teamMembersRaw.split('|').filter(Boolean);
+  const teamRoles = ['Lead Stylist','Color Specialist','Nail Artist','Spa Therapist','Makeup Artist','Barber','Skincare Expert','Lash Technician'];
+  const teamSpecialties = [
+    'Balayage, cuts & creative color',
+    'Highlights, toning & bleach',
+    'Gel, acrylics & nail art',
+    'Swedish & deep tissue massage',
+    'Bridal & event glam',
+    'Fades, tapers & hot shaves',
+    'Facials & anti-aging treatments',
+    'Classic, hybrid & volume lashes'
+  ];
+  const galleryImages = [
+    '{{GALLERY_1}}','{{GALLERY_2}}','{{GALLERY_3}}',
+    '{{GALLERY_4}}','{{GALLERY_5}}','{{GALLERY_6}}'
+  ];
+
+  const members = teamMembers.length ? teamMembers : ['Alex Reyes','Jamie Cruz','Sam Lopez','Morgan Santos'];
+  teamGrid.innerHTML = members.map((name, i) => `
+    <div class="team-card fade-up delay-${(i%4)+1}">
+      <div class="team-img-wrap">
+        <img src="${galleryImages[i % galleryImages.length]}" alt="${name}" loading="lazy">
+        <div class="team-badge">${teamRoles[i % teamRoles.length]}</div>
+      </div>
+      <div class="team-info">
+        <div class="team-name">${name}</div>
+        <div class="team-role">${teamRoles[i % teamRoles.length]}</div>
+        <div class="team-specialty">${teamSpecialties[i % teamSpecialties.length]}</div>
+        <div class="team-socials">
+          <a href="#" class="social-dot" aria-label="Instagram">✦</a>
+          <a href="#" class="social-dot" aria-label="Facebook">f</a>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  /* ── HERO BG LOAD ── */
+  const heroBg = document.getElementById('hero-bg');
+  heroBg.style.backgroundImage = "url('{{HERO_IMAGE}}')";
+  const img = new Image();
+  img.onload = () => heroBg.classList.add('loaded');
+  img.src = '{{HERO_IMAGE}}';
+
+  /* ── CLAIM BANNER DISMISS ── */
+  document.getElementById('banner-close').addEventListener('click', function() {
+    const banner = document.getElementById('claim-banner');
+    banner.style.height = '0';
+    banner.style.overflow = 'hidden';
+    banner.style.transition = 'height 0.4s ease';
+  });
+
+  /* ── HAMBURGER ── */
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileClose = document.getElementById('mobile-close');
+
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  mobileClose.addEventListener('click', closeMenu);
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  function closeMenu() {
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ── LANG TOGGLE ── */
+  const langToggleSlot = document.querySelector('.lang-toggle');
+  langToggleSlot.innerHTML = `
+    <button class="lang-btn active" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="fil">FIL</button>
+  `;
+
+  let currentLang = 'en';
+  langToggleSlot.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const lang = this.dataset.lang;
+      if (lang === currentLang) return;
+      currentLang = lang;
+      langToggleSlot.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      applyLang(lang);
+    });
+  });
+
+  function applyLang(lang) {
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const key = el.dataset.en;
+      const translated = el.dataset.fil;
+      if (lang === 'fil' && translated) {
+        el.textContent = translated;
+      } else {
+        el.textContent = key;
+      }
+    });
+    const bannerSpan = document.querySelector('#claim-banner span');
+    const bannerLink = document.querySelector('#claim-banner a');
+    if (bannerSpan && bannerLink) {
+      bannerSpan.textContent = lang === 'fil' ? i18n.fil['claim-banner-text'] : i18n.en['claim-banner-text'];
+      bannerLink.textContent = lang === 'fil' ? i18n.fil['claim-banner-link'] : i18n.en['claim-banner-link'];
+    }
+  }
+
+  /* ── GALLERY LIGHTBOX ── */
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  document.querySelectorAll('.gallery-item').forEach(item => {
+    item.addEventListener('click', () => {
+      lightboxImg.src = item.dataset.src;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', function(e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  /* ── SCROLL ANIMATIONS ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  /* ── STICKY NAV SCROLL EFFECT ── */
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('main-nav');
+    if (window.scrollY > 80) {
+      nav.style.background = 'rgba(10,7,16,0.99)';
+    } else {
+      nav.style.background = 'rgba(15,11,20,0.97)';
+    }
+  }, { passive: true });
+
+  /* ── SMOOTH SCROLL FOR NAV LINKS ── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+})();
+</script>
+</body>
+</html>

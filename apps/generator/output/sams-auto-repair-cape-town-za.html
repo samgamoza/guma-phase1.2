@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Sam's Auto Repair — Trusted auto repair and servicing for all vehicle makes in Cape Town. Walk-ins welcome. Call (021) 555-0199.">
+<title>Sam's Auto Repair | Cape Town Auto Repair</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: #FAFAFA;
+    color: #1A252F;
+    line-height: 1.6;
+  }
+
+  img { max-width: 100%; display: block; }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ── CLAIM BANNER ── */
+  #claim-banner {
+    background: #2C3E50;
+    color: #ECF0F1;
+    font-size: 12px;
+    text-align: center;
+    padding: 8px 40px 8px 16px;
+    position: relative;
+    z-index: 1000;
+  }
+  #claim-banner a {
+    color: #f0c040;
+    font-weight: 700;
+    text-decoration: underline;
+    margin-left: 4px;
+  }
+  #claim-banner a:hover { color: #ffe070; }
+  #banner-close {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #ECF0F1;
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 6px;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+  }
+  #banner-close:hover { opacity: 1; }
+
+  /* ── STICKY NAV ── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    background: #2C3E50;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  }
+  .nav-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #ECF0F1;
+    letter-spacing: -0.3px;
+  }
+  .nav-logo span { color: #f0c040; }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    color: #ECF0F1;
+    font-size: 0.88rem;
+    font-weight: 500;
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+  }
+  .nav-links a:hover { opacity: 1; }
+  .btn-nav {
+    background: #f0c040;
+    color: #1A252F !important;
+    padding: 9px 22px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.85rem !important;
+    opacity: 1 !important;
+    transition: all 0.2s ease !important;
+  }
+  .btn-nav:hover { background: #ffe070; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(240,192,64,0.35); }
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #ECF0F1;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+  }
+  .mobile-menu {
+    display: none;
+    background: #34495E;
+    padding: 16px 20px;
+  }
+  .mobile-menu.open { display: block; }
+  .mobile-menu a {
+    display: block;
+    color: #ECF0F1;
+    padding: 10px 0;
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    transition: color 0.2s ease;
+  }
+  .mobile-menu a:hover { color: #f0c040; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 90vh;
+    background-image: url('https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1600&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.52);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 80px 24px 60px;
+    color: #ECF0F1;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #f0c040;
+    margin-bottom: 20px;
+    letter-spacing: 0.3px;
+  }
+  .hero-badge::before { content: '★'; font-size: 0.9rem; }
+  .hero-content h1 {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 900;
+    line-height: 1.12;
+    margin-bottom: 18px;
+    max-width: 680px;
+    letter-spacing: -0.5px;
+  }
+  .hero-content h1 em {
+    font-style: normal;
+    color: #f0c040;
+  }
+  .hero-content p {
+    font-size: clamp(1rem, 2vw, 1.18rem);
+    max-width: 520px;
+    margin-bottom: 32px;
+    opacity: 0.92;
+    line-height: 1.65;
+  }
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .btn-primary {
+    background: #f0c040;
+    color: #1A252F;
+    padding: 16px 40px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block;
+    animation: pulse 2.4s ease-in-out infinite;
+    text-decoration: none;
+  }
+  .btn-primary:hover {
+    background: #ffe070;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(240,192,64,0.45);
+    animation: none;
+  }
+  .btn-secondary {
+    background: transparent;
+    color: #ECF0F1;
+    padding: 15px 36px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+    border: 2px solid rgba(255,255,255,0.55);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block;
+    text-decoration: none;
+  }
+  .btn-secondary:hover {
+    border-color: #ECF0F1;
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-2px);
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(240,192,64,0.55); }
+    50% { box-shadow: 0 0 0 10px rgba(240,192,64,0); }
+  }
+  .hero-urgency {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.7);
+    margin-top: 4px;
+  }
+  .social-proof {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 100px;
+    padding: 8px 18px;
+    font-size: 0.84rem;
+    color: rgba(255,255,255,0.88);
+    margin-top: 12px;
+  }
+  .social-proof .dot {
+    width: 8px; height: 8px;
+    background: #4CAF50;
+    border-radius: 50%;
+    animation: blink 1.5s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ── TRUST BAR ── */
+  #trust-bar {
+    background: #2C3E50;
+    padding: 18px 24px;
+  }
+  .trust-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+  }
+  .trust-item {
+    color: #ECF0F1;
+    font-size: 0.88rem;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0 12px;
+  }
+  .trust-item + .trust-item { border-left: 1px solid rgba(255,255,255,0.15); }
+  .trust-icon { font-size: 1.1rem; }
+  .stars { color: #f0c040; letter-spacing: 1px; }
+
+  /* ── SECTION COMMONS ── */
+  section { padding: 80px 24px; }
+  .section-inner { max-width: 960px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #f0c040;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .section-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    font-weight: 800;
+    color: #2C3E50;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 1rem;
+    color: #34495E;
+    max-width: 560px;
+    margin-bottom: 48px;
+    line-height: 1.65;
+  }
+
+  /* ── ABOUT ── */
+  #about { background: #FAFAFA; }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .about-text p {
+    color: #34495E;
+    font-size: 0.97rem;
+    line-height: 1.75;
+    margin-bottom: 18px;
+  }
+  .about-values {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 28px;
+  }
+  .value-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .value-icon {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    background: #2C3E50;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: #f0c040;
+  }
+  .value-text strong {
+    display: block;
+    font-size: 0.9rem;
+    color: #2C3E50;
+    margin-bottom: 2px;
+  }
+  .value-text span {
+    font-size: 0.84rem;
+    color: #34495E;
+  }
+  .about-gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 10px;
+  }
+  .gallery-item {
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    background: #ddd;
+  }
+  .gallery-item:first-child { grid-column: span 2; aspect-ratio: 16/8; }
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  .gallery-item:hover img { transform: scale(1.04); }
+
+  /* ── SERVICES ── */
+  #services { background: #ECF0F1; }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .service-card {
+    background: #FAFAFA;
+    border-radius: 14px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 12px rgba(44,62,80,0.08);
+    transition: all 0.2s ease;
+    border-top: 3px solid transparent;
+  }
+  .service-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(44,62,80,0.13);
+    border-top-color: #f0c040;
+  }
+  .service-icon {
+    font-size: 1.8rem;
+    margin-bottom: 14px;
+    display: block;
+  }
+  .service-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2C3E50;
+    margin-bottom: 8px;
+  }
+  .service-card p {
+    font-size: 0.875rem;
+    color: #34495E;
+    line-height: 1.6;
+  }
+
+  /* ── MORE GALLERY ── */
+  #gallery { background: #FAFAFA; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .gal-item {
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    background: #ddd;
+  }
+  .gal-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+  }
+  .gal-item:hover img { transform: scale(1.06); }
+
+  /* ── HOURS ── */
+  #hours { background: #2C3E50; color: #ECF0F1; }
+  #hours .section-title { color: #ECF0F1; }
+  #hours .section-sub { color: rgba(236,240,241,0.75); }
+  .hours-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .hours-card {
+    background: rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 32px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .hours-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f0c040;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hours-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    font-size: 0.9rem;
+    color: rgba(236,240,241,0.88);
+  }
+  .hours-row:last-child { border-bottom: none; }
+  .hours-row .day { font-weight: 600; }
+  .map-placeholder {
+    background: rgba(255,255,255,0.06);
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    text-align: center;
+    gap: 12px;
+    flex-direction: column;
+  }
+  .map-icon { font-size: 2.5rem; }
+  .map-address { color: rgba(236,240,241,0.85); font-size: 0.95rem; line-height: 1.6; }
+
+  /* ── CONTACT ── */
+  #contact { background: #FAFAFA; }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .contact-info { display: flex; flex-direction: column; gap: 20px; }
+  .contact-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(44,62,80,0.07);
+    transition: box-shadow 0.2s ease;
+  }
+  .contact-item:hover { box-shadow: 0 4px 18px rgba(44,62,80,0.12); }
+  .contact-ic {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    background: #2C3E50;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #f0c040;
+  }
+  .contact-item strong { display: block; font-size: 0.82rem; color: #34495E; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 3px; }
+  .contact-item a, .contact-item span { font-size: 0.95rem; color: #2C3E50; font-weight: 500; }
+  .contact-item a:hover { color: #f0c040; }
+  .contact-form {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 2px 18px rgba(44,62,80,0.09);
+  }
+  .contact-form h3 { font-size: 1.1rem; font-weight: 700; color: #2C3E50; margin-bottom: 20px; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 0.83rem; font-weight: 600; color: #34495E; margin-bottom: 5px; }
+  .form-group input, .form-group textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #dde2e8;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-family: inherit;
+    color: #1A252F;
+    background: #FAFAFA;
+    transition: border-color 0.2s ease;
+    outline: none;
+    resize: vertical;
+  }
+  .form-group input:focus, .form-group textarea:focus { border-color: #2C3E50; background: #fff; }
+  .form-group textarea { min-height: 100px; }
+  .btn-form {
+    width: 100%;
+    background: #2C3E50;
+    color: #ECF0F1;
+    padding: 13px 28px;
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+  .btn-form:hover { background: #34495E; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(44,62,80,0.25); }
+
+  /* ── FREE vs PRO ── */
+  #pricing { background: #ECF0F1; }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .plan-card {
+    background: #FAFAFA;
+    border-radius: 16px;
+    padding: 32px 28px;
+    box-shadow: 0 2px 14px rgba(44,62,80,0.09);
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+  }
+  .plan-card.pro {
+    background: #2C3E50;
+    border-color: #f0c040;
+    color: #ECF0F1;
+  }
+  .plan-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(44,62,80,0.14); }
+  .plan-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #34495E;
+    margin-bottom: 6px;
+  }
+  .plan-card.pro .plan-label { color: #f0c040; }
+  .plan-price {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #2C3E50;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .plan-card.pro .plan-price { color: #f0c040; }
+  .plan-period {
+    font-size: 0.82rem;
+    color: #34495E;
+    margin-bottom: 22px;
+  }
+  .plan-card.pro .plan-period { color: rgba(236,240,241,0.65); }
+  .plan-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .plan-features li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: #34495E;
+  }
+  .plan-card.pro .plan-features li { color: rgba(236,240,241,0.88); }
+  .plan-features li::before { content: '✓'; font-weight: 800; color: #2C3E50; min-width: 16px; }
+  .plan-card.pro .plan-features li::before { color: #f0c040; }
+  .plan-cta {
+    display: block;
+    text-align: center;
+    margin-top: 24px;
+    padding: 12px 24px;
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    background: #ECF0F1;
+    color: #2C3E50;
+    transition: all 0.2s ease;
+  }
+  .plan-card.pro .plan-cta {
+    background: #f0c040;
+    color: #1A252F;
+  }
+  .plan-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
+  .pricing-note {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.83rem;
+    color: #34495E;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #1A252F;
+    color: rgba(236,240,241,0.7);
+    padding: 44px 24px 28px;
+    text-align: center;
+  }
+  .footer-inner { max-width: 960px; margin: 0 auto; }
+  .footer-logo {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #ECF0F1;
+    margin-bottom: 10px;
+  }
+  .footer-logo span { color: #f0c040; }
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    list-style: none;
+    margin: 16px 0;
+  }
+  .footer-links a { color: rgba(236,240,241,0.6); font-size: 0.85rem; transition: color 0.2s ease; }
+  .footer-links a:hover { color: #ECF0F1; }
+  .footer-divider { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 18px 0; }
+  .footer-copy { font-size: 0.8rem; margin-bottom: 10px; }
+  .footer-badge {
+    display: inline-block;
+    font-size: 0.77rem;
+    color: rgba(236,240,241,0.4);
+    margin-top: 6px;
+  }
+  .footer-badge a { color: rgba(236,240,241,0.55); text-decoration: underline; transition: color 0.2s ease; }
+  .footer-badge a:hover { color: #ECF0F1; }
+
+  /* ── MOBILE STICKY BAR ── */
+  #sticky-bar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: #2C3E50;
+    padding: 12px 20px;
+    text-align: center;
+    box-shadow: 0 -4px 18px rgba(0,0,0,0.25);
+  }
+  #sticky-bar a {
+    color: #f0c040;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  #sticky-bar a:hover { color: #ffe070; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    section { padding: 48px 20px; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-gallery { order: -1; grid-template-columns: 1fr 1fr; }
+    .about-gallery .gallery-item:first-child { grid-column: span 2; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .hours-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; max-width: 380px; }
+    #sticky-bar { display: block; }
+    body { padding-bottom: 54px; }
+    .hero-content { padding: 60px 20px 48px; }
+  }
+  @media (max-width: 480px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    .trust-item + .trust-item { border-left: none; }
+    .hero-ctas { flex-direction: column; align-items: flex-start; }
+    .btn-primary, .btn-secondary { width: 100%; text-align: center; }
+    .about-gallery { grid-template-columns: 1fr; }
+    .about-gallery .gallery-item:first-child { grid-column: span 1; }
+  }
+</style>
+  <link rel="canonical" href="http://localhost:3000/sites/sams-auto-repair-cape-town-za">
+</head>
+<body>
+
+<!-- CLAIM BANNER -->
+<div id="claim-banner" role="banner" aria-label="Claim this site">
+  This site was built for you by SiteForge — claim it free to customise ·
+  <a href="https://siteforge.io/claim/sams-auto-repair-cape-town-za">Claim my site →</a>
+  <button id="banner-close" aria-label="Dismiss banner">✕</button>
+</div>
+
+<!-- STICKY HEADER -->
+<header>
+  <div class="nav-inner">
+    <div class="nav-logo">Sam's <span>Auto Repair</span></div>
+    <ul class="nav-links" role="navigation" aria-label="Main navigation">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#hours">Hours</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="tel:0215550199" class="btn-nav">Get in Touch</a></li>
+    </ul>
+    <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#hours">Hours</a>
+    <a href="#contact">Contact</a>
+    <a href="tel:0215550199" style="color:#f0c040; font-weight:700;">📞 Get in Touch</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section id="hero" aria-label="Hero section">
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-badge">★ 4.5 · 87 reviews in Cape Town</div>
+    <h1>Cape Town's Trusted <em>Auto Repair</em> Specialists</h1>
+    <p>Expert servicing and repairs for all vehicle makes and models. Honest quotes, quality workmanship, and walk-ins always welcome at Sam's Auto Repair.</p>
+    <div class="hero-ctas">
+      <a href="tel:0215550199" class="btn-primary">Get in Touch</a>
+      <a href="#services" class="btn-secondary">Learn More</a>
+    </div>
+    <p class="hero-urgency">📍 12 Main Rd, Cape Town · Mon–Fri 8am–5pm, Sat 8am–1pm</p>
+    <div class="social-proof" aria-label="Live activity">
+      <span class="dot" aria-hidden="true"></span>
+      83 businesses like this claimed their site this week
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div id="trust-bar" role="complementary" aria-label="Trust signals">
+  <div class="trust-inner">
+    <div class="trust-item">
+      <span class="trust-icon" aria-hidden="true">🏆</span>
+      <span>Trusted Cape Town Mechanics</span>
+    </div>
+    <div class="trust-item">
+      <span class="stars" aria-label="4.5 stars">★★★★½</span>
+      <span>4.5 / 5 · 87 Reviews</span>
+    </div>
+    <div class="trust-item">
+      <span class="trust-icon" aria-hidden="true">📍</span>
+      <span>12 Main Rd, Cape Town</span>
+    </div>
+    <div class="trust-item">
+      <span class="trust-icon" aria-hidden="true">📞</span>
+      <a href="tel:0215550199" style="color:#ECF0F1;">(021) 555-0199</a>
+    </div>
+    <div class="trust-item">
+      <span class="trust-icon" aria-hidden="true">🚗</span>
+      <span>All Makes & Models</span>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-text">
+        <span class="section-label">Our Story</span>
+        <h2 class="section-title">Cape Town's Neighbourhood Mechanic You Can Actually Trust</h2>
+        <p>Sam's Auto Repair has been a cornerstone of the Cape Town community, delivering honest, high-quality vehicle servicing to drivers across the Western Cape. Founded on a simple belief — that every customer deserves straight talk, fair pricing, and a job done right the first time.</p>
+        <p>Whether it's a routine service, a complex engine repair, or a last-minute fix before a road trip, our team of skilled technicians handles it all with professionalism and care. We welcome walk-ins and go out of our way to get you back on the road quickly.</p>
+        <div class="about-values">
+          <div class="value-item">
+            <div class="value-icon" aria-hidden="true">⚙️</div>
+            <div class="value-text">
+              <strong>Expert Technicians</strong>
+              <span>Trained on all vehicle makes and models, local and imported.</span>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" aria-hidden="true">💬</div>
+            <div class="value-text">
+              <strong>Honest Communication</strong>
+              <span>Clear quotes upfront — no hidden fees, no surprises.</span>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" aria-hidden="true">⏱️</div>
+            <div class="value-text">
+              <strong>Fast Turnaround</strong>
+              <span>We respect your time and work efficiently to get you moving.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-gallery" aria-label="Workshop gallery">
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=600&auto=format&fit=crop" alt="Mechanic working under a vehicle bonnet" loading="lazy">
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&auto=format&fit=crop" alt="Sleek sports car receiving service" loading="lazy">
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format&fit=crop" alt="Car repair workshop tools and equipment" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <span class="section-label">What We Do</span>
+    <h2 class="section-title">Comprehensive Auto Repair Services</h2>
+    <p class="section-sub">From routine maintenance to major mechanical work — we've got you covered, whatever you drive.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="service-icon" aria-hidden="true">🔧</span>
+        <h3>Full Vehicle Servicing</h3>
+        <p>Comprehensive scheduled services including oil changes, filter replacements, fluid checks, and manufacturer-recommended maintenance intervals.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon" aria-hidden="true">🛞</span>
+        <h3>Brakes & Tyres</h3>
+        <p>Brake pad and disc replacements, fluid flushes, tyre fitting, rotation, and balancing. Stay safe on Cape Town's roads.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon" aria-hidden="true">🔍</span>
+        <h3>Engine Diagnostics</h3>
+        <p>Advanced computer diagnostics to identify and resolve engine faults, warning lights, and performance issues accurately and quickly.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon" aria-hidden="true">❄️</span>
+        <h3>Air Conditioning</h3>
+        <p>A/C re-gassing, leak detection, compressor repairs, and full climate control system servicing to keep you comfortable year-round.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon" aria-hidden="true">⚡</span>
+        <h3>Electrical Repairs</h3>
+        <p>Fault-finding and repairs for batteries, alternators, starters, wiring, lights, and all vehicle electrical systems.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon" aria-hidden="true">🚗</span>
+        <h3>Suspension & Steering</h3>
+        <p>Shock absorbers, struts, wheel alignment, ball joints, tie rods — full suspension and steering assessment and repair.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-inner">
+    <span class="section-label">Our Workshop</span>
+    <h2 class="section-title">See Us in Action</h2>
+    <p class="section-sub">A look inside Sam's Auto Repair — the tools, the team, and the results our customers trust.</p>
+    <div class="gallery-grid" role="list" aria-label="Workshop photo gallery">
+      <div class="gal-item" role="listitem">
+        <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&auto=format&fit=crop" alt="Car interior dashboard view" loading="lazy">
+      </div>
+      <div class="gal-item" role="listitem">
+        <img src="https://images.unsplash.com/photo-1502877338535-766e1452684a?w=600&auto=format&fit=crop" alt="Vehicle parked in servicing bay" loading="lazy">
+      </div>
+      <div class="gal-item" role="listitem">
+        <img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=600&auto=format&fit=crop" alt="Car wheel and tyre closeup" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOURS & LOCATION -->
+<section id="hours">
+  <div class="section-inner">
+    <span class="section-label">Find Us</span>
+    <h2 class="section-title">Hours & Location</h2>
+    <p class="section-sub">Conveniently located on Main Rd in Cape Town. Walk-ins always welcome during business hours.</p>
+    <div class="hours-grid">
+      <div class="hours-card">
+        <h3>🕐 Opening Hours</h3>
+        <div class="hours-row"><span class="day">Monday</span><span>8:00 am – 5:00 pm</span></div>
+        <div class="hours-row"><span class="day">Tuesday</span><span>8:00 am – 5:00 pm</span></div>
+        <div class="hours-row"><span class="day">Wednesday</span><span>8:00 am – 5:00 pm</span></div>
+        <div class="hours-row"><span class="day">Thursday</span><span>8:00 am – 5:00 pm</span></div>
+        <div class="hours-row"><span class="day">Friday</span><span>8:00 am – 5:00 pm</span></div>
+        <div class="hours-row"><span class="day">Saturday</span><span>8:00 am – 1:00 pm</span></div>
+        <div class="hours-row"><span class="day">Sunday</span><span>Closed</span></div>
+      </div>
+      <div class="map-placeholder">
+        <div class="map-icon" aria-hidden="true">📍</div>
+        <div class="map-address">
+          <strong style="display:block; color:#ECF0F1; font-size:1rem; margin-bottom:6px;">Sam's Auto Repair</strong>
+          12 Main Rd<br>Cape Town, 8001<br>Western Cape, South Africa
+        </div>
+        <a href="https://maps.google.com/?q=12+Main+Rd+Cape+Town+8001" target="_blank" rel="noopener noreferrer" style="display:inline-block; margin-top:12px; background:#f0c040; color:#1A252F; padding:10px 22px; border-radius:8px; font-weight:700; font-size:0.88rem; text-decoration:none; transition:all 0.2s ease;" aria-label="Open Google Maps directions to Sam's Auto Repair">Get Directions →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <span class="section-label">Get In Touch</span>
+    <h2 class="section-title">We're Here to Help</h2>
+    <p class="section-sub">Reach out with any questions about your vehicle, or simply swing by — walk-ins welcome.</p>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-ic" aria-hidden="true">📞</div>
+          <div>
+            <strong>Phone</strong>
+            <a href="tel:0215550199">(021) 555-0199</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-ic" aria-hidden="true">✉️</div>
+          <div>
+            <strong>Email</strong>
+            <a href="mailto:samgamoza@gmail.com">samgamoza@gmail.com</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-ic" aria-hidden="true">📍</div>
+          <div>
+            <strong>Address</strong>
+            <span>12 Main Rd, Cape Town, 8001<br>Western Cape, South Africa</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-ic" aria-hidden="true">🕐</div>
+          <div>
+            <strong>Hours</strong>
+            <span>Mon–Fri: 8am–5pm<br>Sat: 8am–1pm · Sun: Closed</span>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <h3>Send us a Message</h3>
+        <form action="mailto:samgamoza@gmail.com" method="get" enctype="text/plain" aria-label="Contact form">
+          <div class="form-group">
+            <label for="contact-name">Your Name</label>
+            <input type="text" id="contact-name" name="name" placeholder="e.g. Jane Smith" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="contact-phone">Phone Number</label>
+            <input type="tel" id="contact-phone" name="phone" placeholder="e.g. 082 555 0100" autocomplete="tel">
+          </div>
+          <div class="form-group">
+            <label for="contact-msg">Message</label>
+            <textarea id="contact-msg" name="body" placeholder="Describe your vehicle issue or question…" required></textarea>
+          </div>
+          <button type="submit" class="btn-form">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FREE vs PRO COMPARISON -->
+<section id="pricing">
+  <div class="section-inner">
+    <span class="section-label" style="text-align:center; display:block;">For Business Owners</span>
+    <h2 class="section-title" style="text-align:center;">Is This Your Business?</h2>
+    <p class="section-sub" style="text-align:center; margin-left:auto; margin-right:auto;">Claim this page free — then upgrade whenever you're ready for more.</p>
+    <div class="pricing-grid">
+      <div class="plan-card">
+        <div class="plan-label">Free</div>
+        <div class="plan-price">R0</div>
+        <div class="plan-period">This site · forever free</div>
+        <ul class="plan-features" aria-label="Free plan features">
+          <li>Beautiful business page</li>
+          <li>Your info & hours listed</li>
+          <li>Google-friendly SEO</li>
+          <li>Mobile-optimised design</li>
+          <li>SiteForge badge shown</li>
+        </ul>
+        <a href="https://siteforge.io/claim/sams-auto-repair-cape-town-za" class="plan-cta" aria-label="Claim free site for Sam's Auto Repair">Claim free site →</a>
+      </div>
+      <div class="plan-card pro">
+        <div class="plan-label">Pro</div>
+        <div class="plan-price">R529</div>
+        <div class="plan-period">per month · cancel anytime</div>
+        <ul class="plan-features" aria-label="Pro plan features">
+          <li>Custom domain name</li>
+          <li>Built-in content editor</li>
+          <li>Online booking form</li>
+          <li>No SiteForge badge</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="https://siteforge.io/claim/sams-auto-repair-cape-town-za" class="plan-cta" aria-label="Upgrade to Pro plan">Upgrade to Pro →</a>
+      </div>
+    </div>
+    <p class="pricing-note">Free forever — takes 30 seconds to claim. No credit card required.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Sam's <span>Auto Repair</span></div>
+    <p style="font-size:0.87rem; margin-top:4px;">Trusted auto repair and servicing for all vehicle makes · Cape Town</p>
+    <ul class="footer-links" aria-label="Footer navigation">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#hours">Hours</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="tel:0215550199">(021) 555-0199</a></li>
+    </ul>
+    <hr class="footer-divider">
+    <p class="footer-copy">© 2025 Sam's Auto Repair · 12 Main Rd, Cape Town, 8001 · All rights reserved.</p>
+    <div class="footer-badge">
+      Built with ♥ by <a href="https://siteforge.io" target="_blank" rel="noopener noreferrer">SiteForge</a> — free websites for local businesses
+    </div>
+  </div>
+</footer>
+
+<!-- MOBILE STICKY BAR -->
+<div id="sticky-bar" role="complementary" aria-label="Business claim prompt">
+  <a href="https://siteforge.io/claim/sams-auto-repair-cape-town-za" aria-label="Claim this business page for free">
+    🏪 Is this your business? Claim it free →
+  </a>
+</div>
+
+<script>
+  // Banner dismiss
+  document.getElementById('banner-close').addEventListener('click', function() {
+    const banner = document.getElementById('claim-banner');
+    banner.style.display = 'none';
+  });
+
+  // Mobile nav hamburger toggle
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', function() {
+    const isOpen = mobileMenu.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', isOpen.toString());
+  });
+
+  // Close mobile menu when a link is clicked
+  mobileMenu.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      mobileMenu.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Sticky bar hide on desktop, show on mobile
+  function checkStickyBar() {
+    const bar = document.getElementById('sticky-bar');
+    bar.style.display = window.innerWidth <= 768 ? 'block' : 'none';
+  }
+  checkStickyBar();
+  window.addEventListener('resize', checkStickyBar);
+
+  // Smooth active nav highlighting
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', function() {
+    let current = '';
+    sections.forEach(function(section) {
+      if (window.scrollY >= section.offsetTop - 100) {
+        current = section.getAttribute('id');
+      }
+    });
+    navLinks.forEach(function(link) {
+      link.style.opacity = link.getAttribute('href') === '#' + current ? '1' : '0.85';
+    });
+  });
+</script>
+</body>
+</html>

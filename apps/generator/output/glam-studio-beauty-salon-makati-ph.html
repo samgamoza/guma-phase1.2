@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Glam Studio Beauty Salon – Premium beauty salon in Makati offering hair colour, keratin treatments, lash extensions, and nail art. Walk-ins welcome.">
+<title>Glam Studio Beauty Salon | Makati, Metro Manila</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: #FDFBFF;
+    color: #2D1B33;
+    line-height: 1.6;
+  }
+
+  /* ─── CLAIM BANNER ─── */
+  #claim-banner {
+    background: #7D3C98;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    padding: 9px 40px 9px 16px;
+    position: relative;
+    z-index: 1000;
+  }
+  #claim-banner a { color: #F5EEF8; font-weight: 700; text-decoration: underline; }
+  #claim-banner a:hover { color: #fff; }
+  #dismiss-banner {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: #fff; cursor: pointer;
+    font-size: 15px; line-height: 1; padding: 4px;
+  }
+
+  /* ─── STICKY NAV ─── */
+  #main-nav {
+    position: sticky; top: 0; z-index: 999;
+    background: rgba(253,251,255,0.97);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #e8dff0;
+    padding: 0 20px;
+  }
+  .nav-inner {
+    max-width: 960px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px; gap: 12px;
+  }
+  .nav-logo {
+    font-size: 1.1rem; font-weight: 800; color: #7D3C98; text-decoration: none;
+    letter-spacing: -0.3px; flex-shrink: 0;
+  }
+  .nav-links {
+    display: flex; gap: 24px; list-style: none;
+  }
+  .nav-links a {
+    color: #2D1B33; text-decoration: none; font-size: 0.9rem; font-weight: 500;
+    transition: color 0.2s ease;
+  }
+  .nav-links a:hover { color: #7D3C98; }
+  .nav-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .btn-nav {
+    background: #7D3C98; color: #fff; padding: 9px 20px;
+    border-radius: 8px; border: none; font-weight: 700; font-size: 0.85rem;
+    cursor: pointer; text-decoration: none; transition: all 0.2s ease;
+  }
+  .btn-nav:hover { background: #6a3080; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(125,60,152,0.35); }
+
+  /* Language toggle */
+  .lang-toggle {
+    display: flex; gap: 4px; align-items: center;
+  }
+  .lang-btn {
+    background: none; border: 1.5px solid #A569BD; color: #7D3C98;
+    padding: 4px 9px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;
+    cursor: pointer; transition: all 0.2s ease;
+  }
+  .lang-btn.active { background: #7D3C98; color: #fff; border-color: #7D3C98; }
+  .lang-btn:hover { background: #7D3C98; color: #fff; border-color: #7D3C98; }
+
+  @media (max-width: 680px) {
+    .nav-links { display: none; }
+    .nav-logo { font-size: 1rem; }
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 90vh;
+    background-image: url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1600&auto=format&fit=crop');
+    background-size: cover; background-position: center;
+    position: relative; display: flex; align-items: center;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.48);
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 960px; margin: 0 auto; padding: 80px 24px;
+    color: #fff;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(245,238,248,0.15); border: 1px solid rgba(245,238,248,0.4);
+    color: #F5EEF8; font-size: 0.8rem; font-weight: 600;
+    padding: 5px 14px; border-radius: 20px; margin-bottom: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .hero-badge .star { color: #f5c518; }
+  .hero-title {
+    font-size: clamp(2.2rem, 6vw, 3.8rem); font-weight: 900;
+    line-height: 1.1; letter-spacing: -1px; margin-bottom: 18px;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+  }
+  .hero-title span { color: #A569BD; }
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.2rem); max-width: 520px;
+    margin-bottom: 32px; opacity: 0.92; font-weight: 400;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+  }
+  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 36px; }
+  .btn-primary {
+    background: #7D3C98; color: #fff;
+    padding: 16px 40px; border-radius: 10px; border: none;
+    font-weight: 800; font-size: 1rem; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: all 0.2s ease;
+    animation: pulse 2.4s infinite;
+    box-shadow: 0 4px 20px rgba(125,60,152,0.5);
+  }
+  .btn-primary:hover { background: #6a3080; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(125,60,152,0.6); animation: none; }
+  .btn-secondary {
+    background: transparent; color: #fff;
+    padding: 16px 36px; border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.75);
+    font-weight: 700; font-size: 1rem; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: all 0.2s ease;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.15); border-color: #fff; transform: translateY(-2px); }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 4px 20px rgba(125,60,152,0.5); }
+    50% { box-shadow: 0 4px 32px rgba(125,60,152,0.85), 0 0 0 8px rgba(125,60,152,0.15); }
+  }
+
+  .hero-social-proof {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.88rem; opacity: 0.9;
+  }
+  .proof-dot { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; animation: blink 1.8s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* ─── SECTIONS SHARED ─── */
+  .section { padding: 80px 24px; }
+  .section-alt { background: #F5EEF8; }
+  .section-inner { max-width: 960px; margin: 0 auto; }
+  .section-tag {
+    display: inline-block; background: #e8d5f5; color: #7D3C98;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 1.2px;
+    text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 10px;
+  }
+  .section-title { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 900; line-height: 1.15; margin-bottom: 10px; color: #2D1B33; }
+  .section-sub { color: #5a3d6b; font-size: 1rem; max-width: 560px; margin-bottom: 48px; }
+
+  /* ─── TRUST STRIP ─── */
+  #trust-strip {
+    background: #7D3C98; color: #fff; padding: 28px 24px;
+  }
+  .trust-inner {
+    max-width: 960px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;
+    text-align: center;
+  }
+  .trust-item .trust-num { font-size: 2rem; font-weight: 900; color: #F5EEF8; }
+  .trust-item .trust-label { font-size: 0.8rem; opacity: 0.85; margin-top: 2px; }
+
+  /* ─── SERVICES ─── */
+  .services-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;
+  }
+  .service-card {
+    background: #fff; border-radius: 14px; padding: 28px 24px;
+    box-shadow: 0 2px 16px rgba(125,60,152,0.09);
+    border: 1px solid #ede5f5; transition: all 0.2s ease;
+  }
+  .service-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(125,60,152,0.18); }
+  .service-icon { font-size: 2rem; margin-bottom: 14px; }
+  .service-name { font-size: 1.1rem; font-weight: 800; color: #7D3C98; margin-bottom: 8px; }
+  .service-desc { font-size: 0.9rem; color: #5a3d6b; line-height: 1.55; }
+
+  /* ─── GALLERY ─── */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 620px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+  .gallery-item {
+    border-radius: 12px; overflow: hidden;
+    aspect-ratio: 4/3; position: relative;
+    box-shadow: 0 2px 12px rgba(125,60,152,0.12);
+    transition: all 0.2s ease;
+  }
+  .gallery-item:hover { transform: scale(1.02); box-shadow: 0 8px 28px rgba(125,60,152,0.25); }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .gallery-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(45,27,51,0.75));
+    color: #fff; font-size: 0.78rem; font-weight: 600;
+    padding: 20px 12px 10px; opacity: 0; transition: opacity 0.2s ease;
+  }
+  .gallery-item:hover .gallery-caption { opacity: 1; }
+
+  /* ─── BOOK CTA ─── */
+  #book {
+    background: linear-gradient(135deg, #7D3C98 0%, #5b2a72 100%);
+    color: #fff; text-align: center;
+  }
+  #book .section-title { color: #fff; }
+  #book .section-sub { color: rgba(245,238,248,0.85); margin: 0 auto 32px; }
+  #book .section-tag { background: rgba(245,238,248,0.2); color: #F5EEF8; }
+  .book-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 18px; }
+  .btn-white {
+    background: #fff; color: #7D3C98;
+    padding: 16px 40px; border-radius: 10px; border: none;
+    font-weight: 800; font-size: 1rem; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    animation: pulse-white 2.4s infinite;
+  }
+  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.2); animation: none; }
+  @keyframes pulse-white {
+    0%,100% { box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+    50% { box-shadow: 0 4px 28px rgba(0,0,0,0.25), 0 0 0 8px rgba(255,255,255,0.12); }
+  }
+  .book-urgency { font-size: 0.85rem; opacity: 0.82; }
+  .book-urgency span { font-weight: 700; }
+
+  /* ─── CONTACT ─── */
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+  }
+  @media (max-width: 640px) { .contact-grid { grid-template-columns: 1fr; } }
+  .contact-info h3 { font-size: 1.15rem; font-weight: 800; color: #7D3C98; margin-bottom: 20px; }
+  .contact-row { display: flex; gap: 12px; margin-bottom: 18px; align-items: flex-start; }
+  .contact-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+  .contact-label { font-size: 0.78rem; font-weight: 700; color: #A569BD; text-transform: uppercase; letter-spacing: 0.7px; }
+  .contact-val { font-size: 0.95rem; color: #2D1B33; font-weight: 500; }
+  .contact-val a { color: #7D3C98; text-decoration: none; font-weight: 600; }
+  .contact-val a:hover { text-decoration: underline; }
+  .map-placeholder {
+    border-radius: 14px; overflow: hidden;
+    background: linear-gradient(135deg, #e8d5f5, #f5eef8);
+    height: 240px; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 8px; color: #7D3C98;
+    font-weight: 700; font-size: 0.9rem; text-align: center;
+    border: 1px solid #e0ceee;
+    box-shadow: 0 2px 12px rgba(125,60,152,0.08);
+  }
+  .map-placeholder .map-pin { font-size: 2.5rem; }
+
+  /* ─── COMPARISON ─── */
+  #compare { background: #FDFBFF; }
+  .compare-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 8px;
+  }
+  @media (max-width: 540px) { .compare-grid { grid-template-columns: 1fr; } }
+  .compare-card {
+    border-radius: 16px; padding: 32px 28px;
+    border: 2px solid #e0ceee;
+    box-shadow: 0 2px 12px rgba(125,60,152,0.07);
+  }
+  .compare-card.pro {
+    border-color: #7D3C98;
+    background: linear-gradient(135deg, #7D3C98 0%, #5b2a72 100%);
+    color: #fff;
+    box-shadow: 0 8px 32px rgba(125,60,152,0.3);
+    position: relative; overflow: hidden;
+  }
+  .compare-card.pro::before {
+    content: 'MOST POPULAR';
+    position: absolute; top: 14px; right: -28px;
+    background: #F5EEF8; color: #7D3C98; font-size: 0.65rem; font-weight: 800;
+    padding: 4px 36px; transform: rotate(45deg); letter-spacing: 1px;
+  }
+  .compare-plan { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; opacity: 0.7; }
+  .compare-price { font-size: 2rem; font-weight: 900; margin-bottom: 4px; }
+  .compare-price span { font-size: 0.9rem; font-weight: 500; }
+  .compare-tagline { font-size: 0.85rem; margin-bottom: 24px; opacity: 0.8; }
+  .compare-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .compare-features li { font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
+  .compare-features li .chk { font-size: 1rem; }
+  .compare-cta {
+    display: block; text-align: center; padding: 12px 24px;
+    border-radius: 8px; font-weight: 800; font-size: 0.9rem;
+    text-decoration: none; transition: all 0.2s ease;
+    border: 2px solid transparent;
+  }
+  .compare-card:not(.pro) .compare-cta {
+    background: #F5EEF8; color: #7D3C98; border-color: #e0ceee;
+  }
+  .compare-card:not(.pro) .compare-cta:hover { background: #7D3C98; color: #fff; border-color: #7D3C98; }
+  .compare-card.pro .compare-cta { background: #fff; color: #7D3C98; }
+  .compare-card.pro .compare-cta:hover { background: #F5EEF8; transform: translateY(-2px); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: #2D1B33; color: rgba(245,238,248,0.75);
+    padding: 40px 24px; text-align: center;
+  }
+  .footer-inner { max-width: 960px; margin: 0 auto; }
+  .footer-logo { font-size: 1.2rem; font-weight: 900; color: #A569BD; margin-bottom: 10px; }
+  .footer-tagline { font-size: 0.85rem; margin-bottom: 20px; }
+  .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+  .footer-links a { color: rgba(245,238,248,0.65); text-decoration: none; font-size: 0.85rem; transition: color 0.2s ease; }
+  .footer-links a:hover { color: #A569BD; }
+  .footer-divider { border: none; border-top: 1px solid rgba(245,238,248,0.1); margin: 20px 0; }
+  .footer-copy { font-size: 0.8rem; opacity: 0.55; }
+  .siteforge-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.75rem; color: rgba(245,238,248,0.45);
+    text-decoration: none; margin-top: 10px; transition: color 0.2s ease;
+  }
+  .siteforge-badge:hover { color: #A569BD; }
+  .siteforge-badge .sf-icon { font-size: 0.9rem; }
+
+  /* ─── MOBILE STICKY BAR ─── */
+  #mobile-claim-bar {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 998;
+    background: #7D3C98; color: #fff;
+    padding: 13px 20px; text-align: center;
+    font-size: 0.88rem; font-weight: 600;
+    box-shadow: 0 -4px 20px rgba(125,60,152,0.4);
+  }
+  #mobile-claim-bar a { color: #F5EEF8; font-weight: 800; text-decoration: none; }
+  #mobile-claim-bar a:hover { text-decoration: underline; }
+  @media (max-width: 768px) { #mobile-claim-bar { display: block; } body { padding-bottom: 56px; } }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .section { padding: 56px 20px; }
+    .hero-content { padding: 60px 20px; }
+  }
+  @media (max-width: 480px) {
+    .hero-ctas { flex-direction: column; }
+    .btn-primary, .btn-secondary { width: 100%; text-align: center; }
+  }
+
+  /* ─── ACCESSIBILITY ─── */
+  :focus-visible { outline: 3px solid #7D3C98; outline-offset: 3px; border-radius: 4px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+</style>
+  <link rel="canonical" href="http://localhost:3000/sites/glam-studio-beauty-salon-makati-ph">
+</head>
+<body>
+
+<!-- CLAIM BANNER -->
+<div id="claim-banner" role="banner" aria-label="Claim this site">
+  ✨ This site was built for you by SiteForge — claim it free to customise &nbsp;·&nbsp;
+  <a href="https://siteforge.io/claim/glam-studio-beauty-salon-makati-ph" data-i18n="claim_link">Claim my site →</a>
+  <button id="dismiss-banner" aria-label="Dismiss banner">✕</button>
+</div>
+
+<!-- STICKY NAV -->
+<nav id="main-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo" aria-label="Glam Studio Beauty Salon home">✦ Glam Studio</a>
+    <ul class="nav-links" role="list">
+      <li><a href="#services" data-i18n="nav_services">Services</a></li>
+      <li><a href="#gallery" data-i18n="nav_gallery">Gallery</a></li>
+      <li><a href="#book" data-i18n="nav_book">Book</a></li>
+      <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang-toggle" role="group" aria-label="Language selector">
+        <button class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
+        <button class="lang-btn" data-lang="fil" aria-pressed="false">FIL</button>
+      </div>
+      <a href="#book" class="btn-nav" data-i18n="nav_cta">Book Now</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" aria-label="Hero">
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="star" aria-hidden="true">★</span>
+      <span>4.8 Stars &nbsp;·&nbsp; 298 Reviews &nbsp;·&nbsp; Makati's Premier Salon</span>
+    </div>
+    <h1 class="hero-title" data-i18n="hero_title">Your Glow.<br><span>Our Craft.</span></h1>
+    <p class="hero-sub" data-i18n="hero_sub">Premium hair colour, keratin treatments, lash extensions, and nail art — all under one roof. Walk-ins always welcome.</p>
+    <div class="hero-ctas">
+      <a href="#book" class="btn-primary" data-i18n="cta_primary">Book Appointment</a>
+      <a href="#services" class="btn-secondary" data-i18n="cta_secondary">See Services</a>
+    </div>
+    <div class="hero-social-proof">
+      <div class="proof-dot" aria-hidden="true"></div>
+      <span data-i18n="social_proof">83 businesses claimed their site this week — yours is ready</span>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div id="trust-strip" role="region" aria-label="Trust indicators">
+  <div class="trust-inner">
+    <div class="trust-item">
+      <div class="trust-num">★ 4.8</div>
+      <div class="trust-label">Average Rating</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-num">298</div>
+      <div class="trust-label">Happy Clients</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-num">10+</div>
+      <div class="trust-label">Years of Excellence</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-num">6</div>
+      <div class="trust-label">Expert Specialties</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-num">✔</div>
+      <div class="trust-label">Certified Stylists</div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services" class="section section-alt" aria-label="Services">
+  <div class="section-inner">
+    <span class="section-tag" data-i18n="services_tag">What We Offer</span>
+    <h2 class="section-title" data-i18n="services_title">Indulge in Every Detail</h2>
+    <p class="section-sub" data-i18n="services_sub">From transformative colour to flawless lashes — every service is crafted to bring out your most radiant self.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon" aria-hidden="true">🎨</div>
+        <div class="service-name" data-i18n="svc1_name">Hair Colour & Highlights</div>
+        <p class="service-desc" data-i18n="svc1_desc">From balayage to vivid transformations — our colour specialists create tones that perfectly complement your skin and personality.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon" aria-hidden="true">✨</div>
+        <div class="service-name" data-i18n="svc2_name">Keratin Treatments</div>
+        <p class="service-desc" data-i18n="svc2_desc">Restore silky smoothness and tame frizz with our professional-grade keratin therapy. Results last up to 5 months.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon" aria-hidden="true">👁️</div>
+        <div class="service-name" data-i18n="svc3_name">Lash Extensions</div>
+        <p class="service-desc" data-i18n="svc3_desc">Classic, hybrid, or volume sets applied by certified lash artists. Wake up beautiful, every single morning.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon" aria-hidden="true">💅</div>
+        <div class="service-name" data-i18n="svc4_name">Nail Art & Gel Polish</div>
+        <p class="service-desc" data-i18n="svc4_desc">Intricate nail art and long-lasting gel manicures. From minimalist chic to bold statement designs.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon" aria-hidden="true">💆</div>
+        <div class="service-name" data-i18n="svc5_name">Hair Rebonding & Relaxing</div>
+        <p class="service-desc" data-i18n="svc5_desc">Achieve perfectly straight, glossy hair with our gentle rebonding process — safe for even chemically treated hair.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon" aria-hidden="true">🌸</div>
+        <div class="service-name" data-i18n="svc6_name">Facial & Skin Care</div>
+        <p class="service-desc" data-i18n="svc6_desc">Rejuvenate your skin with our signature facial treatments — hydrating, brightening, and deep-cleansing options available.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="section" aria-label="Photo Gallery">
+  <div class="section-inner">
+    <span class="section-tag" data-i18n="gallery_tag">Our Work</span>
+    <h2 class="section-title" data-i18n="gallery_title">Results That Speak for Themselves</h2>
+    <p class="section-sub" data-i18n="gallery_sub">A glimpse into the transformations happening every day at Glam Studio.</p>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=600&auto=format&fit=crop" alt="Professional hair styling at Glam Studio" loading="lazy">
+        <div class="gallery-caption">Hair Styling</div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1487412947147-5cebf100d293?w=600&auto=format&fit=crop" alt="Beauty makeup transformation" loading="lazy">
+        <div class="gallery-caption">Makeup & Beauty</div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=600&auto=format&fit=crop" alt="Hair colour treatment results" loading="lazy">
+        <div class="gallery-caption">Hair Colour</div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1470259078422-826894b933aa?w=600&auto=format&fit=crop" alt="Nail art and manicure services" loading="lazy">
+        <div class="gallery-caption">Nail Art</div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=600&auto=format&fit=crop" alt="Lash extension application" loading="lazy">
+        <div class="gallery-caption">Lash Extensions</div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&auto=format&fit=crop" alt="Luxury salon experience and treatment" loading="lazy">
+        <div class="gallery-caption">Salon Experience</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK APPOINTMENT -->
+<section id="book" class="section" aria-label="Book an Appointment">
+  <div class="section-inner" style="text-align:center;">
+    <span class="section-tag" data-i18n="book_tag">Ready to Glow?</span>
+    <h2 class="section-title" data-i18n="book_title">Book Your Appointment Today</h2>
+    <p class="section-sub" data-i18n="book_sub">Walk-ins are always welcome, but booking ahead guarantees your preferred stylist and time slot. Treat yourself — you deserve it.</p>
+    <div class="book-ctas">
+      <a href="tel:+6328812 4455" class="btn-white" data-i18n="book_cta_phone">📞 Call to Book</a>
+      <a href="mailto:kimpdlc24@gmail.com?subject=Appointment%20Request%20-%20Glam%20Studio" class="btn-white" data-i18n="book_cta_email">✉️ Email Us</a>
+    </div>
+    <p class="book-urgency" data-i18n="book_urgency">⚡ <span>Free forever</span> — takes 30 seconds to claim your site &nbsp;·&nbsp; <a href="https://siteforge.io/claim/glam-studio-beauty-salon-makati-ph" style="color:#F5EEF8; font-weight:800;" data-i18n="book_claim_link">Claim mine now →</a></p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section section-alt" aria-label="Contact Information">
+  <div class="section-inner">
+    <span class="section-tag" data-i18n="contact_tag">Find Us</span>
+    <h2 class="section-title" data-i18n="contact_title">Come Visit Us</h2>
+    <p class="section-sub" data-i18n="contact_sub">We're conveniently located in the heart of Makati — easy to reach, impossible to leave without feeling fabulous.</p>
+    <div class="contact-grid">
+      <div class="contact-info" aria-label="Contact details">
+        <h3 data-i18n="contact_details_title">Get in Touch</h3>
+        <div class="contact-row">
+          <span class="contact-icon" aria-hidden="true">📍</span>
+          <div>
+            <div class="contact-label">Address</div>
+            <div class="contact-val">32 Kalayaan Ave, Makati, Metro Manila 1210</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <span class="contact-icon" aria-hidden="true">📞</span>
+          <div>
+            <div class="contact-label">Phone</div>
+            <div class="contact-val"><a href="tel:+6328812 4455">+63 2 8812 4455</a></div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <span class="contact-icon" aria-hidden="true">✉️</span>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-val"><a href="mailto:kimpdlc24@gmail.com">kimpdlc24@gmail.com</a></div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <span class="contact-icon" aria-hidden="true">🕐</span>
+          <div>
+            <div class="contact-label">Hours</div>
+            <div class="contact-val">Mon–Sun: 9am–8pm</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <span class="contact-icon" aria-hidden="true">🚶</span>
+          <div>
+            <div class="contact-label">Walk-ins</div>
+            <div class="contact-val">Always welcome!</div>
+          </div>
+        </div>
+      </div>
+      <div class="map-placeholder" role="img" aria-label="Map location: 32 Kalayaan Ave, Makati">
+        <div class="map-pin" aria-hidden="true">📍</div>
+        <div style="font-weight:800; color:#7D3C98; font-size:1rem;">Glam Studio Beauty Salon</div>
+        <div style="font-size:0.82rem; color:#5a3d6b; margin-top:4px;">32 Kalayaan Ave, Makati</div>
+        <div style="font-size:0.82rem; color:#5a3d6b;">Metro Manila 1210</div>
+        <a href="https://maps.google.com/?q=32+Kalayaan+Ave+Makati+Metro+Manila" target="_blank" rel="noopener noreferrer" style="margin-top:14px; background:#7D3C98; color:#fff; padding:9px 20px; border-radius:8px; font-size:0.82rem; font-weight:700; text-decoration:none; transition: all 0.2s ease;" aria-label="Open in Google Maps">Open in Google Maps ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FREE VS PRO COMPARISON -->
+<section id="compare" class="section" aria-label="Free vs Pro comparison">
+  <div class="section-inner">
+    <span class="section-tag">SiteForge Plans</span>
+    <h2 class="section-title">Free Site vs Pro — What's the Difference?</h2>
+    <p class="section-sub">This beautiful site is yours, free, forever. Upgrade to Pro for your own domain, a built-in editor, and more.</p>
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-plan">Free</div>
+        <div class="compare-price">₱0 <span>/ forever</span></div>
+        <div class="compare-tagline">This site, always live, always free.</div>
+        <ul class="compare-features">
+          <li><span class="chk" aria-hidden="true">✅</span> Beautiful mobile-ready website</li>
+          <li><span class="chk" aria-hidden="true">✅</span> Contact info & services listed</li>
+          <li><span class="chk" aria-hidden="true">✅</span> Photo gallery</li>
+          <li><span class="chk" aria-hidden="true">✅</span> Google-indexed for local search</li>
+          <li><span class="chk" aria-hidden="true">❌</span> Custom domain</li>
+          <li><span class="chk" aria-hidden="true">❌</span> Online booking form</li>
+          <li><span class="chk" aria-hidden="true">❌</span> Visual drag-and-drop editor</li>
+          <li><span class="chk" aria-hidden="true">❌</span> Remove SiteForge badge</li>
+        </ul>
+        <a href="https://siteforge.io/claim/glam-studio-beauty-salon-makati-ph" class="compare-cta">Claim Free Site →</a>
+      </div>
+      <div class="compare-card pro">
+        <div class="compare-plan">Pro</div>
+        <div class="compare-price">$29 <span>/ month</span></div>
+        <div class="compare-tagline">Everything in Free, plus the good stuff.</div>
+        <ul class="compare-features">
+          <li><span class="chk" aria-hidden="true">✅</span> Everything in Free</li>
+          <li><span class="chk" aria-hidden="true">✅</span> Your own custom domain</li>
+          <li><span class="chk" aria-hidden="true">✅</span> Built-in online booking form</li>
+          <li><span class="chk" aria-hidden="true">✅</span> Drag-and-drop page editor</li>
+          <li><span class="chk" aria-hidden="true">✅</span> Priority support</li>
+          <li><span class="chk" aria-hidden="true">✅</span> Unlimited photo uploads</li>
+          <li><span class="chk" aria-hidden="true">✅</span> Analytics dashboard</li>
+          <li><span class="chk" aria-hidden="true">✅</span> No SiteForge badge</li>
+        </ul>
+        <a href="https://siteforge.io/upgrade/glam-studio-beauty-salon-makati-ph" class="compare-cta">Upgrade to Pro →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-logo">✦ Glam Studio Beauty Salon</div>
+    <p class="footer-tagline">Your beauty, elevated. &nbsp;·&nbsp; Makati, Metro Manila</p>
+    <nav class="footer-links" aria-label="Footer navigation">
+      <a href="#services">Services</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#book">Book Now</a>
+      <a href="#contact">Contact</a>
+      <a href="mailto:kimpdlc24@gmail.com">Email Us</a>
+    </nav>
+    <hr class="footer-divider">
+    <p class="footer-copy">© 2025 Glam Studio Beauty Salon. All rights reserved. &nbsp;·&nbsp; 32 Kalayaan Ave, Makati, Metro Manila 1210</p>
+    <a href="https://siteforge.io" class="siteforge-badge" rel="noopener noreferrer" aria-label="Powered by SiteForge">
+      <span class="sf-icon" aria-hidden="true">⚡</span> Powered by SiteForge
+    </a>
+  </div>
+</footer>
+
+<!-- MOBILE STICKY CLAIM BAR -->
+<div id="mobile-claim-bar" role="complementary" aria-label="Claim this site">
+  <span data-i18n="mobile_claim_text">Is this your business? </span><a href="https://siteforge.io/claim/glam-studio-beauty-salon-makati-ph" data-i18n="mobile_claim_link">Claim it free →</a>
+</div>
+
+<script>
+  // ─── Dismiss claim banner ───
+  document.getElementById('dismiss-banner').addEventListener('click', function() {
+    var banner = document.getElementById('claim-banner');
+    banner.style.display = 'none';
+  });
+
+  // ─── Language translations ───
+  var translations = {
+    en: {
+      claim_link: 'Claim my site →',
+      nav_services: 'Services',
+      nav_gallery: 'Gallery',
+      nav_book: 'Book',
+      nav_contact: 'Contact',
+      nav_cta: 'Book Now',
+      hero_title: 'Your Glow.<br><span>Our Craft.</span>',
+      hero_sub: 'Premium hair colour, keratin treatments, lash extensions, and nail art — all under one roof. Walk-ins always welcome.',
+      cta_primary: 'Book Appointment',
+      cta_secondary: 'See Services',
+      social_proof: '83 businesses claimed their site this week — yours is ready',
+      services_tag: 'What We Offer',
+      services_title: 'Indulge in Every Detail',
+      services_sub: 'From transformative colour to flawless lashes — every service is crafted to bring out your most radiant self.',
+      svc1_name: 'Hair Colour & Highlights',
+      svc1_desc: 'From balayage to vivid transformations — our colour specialists create tones that perfectly complement your skin and personality.',
+      svc2_name: 'Keratin Treatments',
+      svc2_desc: 'Restore silky smoothness and tame frizz with our professional-grade keratin therapy. Results last up to 5 months.',
+      svc3_name: 'Lash Extensions',
+      svc3_desc: 'Classic, hybrid, or volume sets applied by certified lash artists. Wake up beautiful, every single morning.',
+      svc4_name: 'Nail Art & Gel Polish',
+      svc4_desc: 'Intricate nail art and long-lasting gel manicures. From minimalist chic to bold statement designs.',
+      svc5_name: 'Hair Rebonding & Relaxing',
+      svc5_desc: 'Achieve perfectly straight, glossy hair with our gentle rebonding process — safe for even chemically treated hair.',
+      svc6_name: 'Facial & Skin Care',
+      svc6_desc: 'Rejuvenate your skin with our signature facial treatments — hydrating, brightening, and deep-cleansing options available.',
+      gallery_tag: 'Our Work',
+      gallery_title: 'Results That Speak for Themselves',
+      gallery_sub: 'A glimpse into the transformations happening every day at Glam Studio.',
+      book_tag: 'Ready to Glow?',
+      book_title: 'Book Your Appointment Today',
+      book_sub: 'Walk-ins are always welcome, but booking ahead guarantees your preferred stylist and time slot. Treat yourself — you deserve it.',
+      book_cta_phone: '📞 Call to Book',
+      book_cta_email: '✉️ Email Us',
+      book_urgency: '⚡ <span>Free forever</span> — takes 30 seconds to claim your site &nbsp;·&nbsp; <a href="https://siteforge.io/claim/glam-studio-beauty-salon-makati-ph" style="color:#F5EEF8; font-weight:800;">Claim mine now →</a>',
+      book_claim_link: 'Claim mine now →',
+      contact_tag: 'Find Us',
+      contact_title: 'Come Visit Us',
+      contact_sub: "We're conveniently located in the heart of Makati — easy to reach, impossible to leave without feeling fabulous.",
+      contact_details_title: 'Get in Touch',
+      mobile_claim_text: 'Is this your business? ',
+      mobile_claim_link: 'Claim it free →'
+    },
+    fil: {
+      claim_link: 'I-claim ang aking site →',
+      nav_services: 'Mga Serbisyo',
+      nav_gallery: 'Galería',
+      nav_book: 'Mag-book',
+      nav_contact: 'Makipag-ugnayan',
+      nav_cta: 'Mag-book Ngayon',
+      hero_title: 'Ang Iyong Ganda.<br><span>Ang Aming Sining.</span>',
+      hero_sub: 'Premium na hair colour, keratin treatment, lash extensions, at nail art — lahat sa iisang lugar. Malugod na tinatanggap ang walk-ins.',
+      cta_primary: 'Mag-book ng Appointment',
+      cta_secondary: 'Tingnan ang Serbisyo',
+      social_proof: '83 negosyo ang nag-claim ng kanilang site ngayong linggo — handa na ang sa iyo',
+      services_tag: 'Aming Inaalok',
+      services_title: 'Pasayahin ang Bawat Detalye',
+      services_sub: 'Mula sa kulay ng buhok hanggang sa magagandang lashes — bawat serbisyo ay ginawa para ilabas ang iyong pinakamagandang sarili.',
+      svc1_name: 'Pagkulay ng Buhok',
+      svc1_desc: 'Mula balayage hanggang matingkad na pagbabago — ang aming mga color specialist ay lumilikha ng tono na perpekto para sa iyo.',
+      svc2_name: 'Keratin Treatment',
+      svc2_desc: 'Ibalik ang makinis at maliwanag na buhok at kontrolin ang kulot gamit ang aming professional na keratin therapy.',
+      svc3_name: 'Lash Extensions',
+      svc3_desc: 'Classic, hybrid, o volume sets na ginagawa ng mga certified lash artist. Gumising nang maganda araw-araw.',
+      svc4_name: 'Nail Art at Gel Polish',
+      svc4_desc: 'Masalimuot na nail art at matagal na gel manicure. Mula minimalist hanggang bold na disenyo.',
+      svc5_name: 'Hair Rebonding at Relaxing',
+      svc5_desc: 'Makamit ang perpektong tuwid at makintab na buhok sa aming malambot na proseso ng rebonding.',
+      svc6_name: 'Facial at Pag-aalaga ng Balat',
+      svc6_desc: 'Bigyan ng bagong buhay ang iyong balat gamit ang aming signature na facial treatments — hydrating, brightening, at deep-cleansing.',
+      gallery_tag: 'Aming Gawa',
+      gallery_title: 'Mga Resultang Nagsasalita para sa Kanilang Sarili',
+      gallery_sub: 'Isang sulyap sa mga pagbabagong nagaganap araw-araw sa Glam Studio.',
+      book_tag: 'Handa Ka Na Bang Magniningning?',
+      book_title: 'Mag-book ng Appointment Ngayon',
+      book_sub: 'Palaging tinatanggap ang walk-ins, ngunit ang pag-book nang maaga ay nagtitiyak ng iyong preferred na stylist at oras.',
+      book_cta_phone: '📞 Tumawag para Mag-book',
+      book_cta_email: '✉️ Mag-email sa Amin',
+      book_urgency: '⚡ <span>Libre magpakailanman</span> — 30 segundo lang para ma-claim ang iyong site &nbsp;·&nbsp; <a href="https://siteforge.io/claim/glam-studio-beauty-salon-makati-ph" style="color:#F5EEF8; font-weight:800;">I-claim ko na →</a>',
+      book_claim_link: 'I-claim ko na →',
+      contact_tag: 'Hanapin Kami',
+      contact_title: 'Bisitahin Mo Kami',
+      contact_sub: 'Nasa puso ng Makati kami — madaling marating, at hindi ka maaaring umalis nang hindi maganda ang pakiramdam.',
+      contact_details_title: 'Makipag-ugnayan',
+      mobile_claim_text: 'Ikaw ba ang may-ari nito? ',
+      mobile_claim_link: 'I-claim nang libre →'
+    }
+  };
+
+  var currentLang = 'en';
+
+  function applyTranslations(lang) {
+    var t = translations[lang];
+    if (!t) return;
+    currentLang = lang;
+
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) {
+        el.innerHTML = t[key];
+      }
+    });
+
+    // Update lang buttons state
+    document.querySelectorAll('.lang-btn').forEach(function(btn) {
+      var isActive = btn.getAttribute('data-lang') === lang;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+
+    // Update html lang attribute
+    document.documentElement.lang = lang === 'fil' ? 'fil' : 'en';
+  }
+
+  // Language button click handlers
+  document.querySelectorAll('.lang-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var lang = this.getAttribute('data-lang');
+      applyTranslations(lang);
+    });
+  });
+
+  // ─── Smooth scroll for all internal links ───
+  document.querySelectorAll('a[href^="#"]').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  // ─── Nav shadow on scroll ───
+  window.addEventListener('scroll', function() {
+    var nav = document.getElementById('main-nav');
+    if (window.scrollY > 10) {
+      nav.style.boxShadow = '0 2px 20px rgba(125,60,152,0.12)';
+    } else {
+      nav.style.boxShadow = 'none';
+    }
+  });
+</script>
+</body>
+</html>
