@@ -1,21 +1,19 @@
 import { createClient } from '@supabase/supabase-js'
-import { createClient as createRedis } from 'redis'
+import Redis from 'ioredis'
 
 export async function assertHealthy() {
   const errors = []
 
-  // Redis
   const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379'
   try {
-    const redis = createRedis({ url: redisUrl })
+    const redis = new Redis(redisUrl, { lazyConnect: true, connectTimeout: 5000 })
     await redis.connect()
     await redis.ping()
-    await redis.quit()
+    redis.disconnect()
   } catch (err) {
     errors.push(`Redis unreachable at ${redisUrl}: ${err.message}`)
   }
 
-  // Supabase
   const supabaseUrl = process.env.SUPABASE_URL
   const supabaseKey = process.env.SUPABASE_SERVICE_KEY
   if (!supabaseUrl || !supabaseKey) {
