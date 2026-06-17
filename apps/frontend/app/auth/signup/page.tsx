@@ -58,13 +58,9 @@ function ScannerScreen({ status }: { status: string }) {
 function MagicLinkSentScreen({
   email,
   onBack,
-  link,
-  sandboxRestricted
 }: {
   email: string
   onBack: () => void
-  link?: string
-  sandboxRestricted?: boolean
 }) {
   return (
     <div className="card p-8 text-center space-y-5 min-h-[350px] flex flex-col items-center justify-center">
@@ -77,20 +73,6 @@ function MagicLinkSentScreen({
           We sent a magic link to <span className="font-semibold text-ink">{email}</span>.
           Click it to verify and proceed.
         </p>
-        {sandboxRestricted && link && (
-          <div className="p-4 bg-amber-50 border border-amber-100 rounded-xl text-left space-y-2 mt-4">
-            <p className="text-xs font-bold text-amber-800">⚠️ Resend Sandbox Mode</p>
-            <p className="text-xs text-amber-700 leading-normal">
-              Resend is in sandbox mode and only sends to the owner. Since you are in development mode, click below to bypass and sign in directly:
-            </p>
-            <a
-              href={link}
-              className="btn-primary py-2 text-xs w-full text-center inline-block"
-            >
-              Sign In Instantly (Bypass) →
-            </a>
-          </div>
-        )}
       </div>
       <button onClick={onBack} className="text-xs text-indigo hover:underline font-semibold">
         Use a different email
@@ -110,8 +92,6 @@ function ClaimSignupScreen({
   const [loading, setLoading] = useState(false)
   const [sent, setSent] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [magicLink, setMagicLink] = useState('')
-  const [isSandbox, setIsSandbox] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -137,8 +117,6 @@ function ClaimSignupScreen({
       if (!res.ok) {
         throw new Error(data.error || 'Failed to send login link')
       }
-      if (data.link) setMagicLink(data.link)
-      if (data.sandboxRestricted) setIsSandbox(true)
       setSent(true)
     } catch (err: any) {
       setError(err.message)
@@ -147,7 +125,7 @@ function ClaimSignupScreen({
     }
   }
 
-  if (sent) return <MagicLinkSentScreen email={email} onBack={() => setSent(false)} link={magicLink} sandboxRestricted={isSandbox} />
+  if (sent) return <MagicLinkSentScreen email={email} onBack={() => setSent(false)} />
 
   return (
     <div className="card p-8 space-y-6">
@@ -216,8 +194,6 @@ function ManualSignupScreen({ onBack, prefillName }: { onBack: () => void; prefi
   const [loading, setLoading] = useState(false)
   const [sent, setSent] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [magicLink, setMagicLink] = useState('')
-  const [isSandbox, setIsSandbox] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -236,8 +212,6 @@ function ManualSignupScreen({ onBack, prefillName }: { onBack: () => void; prefi
       if (!res.ok) {
         throw new Error(data.error || 'Failed to send login link')
       }
-      if (data.link) setMagicLink(data.link)
-      if (data.sandboxRestricted) setIsSandbox(true)
       setSent(true)
     } catch (err: any) {
       setError(err.message)
@@ -246,7 +220,7 @@ function ManualSignupScreen({ onBack, prefillName }: { onBack: () => void; prefi
     }
   }
 
-  if (sent) return <MagicLinkSentScreen email={email} onBack={() => setSent(false)} link={magicLink} sandboxRestricted={isSandbox} />
+  if (sent) return <MagicLinkSentScreen email={email} onBack={() => setSent(false)} />
 
   return (
     <div className="card p-8 space-y-6">

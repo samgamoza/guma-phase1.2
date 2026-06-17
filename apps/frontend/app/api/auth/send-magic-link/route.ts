@@ -43,16 +43,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Could not generate login link' }, { status: 500 })
     }
 
-    console.log(`[DEVELOPMENT ONLY] Generated magic link for ${email}: ${actionLink}`)
-
     // 3. Send email via Resend API
     if (!resendApiKey) {
-      return NextResponse.json({
-        success: true,
-        message: 'Magic link generated successfully',
-        link: actionLink,
-        sandboxRestricted: true
-      })
+      return NextResponse.json({ error: 'Email service not configured' }, { status: 500 })
     }
 
     const resendRes = await fetch('https://api.resend.com/emails', {
@@ -105,26 +98,12 @@ export async function POST(req: NextRequest) {
       console.error('Resend API error:', resendErr)
       
       // If Resend fails due to sandbox/unverified recipient restrictions
-      if (resendErr.message?.includes('testing emails') || resendErr.message?.includes('verify a domain') || resendRes.status === 403) {
-        return NextResponse.json({
-          success: true,
-          message: 'Resend sandbox account restriction: Only verified addresses can receive emails.',
-          link: actionLink,
-          sandboxRestricted: true,
-          developerMessage: resendErr.message
-        })
-      }
-
       return NextResponse.json({
         error: `Failed to send email: ${resendErr.message || 'Resend API returned error'}`
       }, { status: 500 })
     }
 
-    return NextResponse.json({
-      success: true,
-      message: 'Magic link sent successfully',
-      link: actionLink
-    })
+    return NextResponse.json({ success: true })
   } catch (err: any) {
     console.error('send-magic-link API error:', err)
     return NextResponse.json({ error: err.message || 'Internal Server Error' }, { status: 500 })
