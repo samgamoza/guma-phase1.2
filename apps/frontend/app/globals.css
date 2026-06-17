@@ -2,13 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 @layer base {
   html { scroll-behavior: smooth; }
   body {
     @apply bg-[#0a0b12] text-white antialiased;
-    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.011em;
   }
   *:focus-visible {
     @apply outline-none ring-2 ring-indigo ring-offset-2 ring-offset-zinc-950;
@@ -52,9 +55,9 @@
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
   }
 
-  /* ── Section label — matches dark bg ── */
+  /* ── Section label — refined eyebrow ── */
   .section-label {
-    @apply text-xs font-black tracking-[0.2em] uppercase text-indigo-light;
+    @apply inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.16em] uppercase text-indigo-light/80;
   }
 
   .divider {
@@ -136,4 +139,66 @@
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+/* ── Typography system ──────────────────────────────────────────────
+   Calm, Linear-grade hierarchy. Weights stay <=700 except very
+   selectively; tracking tightens as size grows.                       */
+.t-display {
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  font-weight: 700;
+}
+.t-h2 {
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  font-weight: 600;
+}
+.t-h3 {
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  font-weight: 600;
+}
+.t-balance { text-wrap: balance; }
+
+/* Soft white→muted heading gradient, used sparingly */
+.text-heading {
+  @apply text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-400;
+}
+
+/* ── Scroll reveal (paired with <Reveal/>) ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ── Premium surface + hover elevation ── */
+.surface {
+  @apply bg-zinc-900/30 border border-white/[0.06] rounded-2xl backdrop-blur-sm;
+}
+.surface-hover {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease;
+}
+.surface-hover:hover {
+  transform: translateY(-3px);
+  border-color: rgba(108, 99, 255, 0.28);
+  box-shadow: 0 14px 40px -16px rgba(108, 99, 255, 0.35);
+}
+
+/* Hairline gradient divider */
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
 }
