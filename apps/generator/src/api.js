@@ -48,6 +48,21 @@ const server = http.createServer(async (req, res) => {
     return json(res, 200, { ok: true, service: 'guma-generator' })
   }
 
+  // Single: enqueue generation for one business by id
+  if (req.method === 'POST' && req.url === '/jobs/single') {
+    try {
+      const { businessId } = await readBody(req)
+      if (!businessId) return json(res, 400, { error: 'Missing businessId' })
+
+      const job = await enqueueGenerateJob(businessId)
+      logger.info(`API single generation enqueued for business ${businessId} (job ${job.id})`)
+      return json(res, 200, { ok: true, jobId: job.id })
+    } catch (err) {
+      logger.error('API single generate failed', { error: err.message })
+      return json(res, 500, { error: err.message })
+    }
+  }
+
   // Batch: find businesses without sites and enqueue them
   if (req.method === 'POST' && req.url === '/jobs') {
     try {

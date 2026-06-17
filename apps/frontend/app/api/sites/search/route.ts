@@ -115,9 +115,12 @@ async function triggerGeneration(businessId: string): Promise<void> {
   const generatorUrl = process.env.GENERATOR_API_URL
   if (!generatorUrl) return // generator not wired up in this env — skip silently
   try {
-    await fetch(`${generatorUrl}/generate`, {
+    await fetch(`${generatorUrl.replace(/\/$/, '')}/jobs/single`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.GENERATOR_API_KEY || '' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-secret': process.env.GENERATOR_API_SECRET || '',
+      },
       body: JSON.stringify({ businessId }),
       signal: AbortSignal.timeout(3000),
     })
@@ -260,16 +263,16 @@ export async function GET(request: NextRequest) {
     ...(ddgResults.status === 'fulfilled' ? ddgResults.value : []),
   ].filter(r => r.name && r.name.toLowerCase() !== 'wikipedia')
 
-  // Demo fallback: If no real results are found, simulate finding the exact business
+  // Fallback: if no external match, still let the user claim a site under the
+  // exact name they typed — but never fabricate contact details.
   if (liveResults.length === 0 && q.length > 2) {
     liveResults.push({
       name: q,
       category: resolveCategory([q]),
-      city: city || 'Local Area',
-      phone: '+1 555-0198',
-      address: `123 Main Street${city ? `, ${city}` : ''}`,
-      source: 'simulated_search',
-      description: `Locally owned and operated business serving the community.`
+      city: city || '',
+      phone: '',
+      address: '',
+      source: 'user_entered',
     })
   }
 
