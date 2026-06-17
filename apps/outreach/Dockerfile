@@ -4,4 +4,4 @@ COPY package.json .
 RUN npm install --omit=dev
 COPY . .
 RUN mkdir -p logs
-CMD ["node", "src/queue/worker.js"]
+CMD ["node", "src/index.js"]
