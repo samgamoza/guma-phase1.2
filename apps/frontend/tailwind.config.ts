@@ -30,9 +30,9 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
-        display: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        sans: ['Geist', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        display: ['Geist', 'system-ui', 'sans-serif'],
+        mono: ['"Geist Mono"', 'JetBrains Mono', 'Fira Code', 'monospace'],
       },
       letterSpacing: {
         tightest: '-0.04em',
