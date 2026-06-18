@@ -54,6 +54,7 @@ export async function middleware(req: NextRequest) {
     '/api/sites/search', // Business search must be public (used on signup page)
     '/api/sites/create-manual', // Manual generation must be public
     '/api/auth/send-magic-link', // Allow generating/sending magic links publicly
+    '/api/stats', // Public stats endpoint
   ]
 
   const pathname = req.nextUrl.pathname
