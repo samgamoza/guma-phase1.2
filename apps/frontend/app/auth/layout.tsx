@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Zap, Globe, CheckCircle2 } from 'lucide-react'
+import { Globe, CheckCircle2 } from 'lucide-react'
 
 const PROOF_POINTS = [
   'Pre-generated site — live in minutes',
@@ -20,11 +20,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         {/* Glow */}
         <div className="absolute top-1/3 -left-20 w-64 h-64 rounded-full bg-indigo/20 blur-3xl pointer-events-none" />
 
-        <Link href="/" className="relative flex items-center gap-2.5 z-10">
-          <div className="w-8 h-8 rounded-xl bg-indigo flex items-center justify-center">
-            <Zap size={16} className="text-white" />
-          </div>
-          <span className="font-semibold text-white text-lg">Guma AI</span>
+        <Link href="/" className="relative z-10">
+          <img src="/guma-logo.png" alt="Guma AI" className="h-8 w-auto" />
         </Link>
 
         <div className="relative z-10">
@@ -54,11 +51,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <div className="flex-1 bg-cream flex flex-col">
         {/* Mobile logo */}
         <div className="lg:hidden p-6 border-b border-warm-gray-100">
-          <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-indigo flex items-center justify-center">
-              <Zap size={14} className="text-white" />
-            </div>
-            <span className="font-semibold text-ink">Guma AI</span>
+          <Link href="/">
+            <img src="/guma-logo.png" alt="Guma AI" className="h-7 w-auto" />
           </Link>
         </div>
 

@@ -610,7 +610,7 @@ export default function NichePage({ params }: { params: { niche: string } }) {
       {/* Nav */}
       <header className="border-b border-white/5 bg-zinc-950/60 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="text-white font-black text-lg tracking-tight">Guma AI</Link>
+          <Link href="/"><img src="/guma-logo.png" alt="Guma AI" className="h-8 w-auto" /></Link>
           <div className="flex items-center gap-4">
             <Link href="/start" className="text-sm text-zinc-400 hover:text-white transition-colors hidden sm:block">
               Build my website

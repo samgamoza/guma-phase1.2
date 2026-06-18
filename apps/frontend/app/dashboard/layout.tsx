@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
-import { Zap, LogOut } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 import NavLinks from './NavLinks'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -16,11 +16,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <aside className="w-56 bg-ink flex flex-col fixed inset-y-0 left-0 z-40">
         {/* Logo */}
         <div className="px-5 py-5 border-b border-white/[0.07]">
-          <Link href="/dashboard" className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-indigo flex items-center justify-center">
-              <Zap size={14} className="text-white" />
-            </div>
-            <span className="font-semibold text-white">Guma AI</span>
+          <Link href="/dashboard">
+            <img src="/guma-logo.png" alt="Guma AI" className="h-7 w-auto" />
           </Link>
         </div>
 
