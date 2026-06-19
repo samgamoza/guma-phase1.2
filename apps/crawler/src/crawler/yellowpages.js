@@ -1,6 +1,10 @@
-import { chromium } from 'playwright'
+import { chromium as chromiumBase } from 'playwright'
+import { chromium } from 'playwright-extra'
+import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 import slugify from 'slugify'
 import { logger } from '../utils/logger.js'
+
+chromium.use(StealthPlugin())
 
 /**
  * YellowPagesScraper
