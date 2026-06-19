@@ -140,7 +140,8 @@ async function testSupabaseConnection() {
 async function testCrawlerApi() {
   log('CRAWLER_API', 'Testing health endpoint...')
   try {
-    const res = await post(`${config.crawlerApiUrl}/health`, {})
+    const res = await fetch(`${config.crawlerApiUrl}/health`)
+    const data = await res.json().catch(() => ({}))
     if (res.status !== 200) throw new Error(`Health check failed: ${res.status}`)
     log('CRAWLER_API', '✅ Crawler API is healthy', { url: config.crawlerApiUrl })
     return true
@@ -153,7 +154,8 @@ async function testCrawlerApi() {
 async function testGeneratorApi() {
   log('GENERATOR_API', 'Testing health endpoint...')
   try {
-    const res = await post(`${config.generatorApiUrl}/health`, {})
+    const res = await fetch(`${config.generatorApiUrl}/health`)
+    await res.json().catch(() => ({}))
     if (res.status !== 200) throw new Error(`Health check failed: ${res.status}`)
     log('GENERATOR_API', '✅ Generator API is healthy', { url: config.generatorApiUrl })
     return true
