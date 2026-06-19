@@ -66,20 +66,28 @@ const server = http.createServer(async (req, res) => {
       const { city, industry, limit = 25, priority = 'normal', dryRun = false } = body
 
       // Find businesses that don't have a website yet
+      // Note: Get all businesses, then filter out ones that have websites
       let query = supabase
         .from('businesses')
         .select('id')
-        .is('websites', null)
-        .limit(limit)
+        .limit(limit * 2)  // Get extra to account for filtering
 
       if (city)     query = query.ilike('city', `%${city}%`)
       if (industry) query = query.ilike('category', `%${industry}%`)
 
-      const { data: businesses, error } = await query
+      const { data: businessIds, error } = await query
       if (error) throw new Error(error.message)
 
+      // Filter out businesses that already have websites
+      const { data: existingWebsites } = await supabase
+        .from('websites')
+        .select('business_id')
+
+      const existingIds = new Set(existingWebsites?.map(w => w.business_id) || [])
+      const businessesToGenerate = businessIds?.filter(b => !existingIds.has(b.id)) || []
+
       const jobs = []
-      for (const b of (businesses || [])) {
+      for (const b of businessesToGenerate.slice(0, limit)) {
         const job = await enqueueGenerateJob(b.id)
         jobs.push(job.id)
       }
