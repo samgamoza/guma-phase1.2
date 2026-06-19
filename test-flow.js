@@ -67,7 +67,7 @@ const config = {
   supabaseServiceKey: process.env.SUPABASE_SERVICE_KEY,
   crawlerApiUrl: process.env.CRAWLER_API_URL || 'http://localhost:3001',
   generatorApiUrl: process.env.GENERATOR_API_URL || 'http://localhost:3002',
-  adminSecret: process.env.ADMIN_API_SECRET || '',
+  adminSecret: process.env.ADMIN_API_SECRET || 'test_secret_123',
   testCity: 'Austin',
   testState: 'TX',
   testCategory: 'Coffee Shops',
@@ -90,37 +90,22 @@ function error(stage, msg, err) {
 }
 
 async function post(url, body, headers = {}) {
-  return new Promise((resolve, reject) => {
-    const urlObj = new URL(url)
-    const options = {
-      hostname: urlObj.hostname,
-      port: urlObj.port,
-      path: urlObj.pathname + urlObj.search,
+  try {
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-admin-secret': config.adminSecret,
         ...headers,
       },
-    }
-
-    const req = http.request(options, (res) => {
-      let data = ''
-      res.on('data', chunk => { data += chunk })
-      res.on('end', () => {
-        try {
-          const json = JSON.parse(data || '{}')
-          resolve({ status: res.statusCode, data: json })
-        } catch (e) {
-          resolve({ status: res.statusCode, data, error: e.message })
-        }
-      })
+      body: JSON.stringify(body),
     })
 
-    req.on('error', reject)
-    req.write(JSON.stringify(body))
-    req.end()
-  })
+    const data = await response.json().catch(() => ({}))
+    return { status: response.status, data }
+  } catch (err) {
+    throw err
+  }
 }
 
 async function getSupabase() {
