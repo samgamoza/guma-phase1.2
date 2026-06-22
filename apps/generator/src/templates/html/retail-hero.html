@@ -1613,13 +1613,15 @@ button { cursor: pointer; font-family: var(--font); border: none; background: no
   .about-float-badge { right: 0; bottom: 20px; }
 }
 </style>
+{{PALETTE_CSS}}
+{{LAYOUT_CSS}}
 </head>
 <body>
 
 <!-- ─── Claim Banner ─── -->
 <div id="claim-banner">
   <span>🛍️</span>
-  <span data-en="This site was built for you by SiteForge — claim it free ·" data-fil="Itong site ay ginawa para sa inyo ng SiteForge — i-claim nang libre ·">This site was built for you by SiteForge — claim it free ·</span>
+  <span data-en="This site was built for you by Guma AI — claim it free ·" data-fil="Itong site ay ginawa para sa inyo ng Guma AI — i-claim nang libre ·">This site was built for you by Guma AI — claim it free ·</span>
   <a href="{{CLAIM_URL}}" data-en="Claim my site →" data-fil="I-claim ang aking site →">Claim my site →</a>
   <button class="banner-close" aria-label="Dismiss banner" onclick="document.getElementById('claim-banner').classList.add('hidden')">✕</button>
 </div>
@@ -1825,7 +1827,7 @@ button { cursor: pointer; font-family: var(--font); border: none; background: no
 </section>
 
 <!-- ─── Gallery ─── -->
-<section id="gallery" aria-label="Photo gallery">
+<section id="gallery" aria-label="Photo gallery" style="{{GALLERY_SECTION_STYLE}}">
   <div class="gallery-header">
     <div class="section-label">Gallery</div>
     <h2 class="section-title">A Peek Inside Our Store</h2>
@@ -2004,7 +2006,7 @@ button { cursor: pointer; font-family: var(--font); border: none; background: no
 <section id="upgrade" aria-label="Upgrade your site">
   <div class="container">
     <div class="upgrade-header">
-      <div class="section-label" style="justify-content:center;">SiteForge Plans</div>
+      <div class="section-label" style="justify-content:center;">Guma AI Plans</div>
       <h2 class="section-title">Level Up Your Online Presence</h2>
       <p class="section-sub" style="margin:12px auto 0;text-align:center;">This site is yours — free forever. Upgrade to unlock powerful tools to grow your store.</p>
     </div>
@@ -2025,7 +2027,7 @@ button { cursor: pointer; font-family: var(--font); border: none; background: no
           <div class="plan-feature-row"><span class="feat-cross">✗</span> Custom domain</div>
           <div class="plan-feature-row"><span class="feat-cross">✗</span> Drag-and-drop editor</div>
           <div class="plan-feature-row"><span class="feat-cross">✗</span> Online booking / inquiry form</div>
-          <div class="plan-feature-row"><span class="feat-cross">✗</span> Remove SiteForge badge</div>
+          <div class="plan-feature-row"><span class="feat-cross">✗</span> Remove Guma AI badge</div>
           <div class="plan-feature-row"><span class="feat-cross">✗</span> Priority customer support</div>
         </div>
         <a href="{{CLAIM_URL}}" class="plan-cta free-cta">Claim Free Site →</a>
@@ -2044,7 +2046,7 @@ button { cursor: pointer; font-family: var(--font); border: none; background: no
           <div class="plan-feature-row"><span class="feat-check">✓</span> Custom domain (.com, .ph, etc.)</div>
           <div class="plan-feature-row"><span class="feat-check">✓</span> Drag-and-drop visual editor</div>
           <div class="plan-feature-row"><span class="feat-check">✓</span> Customer inquiry & booking form</div>
-          <div class="plan-feature-row"><span class="feat-check">✓</span> Remove "Powered by SiteForge"</div>
+          <div class="plan-feature-row"><span class="feat-check">✓</span> Remove "Powered by Guma AI"</div>
           <div class="plan-feature-row"><span class="feat-check">✓</span> Priority support (24h response)</div>
           <div class="plan-feature-row"><span class="feat-check">✓</span> Analytics dashboard</div>
           <div class="plan-feature-row"><span class="feat-check">✓</span> Product catalogue pages</div>
@@ -2103,11 +2105,11 @@ button { cursor: pointer; font-family: var(--font); border: none; background: no
       </div>
 
       <div>
-        <div class="footer-col-title">SiteForge</div>
+        <div class="footer-col-title">Guma AI</div>
         <ul class="footer-links" role="list">
           <li><a href="{{CLAIM_URL}}">Claim Your Site</a></li>
           <li><a href="{{CLAIM_URL}}">Upgrade to Pro</a></li>
-          <li><a href="{{SITE_URL}}">SiteForge.ph</a></li>
+          <li><a href="{{SITE_URL}}">guma.ai</a></li>
           <li><a href="#">Privacy Policy</a></li>
         </ul>
       </div>
@@ -2118,7 +2120,7 @@ button { cursor: pointer; font-family: var(--font); border: none; background: no
         © {{YEAR}} {{BUSINESS_NAME}}. All rights reserved.
       </div>
       <a href="{{SITE_URL}}" class="footer-powered" rel="noopener">
-        ⚡ Powered by <strong>SiteForge</strong>
+        ⚡ Powered by <strong>Guma AI</strong>
       </a>
     </div>
   </div>

@@ -13,9 +13,17 @@ export const CATEGORY_CONFIG = {
   restaurant: {
     label: 'Restaurant / Food & Dining',
     match: [
-      'restaurant', 'pizza', 'food', 'dining', 'cafe', 'coffee', 'bakery',
+      'restaurant', 'pizza', 'food', 'dining', 'cafe', 'café', 'coffee', 'bakery',
       'bar', 'grill', 'diner', 'bistro', 'sushi', 'thai', 'mexican',
       'chinese', 'italian', 'burger', 'sandwich', 'catering',
+      // broader food terms — many businesses never say "restaurant"
+      'noodle', 'ramen', 'pho', 'tea house', 'teahouse', 'milk tea', 'milktea',
+      'dim sum', 'dimsum', 'eatery', 'kitchen', 'canteen', 'panciteria',
+      'carinderia', 'lutong', 'silog', 'lugaw', 'pares', 'lechon', 'seafood',
+      'bbq', 'barbecue', 'barbeque', 'steak', 'steakhouse', 'buffet', 'dessert',
+      'snack', 'resto', 'food house', 'foodhouse', 'tapsilog', 'inasal',
+      'pizzeria', 'pastry', 'patisserie', 'gelato', 'ice cream', 'creamery',
+      'tavern', 'pub', 'brewery', 'wine', 'cocktail', 'deli',
     ],
     theme: {
       primary: '#C0392B',    // warm red
@@ -37,8 +45,10 @@ export const CATEGORY_CONFIG = {
     match: [
       'plumber', 'plumbing', 'electrician', 'hvac', 'roofing', 'contractor',
       'handyman', 'landscaping', 'lawn', 'pest control', 'cleaning',
-      'painting', 'flooring', 'carpet', 'moving', 'storage', 'garage',
+      'paint', 'painting', 'painter', 'flooring', 'carpet', 'moving', 'storage', 'garage',
       'construction', 'builder', 'renovation', 'aircon', 'welding', 'fabrication',
+      'auto repair', 'mechanic', 'auto shop', 'tire', 'tyre', 'auto service',
+      'remodel', 'drywall', 'masonry', 'concrete', 'paving', 'fencing',
     ],
     theme: {
       primary: '#1A5276',   // navy blue
@@ -163,8 +173,28 @@ export const CATEGORY_CONFIG = {
 }
 
 /**
+ * Count whole-word keyword matches in the haystack.
+ * Whole-word (with optional plural) matching avoids substring false-positives:
+ *   - "bar" must NOT match inside "barbers"  → \bbar(?:s|es)?\b doesn't match "barbers"
+ *   - "barber" DOES match "barbers"          → \bbarber(?:s|es)?\b
+ * Multi-word keywords ("tea house", "auto repair") match as phrases.
+ */
+function countCategoryMatches(haystack, keywords) {
+  let score = 0
+  for (const kw of keywords) {
+    const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    if (new RegExp(`\\b${escaped}(?:s|es)?\\b`, 'i').test(haystack)) score++
+  }
+  return score
+}
+
+/**
  * Resolve which category config to use for a given business.
- * Matches against the `category` field or the business name.
+ *
+ * Scored, whole-word matching: the category with the MOST keyword hits wins, so
+ * a "Thai Massage Spa" (salon: spa+massage = 2) beats restaurant (thai = 1), and
+ * a "Barbershop" no longer matches the food keyword "bar". On a tie the
+ * first-declared category wins (restaurant → trades → salon → …).
  */
 export function resolveCategory(business) {
   const haystack = [
@@ -175,12 +205,12 @@ export function resolveCategory(business) {
     .join(' ')
     .toLowerCase()
 
+  let best = { key: 'generic', config: CATEGORY_CONFIG.generic, score: 0 }
   for (const [key, config] of Object.entries(CATEGORY_CONFIG)) {
     if (key === 'generic') continue
-    if (config.match.some((kw) => haystack.includes(kw))) {
-      return { key, config }
-    }
+    const score = countCategoryMatches(haystack, config.match)
+    if (score > best.score) best = { key, config, score }
   }
 
-  return { key: 'generic', config: CATEGORY_CONFIG.generic }
+  return { key: best.key, config: best.config }
 }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{BUSINESS_NAME}} — {{CITY}}</title>
+<title>{{BUSINESS_NAME}} � {{CITY}}</title>
 <meta name="description" content="{{DESCRIPTION}}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,900;1,300;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -122,11 +122,12 @@ footer{background:var(--dark);padding:40px 48px;display:flex;justify-content:spa
   footer{flex-direction:column;gap:12px;padding:32px 20px;text-align:center}
 }
 </style>
+{{PALETTE_CSS}}
 </head>
 <body>
 
 <div class="claim-bar">
-  🎉 This site was built for you — <a href="{{CLAIM_URL}}">Claim it free →</a>
+  🎉 This site was built for you � <a href="{{CLAIM_URL}}">Claim it free →</a>
 </div>
 
 <nav>
@@ -137,10 +138,10 @@ footer{background:var(--dark);padding:40px 48px;display:flex;justify-content:spa
 
 
 <div class="strip">
-  <span class="strip-item">Dine In</span><span class="strip-sep">·</span>
-  <span class="strip-item">Takeaway</span><span class="strip-sep">·</span>
-  <span class="strip-item">{{CATEGORY}}</span><span class="strip-sep">·</span>
-  <span class="strip-item">{{CITY}}</span><span class="strip-sep">·</span>
+  <span class="strip-item">Dine In</span><span class="strip-sep">�</span>
+  <span class="strip-item">Takeaway</span><span class="strip-sep">�</span>
+  <span class="strip-item">{{CATEGORY}}</span><span class="strip-sep">�</span>
+  <span class="strip-item">{{CITY}}</span><span class="strip-sep">�</span>
   <span class="strip-item">{{PHONE}}</span>
 </div>
 
@@ -203,7 +204,7 @@ footer{background:var(--dark);padding:40px 48px;display:flex;justify-content:spa
 
 <section class="claim-section">
   <h2>This site belongs to {{BUSINESS_NAME}}</h2>
-  <p>We built it for free. Claim it, customise it, and make it yours — no credit card needed.</p>
+  <p>We built it for free. Claim it, customise it, and make it yours � no credit card needed.</p>
   <a href="{{CLAIM_URL}}" class="btn-claim">Claim My Free Site →</a>
 </section>
 
@@ -213,7 +214,7 @@ footer{background:var(--dark);padding:40px 48px;display:flex;justify-content:spa
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div class="hero-eyebrow">{{CATEGORY}} · {{CITY}}</div>
+    <div class="hero-eyebrow">{{CATEGORY}} � {{CITY}}</div>
     <h1 class="hero-title">{{BUSINESS_NAME}}<br><em>{{TAGLINE}}</em></h1>
     <p class="hero-sub">{{DESCRIPTION}}</p>
     <div class="hero-actions">
@@ -229,7 +230,7 @@ footer{background:var(--dark);padding:40px 48px;display:flex;justify-content:spa
 </section>
 <footer>
   <div class="footer-brand">{{BUSINESS_NAME}}</div>
-  <div class="footer-text">© {{YEAR}} {{BUSINESS_NAME}} · {{CITY}} · Built by Guma AI</div>
+  <div class="footer-text">� {{YEAR}} {{BUSINESS_NAME}} � {{CITY}} � Built by Guma AI</div>
 </footer>
 </body>
 </html>

@@ -1437,12 +1437,13 @@ footer {
   margin-top: 16px;
 }
 </style>
+{{PALETTE_CSS}}
 </head>
 <body>
 
 <!-- ── CLAIM BANNER ──────────────────────────── -->
 <div id="claim-banner" role="banner">
-  <span data-en="🏥 This site was built for you by SiteForge — claim it free &nbsp;·&nbsp;" data-fil="🏥 Ang site na ito ay ginawa para sa inyo ng SiteForge — i-claim nang libre &nbsp;·&nbsp;">🏥 This site was built for you by SiteForge — claim it free &nbsp;·&nbsp;</span><a href="{{CLAIM_URL}}" data-en="Claim my site →" data-fil="I-claim ang aking site →">Claim my site →</a>
+  <span data-en="🏥 This site was built for you by Guma AI — claim it free &nbsp;·&nbsp;" data-fil="🏥 Ang site na ito ay ginawa para sa inyo ng Guma AI — i-claim nang libre &nbsp;·&nbsp;">🏥 This site was built for you by Guma AI — claim it free &nbsp;·&nbsp;</span><a href="{{CLAIM_URL}}" data-en="Claim my site →" data-fil="I-claim ang aking site →">Claim my site →</a>
   <button id="claim-banner-close" aria-label="Close banner">✕</button>
 </div>
 
@@ -1635,7 +1636,7 @@ footer {
 </section>
 
 <!-- ── GALLERY ────────────────────────────────── -->
-<section class="gallery-section" id="gallery" aria-label="Photo Gallery">
+<section class="gallery-section" id="gallery" aria-label="Photo Gallery" style="{{GALLERY_SECTION_STYLE}}">
   <div class="container">
     <div class="text-center fade-up">
       <div class="section-eyebrow">📸 <span data-en="Our Clinic" data-fil="Aming Klinika">Our Clinic</span></div>
@@ -1839,9 +1840,9 @@ footer {
 <section class="pricing-section" id="pricing" aria-label="Free vs Pro Plans">
   <div class="container">
     <div class="text-center fade-up">
-      <div class="section-eyebrow">🚀 <span data-en="SiteForge Plans" data-fil="Mga Plano ng SiteForge">SiteForge Plans</span></div>
+      <div class="section-eyebrow">🚀 <span data-en="Guma AI Plans" data-fil="Mga Plano ng Guma AI">Guma AI Plans</span></div>
       <h2 class="section-title" data-en="Your Site is Live — Make It Yours" data-fil="Live Na ang Inyong Site — Gawin Itong Inyo">Your Site is Live — Make It Yours</h2>
-      <p class="section-sub" data-en="This site was built by SiteForge. Claim it free or upgrade to Pro for full control." data-fil="Ang site na ito ay ginawa ng SiteForge. I-claim nang libre o mag-upgrade sa Pro para sa buong kontrol.">This site was built by SiteForge. Claim it free or upgrade to Pro for full control.</p>
+      <p class="section-sub" data-en="This site was built by Guma AI. Claim it free or upgrade to Pro for full control." data-fil="Ang site na ito ay ginawa ng Guma AI. I-claim nang libre o mag-upgrade sa Pro para sa buong kontrol.">This site was built by Guma AI. Claim it free or upgrade to Pro for full control.</p>
     </div>
 
     <div class="pricing-cards">
@@ -1877,7 +1878,7 @@ footer {
           </div>
           <div class="pricing-feature">
             <div class="feat-check no">✗</div>
-            <span data-en="Remove SiteForge badge" data-fil="Alisin ang SiteForge badge" style="color:var(--color-text-muted)">Remove SiteForge badge</span>
+            <span data-en="Remove Guma AI badge" data-fil="Alisin ang Guma AI badge" style="color:var(--color-text-muted)">Remove Guma AI badge</span>
           </div>
           <div class="pricing-feature">
             <div class="feat-check no">✗</div>
@@ -1916,7 +1917,7 @@ footer {
           </div>
           <div class="pricing-feature">
             <div class="feat-check yes">✓</div>
-            <span data-en="Remove SiteForge badge" data-fil="Alisin ang SiteForge badge">Remove SiteForge badge</span>
+            <span data-en="Remove Guma AI badge" data-fil="Alisin ang Guma AI badge">Remove Guma AI badge</span>
           </div>
           <div class="pricing-feature">
             <div class="feat-check yes">✓</div>
@@ -1972,7 +1973,7 @@ footer {
       </div>
 
       <div>
-        <div class="footer-nav-title" data-en="SiteForge" data-fil="SiteForge">SiteForge</div>
+        <div class="footer-nav-title" data-en="Guma AI" data-fil="Guma AI">Guma AI</div>
         <div class="footer-nav-links">
           <a href="{{CLAIM_URL}}" data-en="Claim This Site" data-fil="I-claim ang Site na Ito">Claim This Site</a>
           <a href="{{CLAIM_URL}}" data-en="Upgrade to Pro" data-fil="Mag-upgrade sa Pro">Upgrade to Pro</a>
@@ -1985,7 +1986,7 @@ footer {
     <div class="footer-bottom">
       <p class="footer-bottom-text">© {{YEAR}} {{BUSINESS_NAME}} · {{ADDRESS}} · {{PHONE}}</p>
       <a href="{{SITE_URL}}" class="powered-badge">
-        Powered by <strong>SiteForge</strong> &nbsp;·&nbsp; <span data-en="Build your site free →" data-fil="I-build ang inyong site nang libre →">Build your site free →</span>
+        Powered by <strong>Guma AI</strong> &nbsp;·&nbsp; <span data-en="Build your site free →" data-fil="I-build ang inyong site nang libre →">Build your site free →</span>
       </a>
     </div>
   </div>
@@ -2004,7 +2005,7 @@ footer {
   /* ── TRANSLATIONS ────────────────────────── */
   const T = {
     en: {
-      banner: '🏥 This site was built for you by SiteForge — claim it free &nbsp;·&nbsp;',
+      banner: '🏥 This site was built for you by Guma AI — claim it free &nbsp;·&nbsp;',
       bannerLink: 'Claim my site →',
       navServices: 'Services',
       navDoctor: 'Our Doctor',
@@ -2018,7 +2019,7 @@ footer {
       mobileClaimLink: 'Claim it free →',
     },
     fil: {
-      banner: '🏥 Ang site na ito ay ginawa para sa inyo ng SiteForge — i-claim nang libre &nbsp;·&nbsp;',
+      banner: '🏥 Ang site na ito ay ginawa para sa inyo ng Guma AI — i-claim nang libre &nbsp;·&nbsp;',
       bannerLink: 'I-claim ang aking site →',
       navServices: 'Mga Serbisyo',
       navDoctor: 'Aming Doktor',

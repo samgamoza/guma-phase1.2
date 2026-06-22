@@ -15,6 +15,7 @@ import { readFileSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { resolveImages } from './images.js'
+import { CATEGORY_CONFIG } from '../templates/categories.js'
 import { logger } from '../utils/logger.js'
 
 const __dirname  = dirname(fileURLToPath(import.meta.url))
@@ -31,6 +32,11 @@ const TEMPLATE_MAP = {
   retail:     'retail',
   generic:    'retail',   // retail is the most neutral fallback
 }
+
+// NOTE: CSS-injected layout variants were reverted — they added fragility
+// (oversized long names, etc.) for marginal benefit. {{LAYOUT_CSS}} now renders
+// empty; per-business variety comes from the 8-palette axis. Real layout
+// flexibility will come from an LLM-authored renderer, not CSS overrides.
 
 /**
  * Generate a complete website for a business using pre-built templates.
@@ -62,27 +68,55 @@ function calculateLeadScore(business) {
 /**
  * Generate a complete website for a business using pre-built templates.
  * Returns the same shape as SiteGenerator.generate() for drop-in compatibility.
+ *
+ * @param {object} business      — DB row from businesses table
+ * @param {string} categoryKey   — resolved category key
+ * @param {object} categoryConfig — category config from categories.js
+ * @param {object|null} spec     — content_spec from contentAgent (Haiku-generated).
+ *   When provided, all content fields (tagline, offerings, trust points, image
+ *   queries) are drawn from the spec rather than hardcoded fallbacks. The spec
+ *   is stored in the DB and reused on every future re-render — Haiku is called
+ *   only once per business.
  */
-export async function generateFromTemplate(business, categoryKey, categoryConfig) {
+export async function generateFromTemplate(business, categoryKey, categoryConfig, spec = null) {
+  // ── Upgrade a vague "generic" classification using Haiku's understanding ──
+  // The keyword resolver can miss a business type (e.g. "Mei Sum Tea House"),
+  // but Haiku reliably infers offering_type. Trust it to pick the real template
+  // so food businesses stop getting the retail "Shop" layout.
+  let effectiveKey    = categoryKey
+  let effectiveConfig = categoryConfig
+  if (categoryKey === 'generic' && spec?.offering_type) {
+    if (spec.offering_type === 'menu')          effectiveKey = 'restaurant'
+    else if (spec.offering_type === 'products') effectiveKey = 'retail'
+    // "services" / "mixed" stay generic
+    if (effectiveKey !== categoryKey) {
+      effectiveConfig = CATEGORY_CONFIG[effectiveKey] || categoryConfig
+      logger.info(`[TemplateEngine] "${business.name}" reclassified generic → ${effectiveKey} (offering_type=${spec.offering_type})`)
+    }
+  }
+
+  categoryKey    = effectiveKey
+  categoryConfig = effectiveConfig
   const tmplKey  = TEMPLATE_MAP[categoryKey] || 'retail'
 
-  // Pick a random variant layout (if available)
-  const variants = ['hero', 'content']
-  const variant = variants[Math.floor(Math.random() * variants.length)]
-  const variantPath = join(TMPL_DIR, `${tmplKey}-${variant}.html`)
+  // Always use the hero-first layout — keeps hero at top where visitors expect it
+  const variantPath = join(TMPL_DIR, `${tmplKey}-hero.html`)
   const corePath = join(TMPL_DIR, `${tmplKey}.html`)
 
   let tmplPath = corePath
   let layoutName = 'core'
   if (existsSync(variantPath)) {
     tmplPath = variantPath
-    layoutName = `${tmplKey}-${variant}`
+    layoutName = `${tmplKey}-hero`
   } else if (!existsSync(corePath)) {
     throw new Error(`Template not found: ${tmplKey}`)
   }
 
-  const raw    = readFileSync(tmplPath, 'utf8')
-  const images = await resolveImages(categoryKey, business)
+  const raw        = readFileSync(tmplPath, 'utf8')
+  const specQueries = spec
+    ? { hero: spec.hero_image_query, gallery: spec.gallery_queries }
+    : null
+  const images = await resolveImages(categoryKey, business, specQueries)
 
   const slug     = business.slug
   const claimUrl = `${SITE_BASE}/claim/${slug}`
@@ -92,7 +126,7 @@ export async function generateFromTemplate(business, categoryKey, categoryConfig
   const leadScore = calculateLeadScore(business)
   const styleTier = leadScore >= 80 ? 'premium' : 'standard'
   
-  const vars = buildVars({ business, categoryKey, categoryConfig, images, claimUrl, siteUrl, leadScore, styleTier })
+  const vars = buildVars({ business, categoryKey, categoryConfig, images, claimUrl, siteUrl, leadScore, styleTier, spec })
 
   // Replace all {{PLACEHOLDER}} tokens
   const html = raw.replace(/\{\{([A-Z0-9_]+)\}\}/g, (_, key) => {
@@ -120,7 +154,7 @@ export async function generateFromTemplate(business, categoryKey, categoryConfig
 
 // ─── Build the variables map ──────────────────────────────────────────────────
 
-function buildVars({ business, categoryKey, categoryConfig, images, claimUrl, siteUrl, leadScore, styleTier }) {
+function buildVars({ business, categoryKey, categoryConfig, images, claimUrl, siteUrl, leadScore, styleTier, spec }) {
   const raw     = business.raw_data || {}
   const name    = business.name    || 'Local Business'
   const city    = business.city    || ''
@@ -139,26 +173,69 @@ function buildVars({ business, categoryKey, categoryConfig, images, claimUrl, si
   // Category label
   const categoryLabel = business.category || categoryConfig.label || 'Local Business'
 
-  // Tagline — crafted from category tone
-  const tagline = buildTagline(name, categoryKey, city)
+  // ── Content: use spec (Haiku-generated) when available, fall back to hardcoded ──
 
-  // Description
-  const description = raw.description
+  const tagline = spec?.tagline || buildTagline(name, categoryKey, city)
+
+  const description = spec?.about_text
+    || raw.description
     || `${name} is a trusted ${categoryLabel.toLowerCase()} serving ${city || 'the local community'}.`
 
-  // Services list — category-specific defaults
-  const services    = buildServices(categoryKey, categoryLabel)
-  const menuItems   = buildMenuItems(categoryKey)
-  const trustPoints = buildTrustPoints(categoryKey, city, rating)
-  const signatureItems = buildSignatureItems(categoryKey, categoryLabel)
-  const dishes      = buildDishes(categoryKey)
-  const teamMembers = buildTeamMembers(name)
-  const serviceArea = buildServiceArea(city)
+  const heroSubtext = spec?.hero_subtext || description
+
+  // ── List-token formatting ──
+  // The restaurant template injects these tokens straight into HTML <ul> blocks,
+  // so it needs <li>…</li> items. Every OTHER template injects them into a quoted
+  // JS string and parses with .split('|'), so those need pipe-delimited plain text
+  // that is safe inside a string literal (no raw quotes/newlines). One format per
+  // category — the categoryKey picks the template, so it also picks the format.
+  const isRestaurant = categoryKey === 'restaurant'
+
+  // Format a plain string[] for the active template context.
+  const fmtList = (arr) => isRestaurant
+    ? arr.map((s) => `<li>${esc(s)}</li>`).join('\n')
+    : arr.map(jsSafe).filter(Boolean).join('|')
+
+  // Format spec offerings (name + optional desc): rich <li> for restaurant HTML,
+  // clean plain names for the JS templates (which add their own desc/price).
+  const fmtOfferings = (offs) => isRestaurant
+    ? offs.map((o) => `<li><strong>${esc(o.name)}</strong>${o.desc ? ` — ${esc(o.desc)}` : ''}</li>`).join('\n')
+    : offs.map((o) => jsSafe(o.name)).filter(Boolean).join('|')
+
+  // Offerings — real business data from spec, or hardcoded category defaults
+  const services    = spec?.offerings?.length
+    ? fmtOfferings(spec.offerings)
+    : fmtList(buildServices(categoryKey, categoryLabel))
+
+  const menuItems   = spec?.offerings?.length
+    ? fmtOfferings(spec.offerings)
+    : fmtList(buildMenuItems(categoryKey))
+
+  const signatureItems = services
+  const dishes         = menuItems
+
+  // Offering section label — adapts to business type
+  const offeringsLabel = spec?.offering_type === 'products' ? 'Our Products'
+    : spec?.offering_type === 'menu'           ? 'Our Menu'
+    : spec?.offering_type === 'mixed'          ? 'What We Offer'
+    : 'Our Services'
+
+  // Trust points — specific to this business from spec
+  const trustPoints = spec?.trust_points?.length
+    ? fmtList(spec.trust_points)
+    : fmtList(buildTrustPoints(categoryKey, city, rating))
+
+  const teamMembers = fmtList(buildTeamMembers(name))
+  const serviceArea = fmtList(buildServiceArea(city))
   const socialProof = (parseInt(reviewCount) > 0 ? reviewCount : '50') + '+ happy customers'
+
+  // CTA overrides from spec
+  const primaryCta   = spec?.cta_primary   || categoryConfig.cta            || 'Get in Touch'
+  const secondaryCta = spec?.cta_secondary || categoryConfig.cta_secondary  || 'Learn More'
 
   // Filipino localisation tokens (used in some templates)
   const filTagline = buildFilTagline(categoryKey)
-  const filCta     = categoryConfig.cta || 'Get in Touch'
+  const filCta     = primaryCta
 
   // Style Tier Overrides — used to inject tier-specific CSS into the <head>
   const tierConfig = categoryConfig.styleTiers?.[styleTier] || {}
@@ -204,16 +281,59 @@ function buildVars({ business, categoryKey, categoryConfig, images, claimUrl, si
   const galleries = images.galleryUrls || images.gallery || []
   const gallery   = (i) => galleries[i] || images.heroUrl || ''
 
+  // Hide the gallery section entirely when no images are available
+  const galleryImages = [0, 1, 2, 3, 4, 5].map(gallery)
+  const hasGalleryImages = galleryImages.some(url => url && url.trim().length > 0)
+
+  // Axis 1 — Color palettes: 8 distinct schemes, deterministically chosen per slug
+  const PALETTES = [
+    { primary: '#1A5276', secondary: '#2E86C1', accent: '#F39C12', accentLight: '#F7DC6F', dark: '#0D1B2A', dark2: '#1a2a3a' }, // Indigo/Amber
+    { primary: '#7B241C', secondary: '#C0392B', accent: '#F0B27A', accentLight: '#FDEBD0', dark: '#1C0A08', dark2: '#2C1008' }, // Crimson/Warm
+    { primary: '#1A7A4A', secondary: '#239B56', accent: '#F4D03F', accentLight: '#FEFCE1', dark: '#0A2E1A', dark2: '#0F3D22' }, // Forest/Gold
+    { primary: '#145A7C', secondary: '#1F8FB8', accent: '#48C9B0', accentLight: '#D1F5EF', dark: '#082030', dark2: '#0D3040' }, // Teal/Navy
+    { primary: '#6C3483', secondary: '#9B59B6', accent: '#E74C3C', accentLight: '#FADBD8', dark: '#2C1250', dark2: '#3D1A6E' }, // Purple/Rose
+    { primary: '#935116', secondary: '#CA6F1E', accent: '#2471A3', accentLight: '#D6EAF8', dark: '#3A1F05', dark2: '#4E2A07' }, // Amber/Steel
+    { primary: '#1C2833', secondary: '#2C3E50', accent: '#E74C3C', accentLight: '#FADBD8', dark: '#0A0F14', dark2: '#141D26' }, // Charcoal/Red
+    { primary: '#0E6655', secondary: '#1ABC9C', accent: '#F39C12', accentLight: '#FEF9E7', dark: '#04261F', dark2: '#073B2E' }, // Emerald/Gold
+  ]
+  const seed = (business.slug || '').split('').reduce((a, c) => a + c.charCodeAt(0), 0)
+  const palette = PALETTES[seed % PALETTES.length]
+  const PALETTE_CSS = `<style>:root{--color-primary:${palette.primary};--color-secondary:${palette.secondary};--color-accent:${palette.accent};--color-accent-light:${palette.accentLight};--color-dark:${palette.dark};--color-dark-2:${palette.dark2};}
+/* Reveal-safety: templates start scroll-reveal content at opacity:0 and depend on
+   a script to fade it in. If that script's selector doesn't match (it targets
+   .animate-reveal but the markup uses .fade-up), the content stays invisible —
+   empty sections. Force every reveal class visible. Content > animation. */
+.fade-up,.fade-in,.reveal,.reveal-up,.scroll-reveal,.animate-reveal,[data-reveal]{opacity:1!important;transform:none!important;visibility:visible!important}</style>`
+
+  // Decorative ambiance video band (people-free motion). Self-contained inline
+  // styles; the real business photo is the poster so it shows instantly. Empty
+  // string when no video resolved → the band simply doesn't render.
+  const AMBIANCE_BLOCK = images.videoUrl ? `
+<section style="position:relative;height:clamp(320px,55vh,560px);overflow:hidden;background:#111;">
+  <video autoplay muted loop playsinline preload="metadata" poster="${images.heroUrl || ''}"
+         style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+    <source src="${images.videoUrl}" type="video/mp4">
+  </video>
+  <div style="position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.30),rgba(0,0,0,.60));"></div>
+  <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;color:#fff;">
+    <div style="font-family:Georgia,serif;font-size:clamp(1.7rem,4.2vw,3rem);font-weight:700;max-width:20ch;line-height:1.15;letter-spacing:-.02em;text-shadow:0 2px 20px rgba(0,0,0,.4);">${esc(tagline)}</div>
+    <a href="${claimUrl}" style="margin-top:1.5rem;display:inline-block;background:var(--color-accent,#fff);color:#111;padding:.8rem 2rem;border-radius:999px;font-weight:600;text-decoration:none;font-size:.95rem;">${esc(primaryCta)}</a>
+  </div>
+</section>` : ''
+
   return {
     BUSINESS_NAME:      name,
     TAGLINE:            tagline,
     DESCRIPTION:        description,
+    HERO_SUBTEXT:       heroSubtext,
+    ABOUT_TEXT:         description,
     PHONE:              phone || 'Call us for details',
     ADDRESS:            address,
     CITY:               city,
     COUNTRY:            country,
     CATEGORY:           categoryLabel,
     CUISINE_TYPE:       categoryLabel,
+    OFFERINGS_LABEL:    offeringsLabel,
     HOURS:              hours,
     RATING:             rating,
     REVIEW_COUNT:       reviewCount,
@@ -235,16 +355,20 @@ function buildVars({ business, categoryKey, categoryConfig, images, claimUrl, si
     TEAM_MEMBERS:       teamMembers,
     SERVICE_AREA_CITIES: serviceArea,
     SOCIAL_PROOF_COUNT: socialProof,
-    LANG_TOGGLE:        '',   // future: language switcher
+    LANG_TOGGLE:        '',
     FIL_TAGLINE:        filTagline,
     FIL_CTA:            filCta,
     STYLE_TIER_CSS:     tierStyles,
     TIER_BADGE:         styleTier === 'premium' ? '<div class="premium-badge">Featured Partner</div>' : '',
     REVEAL_JS:          revealJs,
     SLUG:               business.slug,
-    PRIMARY_CTA:        categoryConfig.cta,
-    SECONDARY_CTA:      categoryConfig.cta_secondary || '',
+    PRIMARY_CTA:        primaryCta,
+    SECONDARY_CTA:      secondaryCta,
     ICON:               categoryConfig.icon || '🏢',
+    GALLERY_SECTION_STYLE: hasGalleryImages ? '' : 'display:none',
+    PALETTE_CSS,
+    LAYOUT_CSS:         '',   // layout variants reverted — see note above
+    AMBIANCE_BLOCK,
   }
 }
 
@@ -273,8 +397,7 @@ function buildServices(categoryKey, label) {
     retail:     ['In-Store Shopping', 'Online Orders', 'Gift Wrapping', 'Loyalty Rewards'],
     generic:    ['Professional Services', 'Consultations', 'Custom Solutions', 'Local Delivery'],
   }
-  const items = map[categoryKey] || map.generic
-  return items.map((s) => `<li>${s}</li>`).join('\n')
+  return map[categoryKey] || map.generic
 }
 
 function buildMenuItems(categoryKey) {
@@ -287,8 +410,7 @@ function buildMenuItems(categoryKey) {
     retail:     ['New Arrivals', 'Best Sellers', 'Sale Items', 'Gift Ideas'],
     generic:    ['Service A', 'Service B', 'Package Deal', 'Premium Option'],
   }
-  const items = map[categoryKey] || map.generic
-  return items.map((m) => `<li>${m}</li>`).join('\n')
+  return map[categoryKey] || map.generic
 }
 
 function buildTrustPoints(categoryKey, city, rating) {
@@ -301,8 +423,7 @@ function buildTrustPoints(categoryKey, city, rating) {
     retail:     [`${rating}★ rated`, `Locally owned`, `Easy returns`, `Loyalty rewards`],
     generic:    [`${rating}★ rated`, `Locally owned`, `Trusted service`, `${city || 'Local'} based`],
   }
-  const items = map[categoryKey] || map.generic
-  return items.map((t) => `<li>${t}</li>`).join('\n')
+  return map[categoryKey] || map.generic
 }
 
 function buildSignatureItems(categoryKey, label) {
@@ -314,12 +435,34 @@ function buildDishes(categoryKey) {
 }
 
 function buildTeamMembers(businessName) {
-  return `<li>Our friendly team at ${businessName}</li>`
+  return [`Our friendly team at ${businessName}`]
 }
 
 function buildServiceArea(city) {
-  if (!city) return '<li>Local area</li>'
-  return `<li>${city}</li><li>Surrounding suburbs</li><li>Greater metro area</li>`
+  if (!city) return ['Local area']
+  return [city, 'Surrounding suburbs', 'Greater metro area']
+}
+
+function esc(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+/**
+ * Make a value safe to embed inside a quoted JS string literal AND inside a
+ * pipe-delimited list. Strips quotes, backslashes, the pipe delimiter, angle
+ * brackets, and any newline/tab — a single un-escaped " or newline here was
+ * throwing a SyntaxError that killed the whole inline <script> (empty sections,
+ * un-rendered services/team grids) on every non-restaurant template.
+ */
+function jsSafe(str) {
+  return String(str ?? '')
+    .replace(/[\\"'`\r\n\t|<>]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
 }
 
 function buildFilTagline(categoryKey) {

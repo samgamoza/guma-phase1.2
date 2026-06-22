@@ -1,0 +1,67 @@
+(node:21288) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///D:/All%20Apps/guma-phase1.0/test-flow.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\D:\All Apps\guma-phase1.0\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+╔════════════════════════════════════════════════════════════════╗
+║  Guma: Search/Crawl → Generation Flow Test                     ║
+╚════════════════════════════════════════════════════════════════╝
+
+[2026-06-19T01:18:58.921Z] [PHASE_1] Verifying prerequisites... {}
+[2026-06-19T01:18:58.923Z] [SUPABASE] Testing connection... {}
+[2026-06-19T01:19:00.696Z] [SUPABASE] ✅ Connected { url: 'https://qsxypplcrbmjiipcbiaw.supabase.co' }
+[2026-06-19T01:19:00.697Z] [CRAWLER_API] Testing health endpoint... {}
+[2026-06-19T01:19:00.703Z] [CRAWLER_API] ❌ API not reachable AggregateError [EACCES]: 
+    at internalConnectMultiple (node:net:1193:18)
+    at afterConnectMultiple (node:net:1783:7) {
+  code: 'EACCES',
+  [errors]: [
+    Error: connect EACCES ::1:3001
+        at createConnectionError (node:net:1746:14)
+        at afterConnectMultiple (node:net:1776:16) {
+      errno: -4092,
+      code: 'EACCES',
+      syscall: 'connect',
+      address: '::1',
+      port: 3001
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3001
+        at createConnectionError (node:net:1746:14)
+        at afterConnectMultiple (node:net:1776:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3001
+    }
+  ]
+}
+[2026-06-19T01:19:00.704Z] [GENERATOR_API] Testing health endpoint... {}
+[2026-06-19T01:19:00.707Z] [GENERATOR_API] ❌ API not reachable AggregateError [EACCES]: 
+    at internalConnectMultiple (node:net:1193:18)
+    at afterConnectMultiple (node:net:1783:7) {
+  code: 'EACCES',
+  [errors]: [
+    Error: connect EACCES ::1:3002
+        at createConnectionError (node:net:1746:14)
+        at afterConnectMultiple (node:net:1776:16) {
+      errno: -4092,
+      code: 'EACCES',
+      syscall: 'connect',
+      address: '::1',
+      port: 3002
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3002
+        at createConnectionError (node:net:1746:14)
+        at afterConnectMultiple (node:net:1776:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3002
+    }
+  ]
+}
+[2026-06-19T01:19:00.707Z] [VERIFY] Checking database schema and recent records... {}
+[2026-06-19T01:19:02.193Z] [VERIFY] ✅ Database schema verified { businessesCount: 10, websitesCount: 10, crawlJobsCount: '?' }
+
+❌ Prerequisites not met. Exiting.

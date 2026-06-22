@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 import { createClient } from '@supabase/supabase-js'
 import Link from 'next/link'
-import { Globe, CheckCircle2 } from 'lucide-react'
+import { Globe, CheckCircle2, ExternalLink } from 'lucide-react'
 
 export default async function AdminBusinessesPage({
   searchParams,
@@ -19,7 +19,7 @@ export default async function AdminBusinessesPage({
 
   let query = supabase
     .from('businesses')
-    .select('id, name, category, city, phone, email, has_website, source_dir, created_at, websites(status)', { count: 'exact' })
+    .select('id, name, category, city, phone, email, has_website, source_dir, created_at, websites(status, slug)', { count: 'exact' })
     .order('created_at', { ascending: false })
     .range((page - 1) * PAGE, page * PAGE - 1)
 
@@ -46,14 +46,16 @@ export default async function AdminBusinessesPage({
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-warm-gray-100 bg-warm-gray-50">
-              {['Business', 'Category', 'City', 'Phone / Email', 'Source', 'Site', 'Crawled'].map(h => (
+              {['Business', 'Category', 'City', 'Phone / Email', 'Source', 'Site', 'Crawled', 'View'].map(h => (
                 <th key={h} className="text-left px-4 py-3 text-xs font-medium text-warm-gray-400">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody className="divide-y divide-warm-gray-50">
             {businesses.map((b: any) => {
-              const siteStatus = b.websites?.[0]?.status
+              const site = b.websites?.[0]
+              const siteStatus = site?.status
+              const slug = site?.slug
               return (
                 <tr key={b.id} className="hover:bg-warm-gray-50 transition-colors">
                   <td className="px-4 py-3 font-medium text-ink max-w-[200px] truncate">{b.name}</td>
@@ -83,6 +85,22 @@ export default async function AdminBusinessesPage({
                   </td>
                   <td className="px-4 py-3 text-xs text-warm-gray-400">
                     {new Date(b.created_at).toLocaleDateString()}
+                  </td>
+                  <td className="px-4 py-3">
+                    {slug ? (
+                      <a
+                        href={`/sites/${slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs text-indigo hover:underline"
+                        title="View generated site"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        View
+                      </a>
+                    ) : (
+                      <span className="text-xs text-warm-gray-300">—</span>
+                    )}
                   </td>
                 </tr>
               )

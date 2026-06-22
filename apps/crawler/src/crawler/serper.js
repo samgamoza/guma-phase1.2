@@ -45,6 +45,13 @@ export class SerperScraper {
     const label = `${category} / ${city}, ${state}`
     logger.info(`[Serper] Starting search: ${label}`)
 
+    // Detect Philippines vs US for geo-targeting
+    const isPhilippines = state === 'Metro Manila' || city === 'Metro Manila' ||
+      ['Makati', 'Taguig', 'Quezon City', 'Manila', 'Pasig', 'Mandaluyong',
+       'Pasay', 'Paranaque', 'Las Pinas', 'Muntinlupa', 'Pasig City'].includes(city)
+    const gl      = isPhilippines ? 'ph' : 'us'
+    const country = isPhilippines ? 'PH' : 'US'
+
     const suffixes = AREA_SUFFIXES.slice(0, Math.max(1, maxPages))
     const seen = new Set()
     const businesses = []
@@ -55,13 +62,13 @@ export class SerperScraper {
         : `${category} ${city} ${state}`
 
       try {
-        const results = await this._search(query)
+        const results = await this._search(query, gl)
         for (const r of results) {
           const key = r.cid || r.title + r.address
           if (seen.has(key)) continue
           seen.add(key)
 
-          const biz = this._normalise(r, city, state)
+          const biz = this._normalise(r, city, state, country)
           if (biz) businesses.push(biz)
         }
         logger.debug(`[Serper] "${query}" → ${results.length} results`)
@@ -75,20 +82,29 @@ export class SerperScraper {
       }
     }
 
+    // ── Email extraction: visit each business website to find contact email ──
+    const withWebsite = businesses.filter(b => b.raw_data?.website_url)
+    if (withWebsite.length > 0) {
+      logger.info(`[Serper] Extracting emails from ${withWebsite.length} business websites...`)
+      await this._extractEmailsBatch(withWebsite, 3)
+      const found = businesses.filter(b => b.email).length
+      logger.info(`[Serper] Email extraction complete: ${found}/${businesses.length} businesses have email`)
+    }
+
     logger.info(`[Serper] Returning ${businesses.length} unique businesses for ${label}`)
     return businesses
   }
 
   // ─── Single Serper /maps request ─────────────────────────────────────────
 
-  async _search(query) {
+  async _search(query, gl = 'us') {
     const res = await fetch(SERPER_URL, {
       method: 'POST',
       headers: {
         'X-API-KEY': this.apiKey,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ q: query, gl: 'us', hl: 'en' }),
+      body: JSON.stringify({ q: query, gl, hl: 'en' }),
     })
 
     if (!res.ok) {
@@ -102,7 +118,7 @@ export class SerperScraper {
 
   // ─── Normalise Serper place to DB schema ─────────────────────────────────
 
-  _normalise(place, fallbackCity, fallbackState) {
+  _normalise(place, fallbackCity, fallbackState, country = 'US') {
     const name = place.title?.trim()
     if (!name) return null
 
@@ -123,13 +139,13 @@ export class SerperScraper {
       slug,
       category:    this._resolveCategory(place.category || ''),
       phone:       place.phoneNumber || null,
-      email:       null, // Serper does not return email
+      email:       null, // populated later by _extractEmailsBatch
       address,
       city,
-      country:     'US',
-      source_url:  place.website || place.cid
+      country,
+      source_url:  place.website || (place.cid
         ? `https://maps.google.com/?cid=${place.cid}`
-        : null,
+        : null),
       source_dir:  'serper',
       has_website: hasWebsite,
       raw_data: {
@@ -140,8 +156,83 @@ export class SerperScraper {
         website_url:  place.website || null,
         cid:          place.cid || null,
         category_raw: place.category || null,
+        // Real photo of THIS business from Google Maps (100% relevant) + its
+        // Google Place ID (unlocks the full high-res photo set via Places API).
+        photo_url:    place.thumbnailUrl || null,
+        place_id:     place.placeId || null,
       },
       crawled_at: new Date().toISOString(),
+    }
+  }
+
+  // ─── Extract emails from business websites (runs concurrently) ────────────
+
+  async _extractEmailsBatch(businesses, concurrency = 3) {
+    for (let i = 0; i < businesses.length; i += concurrency) {
+      await Promise.all(
+        businesses.slice(i, i + concurrency).map(async (biz) => {
+          const email = await this._extractEmailFromWebsite(biz.raw_data.website_url)
+          if (email) {
+            biz.email = email
+            logger.debug(`[Serper] Email found for "${biz.name}": ${email}`)
+          }
+        })
+      )
+    }
+  }
+
+  async _extractEmailFromWebsite(websiteUrl) {
+    if (!websiteUrl) return null
+    const EMAIL_RE = /\b([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})\b/g
+    const SKIP_DOMAINS = [
+      'example.com', 'sentry.io', 'wix.com', 'wordpress.com', 'squarespace.com',
+      'facebook.com', 'google.com', 'instagram.com', 'twitter.com', 'tiktok.com',
+      'email.com', 'youremail.com', 'domain.com', 'company.com',
+    ]
+
+    const tryFetch = async (url) => {
+      const controller = new AbortController()
+      const timer = setTimeout(() => controller.abort(), 8000)
+      try {
+        const res = await fetch(url, {
+          signal: controller.signal,
+          headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' },
+          redirect: 'follow',
+        })
+        clearTimeout(timer)
+        if (!res.ok) return null
+        return await res.text()
+      } catch {
+        clearTimeout(timer)
+        return null
+      }
+    }
+
+    const findEmail = (html) => {
+      if (!html) return null
+      // Prefer mailto: links (most explicit)
+      const mailtoMatch = html.match(/mailto:([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})/i)
+      if (mailtoMatch) {
+        const e = mailtoMatch[1].toLowerCase()
+        if (!SKIP_DOMAINS.some(d => e.endsWith('@' + d) || e.includes('@' + d))) return e
+      }
+      // Fallback: any email pattern in text
+      const matches = [...html.matchAll(EMAIL_RE)].map(m => m[1].toLowerCase())
+      return matches.find(e => !SKIP_DOMAINS.some(d => e.endsWith('@' + d) || e.includes('@' + d))) || null
+    }
+
+    try {
+      // Try homepage first
+      const homepage = await tryFetch(websiteUrl)
+      const email = findEmail(homepage)
+      if (email) return email
+
+      // Try /contact page if homepage had no email
+      const base = websiteUrl.replace(/\/$/, '')
+      const contactHtml = await tryFetch(`${base}/contact`)
+      return findEmail(contactHtml)
+    } catch {
+      return null
     }
   }
 
@@ -150,7 +241,7 @@ export class SerperScraper {
   _parseAddress(address, fallbackCity, fallbackState) {
     if (!address) return { city: fallbackCity, state: fallbackState }
 
-    // Match "City, ST zip" or "City, ST" at end of address string
+    // Match "City, ST zip" or "City, ST" at end of address string (US format)
     const match = address.match(/,\s*([^,]+),\s*([A-Z]{2})(?:\s+\d{5})?/)
     if (match) {
       return { city: match[1].trim(), state: match[2].trim() }
@@ -181,6 +272,7 @@ export class SerperScraper {
       [['car dealer', 'auto dealer', 'dealership'], 'Auto Dealer'],
       [['electrician', 'electrical'], 'Electrician'],
       [['plumber', 'plumbing'], 'Plumber'],
+      [['handyman', 'handymen', 'jack of all', 'home repair', 'fix it'], 'Handyman'],
       [['contractor', 'construction', 'builder', 'remodel'], 'Contractor'],
       [['painter', 'painting'], 'Painter'],
       [['roofing', 'roofer'], 'Roofing'],

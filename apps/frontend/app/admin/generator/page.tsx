@@ -1,8 +1,8 @@
 export const dynamic = 'force-dynamic'
 import { createClient } from '@supabase/supabase-js'
-import { Zap, Play, RefreshCw, CheckCircle2, XCircle, Clock, AlertTriangle } from 'lucide-react'
+import { Zap, Play, RefreshCw, CheckCircle2, XCircle, Clock, AlertTriangle, RotateCcw } from 'lucide-react'
 
-export default async function AdminGeneratorPage() {
+export default async function AdminGeneratorPage({ searchParams }: { searchParams: Record<string, string> }) {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_KEY!,
@@ -54,7 +54,7 @@ export default async function AdminGeneratorPage() {
   ]
 
   return (
-    <div className="p-8">
+    <div className="p-8" suppressHydrationWarning>
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-ink flex items-center gap-2">
@@ -64,6 +64,18 @@ export default async function AdminGeneratorPage() {
           <p className="text-warm-gray-500 text-sm">Trigger and monitor website generation</p>
         </div>
       </div>
+
+      {/* Flash messages */}
+      {searchParams.success && (
+        <div className="mb-6 px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-lg text-sm text-emerald-700">
+          ✓ {searchParams.success}
+        </div>
+      )}
+      {searchParams.error && (
+        <div className="mb-6 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
+          ✗ {searchParams.error}
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-4 gap-4 mb-8">
@@ -85,25 +97,24 @@ export default async function AdminGeneratorPage() {
           <form action="/api/admin/generator/start" method="POST" className="space-y-4">
             <div>
               <label className="block text-xs font-medium text-warm-gray-500 mb-1">Filter by City (optional)</label>
-              <input name="city" placeholder="Leave blank for all" className="input w-full text-sm" />
+              <input name="city" placeholder="Leave blank for all" className="input w-full text-sm" suppressHydrationWarning />
             </div>
             <div>
               <label className="block text-xs font-medium text-warm-gray-500 mb-1">Filter by Industry (optional)</label>
-              <input name="industry" placeholder="Leave blank for all" className="input w-full text-sm" />
+              <input name="industry" placeholder="Leave blank for all" className="input w-full text-sm" suppressHydrationWarning />
             </div>
             <div>
               <label className="block text-xs font-medium text-warm-gray-500 mb-1">Batch size</label>
               <select name="limit" className="input w-full text-sm">
+                <option value="15">15 sites (dev cap)</option>
                 <option value="10">10 sites</option>
-                <option value="25" selected>25 sites</option>
-                <option value="50">50 sites</option>
-                <option value="100">100 sites</option>
+                <option value="5">5 sites</option>
               </select>
             </div>
             <div>
               <label className="block text-xs font-medium text-warm-gray-500 mb-1">Priority</label>
               <select name="priority" className="input w-full text-sm">
-                <option value="normal" selected>Normal</option>
+                <option value="normal">Normal</option>
                 <option value="high">High</option>
                 <option value="low">Low</option>
               </select>
@@ -113,6 +124,22 @@ export default async function AdminGeneratorPage() {
               Generate Batch
             </button>
           </form>
+
+          <div className="mt-4 pt-4 border-t border-warm-gray-100">
+            <p className="text-xs text-warm-gray-400 mb-3">
+              Force regenerate clears all existing generated sites and re-runs generation for every business.
+              Claimed &amp; published sites are protected.
+            </p>
+            <form action="/api/admin/generator/force" method="POST">
+              <button
+                type="submit"
+                className="w-full text-sm flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-amber-300 text-amber-700 bg-amber-50 hover:bg-amber-100 transition-colors font-medium"
+              >
+                <RotateCcw className="w-4 h-4" />
+                Force Regenerate All
+              </button>
+            </form>
+          </div>
         </div>
 
         {/* Queue Status */}

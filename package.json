@@ -10,7 +10,9 @@
     "dev:outreach": "pnpm --filter guma-outreach dev"
   },
   "dependencies": {
-    "lucide-react": "^1.18.0"
+    "@supabase/supabase-js": "^2.108.1",
+    "lucide-react": "^1.18.0",
+    "ws": "^8.21.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.5.0",

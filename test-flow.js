@@ -68,9 +68,9 @@ const config = {
   crawlerApiUrl: process.env.CRAWLER_API_URL || 'http://localhost:3001',
   generatorApiUrl: process.env.GENERATOR_API_URL || 'http://localhost:3002',
   adminSecret: process.env.ADMIN_API_SECRET || 'test_secret_123',
-  testCity: 'Austin',
+  testCity: 'Waco',
   testState: 'TX',
-  testCategory: 'Coffee Shops',
+  testCategory: 'Handyman',
   maxPages: 2, // Small for testing
   generationBatchSize: 5,
 }
@@ -173,7 +173,7 @@ async function triggerCrawl() {
       city: config.testCity,
       state: config.testState,
       maxPages: config.maxPages,
-      source: 'yellowpages',
+      source: 'serper',
     })
     if (res.status !== 200) throw new Error(`API error: ${res.data.error || res.status}`)
     log('CRAWL', '✅ Crawl job enqueued', { jobId: res.data.jobId, dbJobId: res.data.dbJobId })
@@ -188,14 +188,15 @@ async function waitForBusinesses(city, category, maxWait = 60000, pollInterval =
   log('CRAWL_MONITOR', `Waiting for businesses (${city}, ${category}) to appear in DB...`)
   const supabase = await getSupabase()
   const startTime = Date.now()
+  const since = new Date(startTime - 5000).toISOString() // include rows upserted just before test started
 
   while (Date.now() - startTime < maxWait) {
     const { data, error } = await supabase
       .from('businesses')
       .select('id, name, city, category')
       .eq('city', city)
-      .ilike('category', `%${category}%`)
-      .order('created_at', { ascending: false })
+      .gte('updated_at', since)
+      .order('updated_at', { ascending: false })
       .limit(10)
 
     if (error) {

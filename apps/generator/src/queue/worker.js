@@ -1,39 +1,51 @@
 import 'dotenv/config'
 import { assertHealthy } from '../utils/healthcheck.js'
-import { Worker, Queue } from 'bullmq'
+import { Worker } from 'bullmq'
 
 await assertHealthy()
-import { SiteGenerator } from '../generator/siteGenerator.js'
-import { generateFromTemplate } from '../generator/templateEngine.js'
-import { resolveCategory } from '../templates/categories.js'
+
+import { SiteGenerator }        from '../generator/siteGenerator.js'
+import { generateFromTemplate }  from '../generator/templateEngine.js'
+import { generateContentSpec }   from '../generator/contentAgent.js'
+import { resolveCategory }       from '../templates/categories.js'
+import { runBusinessIntelligence } from '../intelligence/businessIntelligence.js'
+import { businessDnaToSpec }       from '../intelligence/dnaAdapter.js'
 import {
   getBusinessById,
   upsertWebsite,
   enqueueOutreach,
+  createPendingOutreach,
   websiteExistsForBusiness,
   getBusinessesWithoutSites,
+  saveContentSpec,
+  saveBusinessDna,
 } from '../db/client.js'
 import { enqueueGenerateJob } from './queues.js'
-import { logger } from '../utils/logger.js'
+import { logger }             from '../utils/logger.js'
+
+// Business Intelligence stage — mandatory pre-generation step by default.
+// Set BUSINESS_INTEL_ENABLED=false to bypass it entirely during testing.
+const BUSINESS_INTEL_ENABLED = process.env.BUSINESS_INTEL_ENABLED !== 'false'
 
 const CONCURRENCY = parseInt(process.env.GENERATE_CONCURRENCY || '5', 10)
-const REDIS = { url: process.env.REDIS_URL || 'redis://localhost:6379' }
+const REDIS       = { url: process.env.REDIS_URL || 'redis://localhost:6379' }
 
-// USE_AI=true forces Claude API (Phase 5 paid upgrades only).
-// Default is false — use free templates for all Phase 1–4 generation.
-const USE_AI = process.env.USE_AI === 'true'
+// Dev credit control:
+//   AUTO_GENERATE=false        → background sweep is OFF; generate only via manual admin batches
+//   GENERATION_BATCH_LIMIT=15  → never generate more than this many sites per batch
+const AUTO_GENERATE     = process.env.AUTO_GENERATE === 'true'
+const GEN_BATCH_LIMIT   = parseInt(process.env.GENERATION_BATCH_LIMIT || '15', 10)
 
-// Only instantiate Claude client if AI mode is explicitly enabled
+const USE_AI  = process.env.USE_AI === 'true'
 const generator = USE_AI ? new SiteGenerator() : null
-if (USE_AI) logger.info('Generator: AI mode ON (Claude API)')
-else        logger.info('Generator: Template mode ON (zero cost)')
+if (USE_AI) logger.info('Generator: AI mode ON (Claude Sonnet)')
+else        logger.info('Generator: Template mode ON (Haiku content + pre-built templates)')
 
 const worker = new Worker(
   'guma-generate',
   async (job) => {
-    const { businessId } = job.data
+    const { businessId, force = false } = job.data
 
-    // ── 1. Load business from DB ────────────────────────────────────────────
     await job.updateProgress(5)
     const business = await getBusinessById(businessId)
 
@@ -42,127 +54,185 @@ const worker = new Worker(
       return { skipped: true }
     }
 
-    // ── Dedup: skip if a site already exists for this business ──────────────
+    // Skip duplicate generation unless force flag is set (force-batch endpoint)
     const alreadyExists = await websiteExistsForBusiness(businessId)
-    if (alreadyExists) {
-      logger.info(`Site already exists for ${business.name} — skipping duplicate generation`)
+    if (alreadyExists && !force) {
+      logger.info(`Site already exists for "${business.name}" — skipping (use force to regenerate)`)
       return { skipped: true, reason: 'duplicate' }
     }
 
-    logger.info(`Generating site for: ${business.name} (${business.slug})`)
+    logger.info(`Generating site for: "${business.name}" (${business.slug})${force ? ' [force]' : ''}`)
 
-    // ── 2. Generate HTML — template (free) or Claude AI (paid/USE_AI=true) ──
+    // ── Resolve category ────────────────────────────────────────────────────
+    const { key: categoryKey, config: categoryConfig } = resolveCategory(business)
     await job.updateProgress(10)
+
+    // ── Stage: Business Intelligence (pre-generation, mandatory) ─────────────
+    // crawl → [business_intelligence] → planning → generation → validation → deployment
+    // Produces BusinessDNA (classification, website_strategy, hero_variants,
+    // uiux_strategy, content_strategy, seo_strategy), persisted to
+    // businesses.business_dna and injected into the Generator. Runs at most
+    // once per business (reused on re-render). On total failure it falls back
+    // to the existing content flow.
+    let dna = business.business_dna || null
+
+    if (BUSINESS_INTEL_ENABLED && !dna && !business.content_spec) {
+      const { dna: freshDna, telemetry } = await runBusinessIntelligence(business)
+      logger.info('[BI][telemetry]', telemetry)   // duration / success / tokens / cost
+      if (freshDna) {
+        dna = freshDna
+        await saveBusinessDna(business.id, freshDna)
+      } else {
+        logger.warn(`[BI] no DNA for "${business.name}" — falling back to existing generation flow`)
+      }
+    }
+
+    await job.updateProgress(30)
+
+    // ── Content spec: BusinessDNA → spec (injection) → DB cache → Haiku fallback ──
+    // Priority:
+    //   1. cached content_spec (already rendered before)
+    //   2. spec derived from BusinessDNA (the strategy drives the Generator)
+    //   3. Haiku content agent (fallback when BI failed/disabled)
+    let spec = business.content_spec || null
+
+    if (!spec && dna) {
+      spec = businessDnaToSpec(dna, business)
+      await saveContentSpec(business.id, spec)
+      logger.info(`[BI] Generator spec derived from BusinessDNA for "${business.name}" (niche: ${spec._dna_niche || 'n/a'})`)
+    }
+
+    if (!spec && !USE_AI) {
+      try {
+        spec = await generateContentSpec(business, categoryKey, categoryConfig)
+        await saveContentSpec(business.id, spec)
+        logger.info(`[ContentAgent] Spec saved for "${business.name}" (BI fallback)`)
+      } catch (err) {
+        logger.warn(`[ContentAgent] Failed for "${business.name}" — falling back to hardcoded content`, {
+          error: err.message,
+        })
+        spec = null
+      }
+    }
+
+    await job.updateProgress(40)
+
+    // ── Generate HTML ────────────────────────────────────────────────────────
     let result
     if (USE_AI && generator) {
       result = await generator.generate(business)
     } else {
-      const { key: categoryKey, config: categoryConfig } = resolveCategory(business)
-      result = await generateFromTemplate(business, categoryKey, categoryConfig)
+      result = await generateFromTemplate(business, categoryKey, categoryConfig, spec)
     }
+
     await job.updateProgress(70)
 
-    // ── 3. Save to DB ────────────────────────────────────────────────────────
+    // ── Save to DB ───────────────────────────────────────────────────────────
     const website = await upsertWebsite({
       businessId: result.businessId,
-      slug: result.slug,
-      html: result.html,
+      slug:       result.slug,
+      html:       result.html,
       categoryKey: result.categoryKey,
-      theme: result.theme,
-      sections: result.sections,
+      theme:      result.theme,
+      sections:   result.sections,
     })
+
     await job.updateProgress(85)
 
-    // ── 4. Trigger outreach queue ────────────────────────────────────────────
-    await enqueueOutreach(businessId, website.id)
+    // ── Outreach (only on first generation, not on force re-render) ──────────
+    // Development phase: do NOT auto-send. Create a pending record that an admin
+    // sends manually from the Outreach page. Flip AUTO_OUTREACH=true at launch
+    // to send automatically the moment a site is generated.
+    if (!alreadyExists) {
+      if (process.env.AUTO_OUTREACH === 'true') {
+        await enqueueOutreach(businessId, website.id)
+      } else {
+        await createPendingOutreach(businessId, website.id)
+      }
+    }
+
     await job.updateProgress(95)
 
-    // ── 5. Optionally trigger Cloudflare Pages deploy hook ───────────────────
     if (process.env.CF_DEPLOY_HOOK_URL) {
-      await triggerDeploy(result.slug).catch((err) =>
+      await triggerDeploy(result.slug).catch(err =>
         logger.warn('Deploy hook failed', { error: err.message })
       )
     }
 
     await job.updateProgress(100)
 
-    logger.info(`Site generated and saved: ${result.slug}`, {
-      category: result.categoryKey,
-      htmlBytes: result.html.length,
-      tokenEstimate: result.tokenEstimate,
+    logger.info(`Site generated: ${result.slug}`, {
+      category:   result.categoryKey,
+      htmlBytes:  result.html?.length,
+      specSource: spec ? (business.content_spec ? 'db-cached' : 'haiku-new') : 'hardcoded',
     })
 
     return {
-      slug: result.slug,
-      category: result.categoryKey,
-      websiteId: website.id,
-      htmlBytes: result.html.length,
+      slug:       result.slug,
+      category:   result.categoryKey,
+      websiteId:  website.id,
+      htmlBytes:  result.html?.length,
+      specSource: spec ? (business.content_spec ? 'db-cached' : 'haiku-new') : 'hardcoded',
     }
   },
-  {
-    connection: REDIS,
-    concurrency: CONCURRENCY,
-  }
+  { connection: REDIS, concurrency: CONCURRENCY }
 )
-
-// ── Cloudflare Pages deploy hook ──────────────────────────────────────────────
 
 async function triggerDeploy(slug) {
   const res = await fetch(process.env.CF_DEPLOY_HOOK_URL, {
-    method: 'POST',
+    method:  'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ slug }),
+    body:    JSON.stringify({ slug }),
   })
   if (!res.ok) throw new Error(`Deploy hook ${res.status}`)
   logger.info(`Deploy triggered for: ${slug}`)
 }
 
-// ── Lifecycle ─────────────────────────────────────────────────────────────────
-
 worker.on('completed', (job, result) => {
-  if (!result.skipped) {
-    logger.info(`✓ Job ${job.id} done: ${result.slug}`)
-  }
+  if (!result?.skipped) logger.info(`✓ Job ${job.id} done: ${result?.slug}`)
 })
 
 worker.on('failed', (job, err) => {
   logger.error(`✗ Job ${job?.id} failed`, {
     businessId: job?.data?.businessId,
-    error: err.message,
-    attempts: job?.attemptsMade,
+    error:      err.message,
+    attempts:   job?.attemptsMade,
   })
 })
 
-worker.on('error', (err) => logger.error('Worker error', { error: err.message }))
+worker.on('error', err => logger.error('Worker error', { error: err.message }))
 
 // ── Reconciliation sweep ──────────────────────────────────────────────────────
-// Periodically enqueue generation for any business that still has no site.
-// Makes search→generation self-healing even if the real-time trigger never fires.
-const SWEEP_INTERVAL_MS = parseInt(process.env.GENERATE_SWEEP_MS || '60000', 10)
+// Capped at GEN_BATCH_LIMIT per cycle and only active when AUTO_GENERATE=true.
+// In dev (AUTO_GENERATE=false) the sweep is disabled so credits are spent only
+// on manual admin batches.
+const SWEEP_MS = parseInt(process.env.GENERATE_SWEEP_MS || '60000', 10)
 
 async function reconcileMissingSites() {
   try {
-    const ids = await getBusinessesWithoutSites(50)
-    console.log(`[sweep] found ${ids.length} business(es) without a site`)
+    const ids = await getBusinessesWithoutSites(GEN_BATCH_LIMIT)
     if (!ids.length) return
+    logger.info(`[sweep] Enqueuing ${ids.length} businesses without sites (cap ${GEN_BATCH_LIMIT})`)
     for (const id of ids) await enqueueGenerateJob(id)
-    console.log(`[sweep] enqueued ${ids.length} generate job(s)`)
   } catch (err) {
-    console.error('[sweep] FAILED:', err?.message, err?.stack)
+    logger.error('[sweep] Failed', { error: err.message })
   }
 }
 
-console.log(`[startup] generator worker online — sweep every ${SWEEP_INTERVAL_MS}ms`)
-reconcileMissingSites()
-const sweepTimer = setInterval(reconcileMissingSites, SWEEP_INTERVAL_MS)
+let sweepTimer = null
+if (AUTO_GENERATE) {
+  logger.info(`Generator worker started — concurrency: ${CONCURRENCY}, sweep: ${SWEEP_MS}ms, batch cap: ${GEN_BATCH_LIMIT}`)
+  reconcileMissingSites()
+  sweepTimer = setInterval(reconcileMissingSites, SWEEP_MS)
+} else {
+  logger.info(`Generator worker started — concurrency: ${CONCURRENCY}, AUTO_GENERATE=off (manual batches only, cap ${GEN_BATCH_LIMIT})`)
+}
 
 async function shutdown() {
   logger.info('Shutting down generator worker...')
-  clearInterval(sweepTimer)
+  if (sweepTimer) clearInterval(sweepTimer)
   await worker.close()
   process.exit(0)
 }
 process.on('SIGTERM', shutdown)
-process.on('SIGINT', shutdown)
-
-logger.info(`Generator worker started — concurrency: ${CONCURRENCY}, sweep: ${SWEEP_INTERVAL_MS}ms`)
+process.on('SIGINT',  shutdown)

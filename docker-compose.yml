@@ -27,7 +27,7 @@ services:
       redis:
         condition: service_healthy
     ports:
-      - "3001:3001"
+      - "4001:3001"
     env_file: ./apps/crawler/.env
     environment:
       - REDIS_URL=redis://redis:6379
@@ -64,7 +64,7 @@ services:
       redis:
         condition: service_healthy
     ports:
-      - "3002:3002"
+      - "4002:3002"
     env_file: ./apps/generator/.env
     environment:
       - REDIS_URL=redis://redis:6379
@@ -102,12 +102,45 @@ services:
     volumes:
       - ./apps/outreach/logs:/app/logs
 
+  outreach-api:
+    build:
+      context: ./apps/outreach
+      dockerfile: Dockerfile
+    restart: on-failure
+    command: node src/api.js
+    depends_on:
+      redis:
+        condition: service_healthy
+    ports:
+      - "4003:3003"
+    env_file: ./apps/outreach/.env
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - PORT=3003
+    volumes:
+      - ./apps/outreach/logs:/app/logs
+
+  crawler-scheduler:
+    build:
+      context: ./apps/crawler
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: node src/scheduler/index.js
+    depends_on:
+      redis:
+        condition: service_healthy
+    env_file: ./apps/crawler/.env
+    environment:
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./apps/crawler/logs:/app/logs
+
   # Optional: BullMQ dashboard for queue monitoring
   bull-board:
     image: deadly0/bull-board
     restart: unless-stopped
     ports:
-      - "3010:3000"
+      - "4010:3000"
     depends_on:
       - redis
     environment:

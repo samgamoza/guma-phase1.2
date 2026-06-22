@@ -7,11 +7,18 @@ import { ApifyScraper } from '../crawler/apify.js'
 import { BrightDataScraper } from '../crawler/brightdata.js'
 import { ProxyManager } from '../utils/proxy.js'
 import { RateLimiter } from '../utils/rateLimiter.js'
-import { upsertBusinesses, updateCrawlJob } from '../db/client.js'
+import { upsertBusinesses, updateCrawlJob, markTargetCrawled } from '../db/client.js'
+import { checkBatchQuality } from '../crawler/siteChecker.js'
 import { enqueueGenerateJob } from './queues.js'
 import { logger } from '../utils/logger.js'
 
 const CONCURRENCY = parseInt(process.env.CRAWL_CONCURRENCY || '2', 10)
+
+// Dev credit control (shared with generator):
+//   AUTO_GENERATE=false → crawling saves leads but does NOT auto-trigger generation
+//   GENERATION_BATCH_LIMIT=15 → cap sites generated per crawl when AUTO_GENERATE is on
+const AUTO_GENERATE   = process.env.AUTO_GENERATE === 'true'
+const GEN_BATCH_LIMIT = parseInt(process.env.GENERATION_BATCH_LIMIT || '15', 10)
 
 const proxyManager = ProxyManager.fromEnv()
 const rateLimiter = RateLimiter.fromEnv()
@@ -59,7 +66,7 @@ if (process.env.BRIGHT_DATA_API_TOKEN) {
 const worker = new Worker(
   'guma-crawl',
   async (job) => {
-    const { category, city, state, maxPages = 5, jobId, source = 'yellowpages' } = job.data
+    const { category, city, state, maxPages = 5, jobId, source = 'yellowpages', scheduledTargetId } = job.data
     const label = `[${source}] ${category} / ${city}, ${state}`
 
     logger.info(`Worker processing: ${label}`)
@@ -101,25 +108,49 @@ const worker = new Worker(
       throw err
     }
 
+    await job.updateProgress(60)
+
+    // ── Cold leads: no website at all ────────────────────────────────────────
+    const noWebsite = businesses.filter((b) => !b.has_website)
+      .map(b => ({ ...b, raw_data: { ...b.raw_data, lead_priority: 'cold', website_quality: 'none' } }))
+
+    // ── Hot leads: has a website but it's outdated/dead ───────────────────────
+    const withWebsite = businesses.filter((b) => b.has_website && b.raw_data?.website_url)
+    let hotLeads = []
+    if (withWebsite.length > 0) {
+      hotLeads = await checkBatchQuality(withWebsite, { concurrency: 5 })
+      logger.info(`${label}: ${withWebsite.length} sites checked → ${hotLeads.length} hot leads (outdated/dead)`)
+    }
+
     await job.updateProgress(70)
 
-    // ── Filter: only businesses without a website ────────────────────────────
-    const noWebsite = businesses.filter((b) => !b.has_website)
+    // ── Combine cold + hot, then apply quality gate ──────────────────────────
+    const combined = [...noWebsite, ...hotLeads]
 
-    // ── Quality gate: skip records missing critical fields ───────────────────
-    // Saves Claude API credits — low-quality records rarely convert anyway.
-    const qualified = noWebsite.filter((b) => {
+    // ── Quality gate ─────────────────────────────────────────────────────────
+    // ALL reachable businesses (email or phone) are saved AND get a site generated.
+    // Outreach picks the channel per-lead:
+    //   • Has email  → email outreach (Resend)
+    //   • Phone-only → SMS outreach (Twilio)
+    // Nothing with a real name + contact is ever thrown away.
+    const qualified = combined.filter((b) => {
       const hasName    = Boolean(b.name?.trim())
-      const hasCity    = Boolean(b.city?.trim())
       const hasContact = Boolean(b.phone?.trim() || b.email?.trim())
-      const hasAddress = Boolean(b.address?.trim())
-      const score      = [hasName, hasCity, hasContact, hasAddress].filter(Boolean).length
-      if (score < 2) logger.debug(`Skipping low-quality record: ${b.name || 'unnamed'} (score ${score}/4)`)
-      return score >= 2
+      if (!hasName || !hasContact) {
+        logger.debug(`Skipping "${b.name || 'unnamed'}" — missing name or any contact info`)
+        return false
+      }
+      return true
     })
 
+    const emailLeads = qualified.filter(b => Boolean(b.email?.trim()))
+    const phoneLeads = qualified.filter(b => !b.email?.trim() && Boolean(b.phone?.trim()))
+
     logger.info(
-      `${label}: ${businesses.length} total, ${noWebsite.length} without website, ${qualified.length} qualified`
+      `${label}: ${businesses.length} scraped → ` +
+      `${noWebsite.length} cold + ${hotLeads.length} hot → ` +
+      `${emailLeads.length} email + ${phoneLeads.length} phone-only ` +
+      `(all generate now) = ${qualified.length} saved`
     )
 
     await job.updateProgress(75)
@@ -138,15 +169,28 @@ const worker = new Worker(
 
     await job.updateProgress(85)
 
-    // ── Enqueue site generation jobs ─────────────────────────────────────────
+    // ── Enqueue site generation — ALL reachable leads ─────────────────────────
+    // Every saved business (email or phone) gets a site. Outreach later routes
+    // to email (Resend) or SMS (Twilio) based on the contact available.
+    //
+    // Dev credit control: when AUTO_GENERATE is off, crawling still saves all
+    // businesses but does NOT auto-trigger generation — sites are generated
+    // manually in capped batches from the admin. When on, cap per crawl too.
+    const phoneOnlySaved = saved.filter(b => !b.email?.trim() && b.phone?.trim()).length
+
     let enqueued = 0
-    for (const biz of saved) {
-      try {
-        await enqueueGenerateJob(biz.id)
-        enqueued++
-      } catch (err) {
-        logger.warn(`Failed to enqueue generation for ${biz.id}`, { error: err.message })
+    if (AUTO_GENERATE) {
+      const toGenerate = saved.slice(0, GEN_BATCH_LIMIT)
+      for (const biz of toGenerate) {
+        try {
+          await enqueueGenerateJob(biz.id)
+          enqueued++
+        } catch (err) {
+          logger.warn(`Failed to enqueue generation for ${biz.id}`, { error: err.message })
+        }
       }
+    } else {
+      logger.info(`${label}: AUTO_GENERATE=off — saved ${saved.length} businesses, generation deferred to manual admin batch`)
     }
 
     await job.updateProgress(100)
@@ -161,9 +205,17 @@ const worker = new Worker(
       })
     }
 
-    logger.info(`Job done: ${label} — saved ${saved.length}, queued ${enqueued} for generation`)
+    // ── Update scheduled target stats ────────────────────────────────────────
+    if (scheduledTargetId) {
+      await markTargetCrawled(scheduledTargetId, { saved: saved.length })
+    }
 
-    return { found: businesses.length, saved: saved.length, enqueued }
+    logger.info(
+      `Job done: ${label} — saved ${saved.length} total ` +
+      `(${enqueued} → generation queue; ${phoneOnlySaved} of them phone-only → SMS outreach)`
+    )
+
+    return { found: businesses.length, saved: saved.length, enqueued, phoneOnlySaved }
   },
   {
     connection: { url: process.env.REDIS_URL || 'redis://localhost:6379' },

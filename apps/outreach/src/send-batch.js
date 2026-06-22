@@ -39,7 +39,10 @@ async function main() {
     logger.info('DRY RUN — would enqueue:')
     records.forEach((r, i) => {
       const biz = r.businesses
-      logger.info(`  ${i + 1}. ${biz?.name} (${biz?.city}) → ${r.to_email || biz?.email || 'NO EMAIL'}`)
+      const target = r.to_email || biz?.email
+        ? `email:${r.to_email || biz?.email}`
+        : biz?.phone ? `sms:${biz.phone}` : 'NO CONTACT'
+      logger.info(`  ${i + 1}. ${biz?.name} (${biz?.city}) → ${target}`)
     })
     process.exit(0)
   }
@@ -48,9 +51,10 @@ async function main() {
 
   let enqueued = 0
   for (const record of records) {
-    const email = record.to_email || record.businesses?.email
-    if (!email) {
-      logger.debug(`Skipping ${record.id} — no email address`)
+    const biz = record.businesses
+    const reachable = record.to_email || biz?.email || biz?.phone
+    if (!reachable) {
+      logger.debug(`Skipping ${record.id} — no email or phone`)
       continue
     }
     await enqueueOutreachJob(record.id)

@@ -1112,7 +1112,7 @@ footer {
   text-decoration: none;
   font-weight: 600;
 }
-.siteforge-badge {
+.Guma AI-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -1127,7 +1127,7 @@ footer {
   text-decoration: none;
   transition: var(--transition);
 }
-.siteforge-badge:hover {
+.Guma AI-badge:hover {
   background: rgba(125,60,152,0.25);
   border-color: var(--color-primary);
 }
@@ -1263,12 +1263,13 @@ footer {
   margin-bottom: 24px;
 }
 </style>
+{{PALETTE_CSS}}
 </head>
 <body>
 
 <!-- ═══ CLAIM BANNER ═══ -->
 <div id="claim-banner">
-  <span data-en="✦ This site was built for you by SiteForge — claim it free ·" data-fil="✦ Ginawa ang site na ito para sa inyo ng SiteForge — i-claim nang libre ·">✦ This site was built for you by SiteForge — claim it free ·</span>
+  <span data-en="✦ This site was built for you by Guma AI — claim it free ·" data-fil="✦ Ginawa ang site na ito para sa inyo ng Guma AI — i-claim nang libre ·">✦ This site was built for you by Guma AI — claim it free ·</span>
   <a href="{{CLAIM_URL}}" data-en="Claim my site →" data-fil="I-claim ang aking site →">Claim my site →</a>
   <button id="banner-close" aria-label="Dismiss">✕</button>
 </div>
@@ -1362,7 +1363,7 @@ footer {
 </section>
 
 <!-- ═══ GALLERY ═══ -->
-<section id="gallery">
+<section id="gallery" style="{{GALLERY_SECTION_STYLE}}">
   <div class="container">
     <div class="gallery-header fade-up">
       <div class="section-eyebrow" style="color:var(--color-accent)">Our Work</div>
@@ -1516,7 +1517,7 @@ footer {
             <td><span class="check">✓</span></td>
           </tr>
           <tr>
-            <td>SiteForge subdomain</td>
+            <td>Guma AI subdomain</td>
             <td><span class="check">✓</span></td>
             <td><span class="check">✓</span></td>
           </tr>
@@ -1536,7 +1537,7 @@ footer {
             <td><span class="check">✓</span></td>
           </tr>
           <tr>
-            <td>Remove SiteForge badge</td>
+            <td>Remove Guma AI badge</td>
             <td><span class="cross">—</span></td>
             <td><span class="check">✓</span></td>
           </tr>
@@ -1616,7 +1617,7 @@ footer {
       'Get Directions': 'Get Directions',
       '📞 Call to Book': '📞 Call to Book',
       'Ready for Your Transformation?': 'Ready for Your Transformation?',
-      'claim-banner-text': '✦ This site was built for you by SiteForge — claim it free ·',
+      'claim-banner-text': '✦ This site was built for you by Guma AI — claim it free ·',
       'claim-banner-link': 'Claim my site →',
     },
     fil: {
@@ -1631,7 +1632,7 @@ footer {
       'Get Directions': 'Kunin ang Direksyon',
       '📞 Call to Book': '📞 Tumawag para Mag-book',
       'Ready for Your Transformation?': 'Handa Ka Na Ba?',
-      'claim-banner-text': '✦ Ginawa ang site na ito para sa inyo ng SiteForge — i-claim nang libre ·',
+      'claim-banner-text': '✦ Ginawa ang site na ito para sa inyo ng Guma AI — i-claim nang libre ·',
       'claim-banner-link': 'I-claim ang aking site →',
     }
   };
@@ -1893,7 +1894,7 @@ footer {
     </div>
     <div class="footer-bottom">
       <div class="footer-copy">© {{YEAR}} <strong>{{BUSINESS_NAME}}</strong>. All rights reserved. · <a href="{{CLAIM_URL}}">Claim this site</a></div>
-      <a href="{{SITE_URL}}" class="siteforge-badge" target="_blank">⚡ Powered by SiteForge</a>
+      <a href="{{SITE_URL}}" class="guma-badge" target="_blank">⚡ Powered by Guma AI</a>
     </div>
   </div>
 </footer>

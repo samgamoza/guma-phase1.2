@@ -1,9 +1,11 @@
 import { Worker } from 'bullmq';
 import { sendOutreachEmail } from '../email/sender.js';
+import { sendOutreachSMS } from '../sms/sender.js';
 import { enqueueFollowUp } from './queues.js';
-import { getSupabase, updateOutreachStatus, getSentTodayCount } from '../db/client.js';
+import { getSupabase, updateOutreachStatus, getSentTodayCount, getSmsSentTodayCount } from '../db/client.js';
 
 const DAILY_SEND_LIMIT = parseInt(process.env.DAILY_SEND_LIMIT || '200', 10);
+const DAILY_SMS_LIMIT  = parseInt(process.env.DAILY_SMS_LIMIT || '50', 10);
 
 function calculateLeadScore(business) {
   let score = 0;
@@ -53,6 +55,8 @@ export function startOutreachWorker() {
             id,
             name,
             email,
+            phone,
+            country,
             raw_data
           ),
           websites (
@@ -74,46 +78,57 @@ export function startOutreachWorker() {
         throw new Error(`Business not found for outreach record ${outreachId}`);
       }
 
-      const targetEmail = outreach.to_email || business.email;
-      if (!targetEmail) {
-        console.warn(`Business "${business.name}" has no email. Skipping outreach.`);
-        await updateOutreachStatus(outreachId, 'failed');
-        return;
-      }
-
-      // Enforce daily send cap to protect email reputation
-      const sentToday = await getSentTodayCount();
-      if (sentToday >= DAILY_SEND_LIMIT) {
-        console.warn(`Daily send limit reached (${sentToday}/${DAILY_SEND_LIMIT}). Releasing job back to queue.`);
-        // Throw so BullMQ retries later (next day workers will pick it up)
-        throw new Error(`DAILY_LIMIT_REACHED: ${sentToday}/${DAILY_SEND_LIMIT}`);
-      }
-
       const rating = business.raw_data?.rating;
       const leadScore = calculateLeadScore(business);
       const siteBase = process.env.SITE_BASE_URL || 'https://guma.ai';
       const publicUrl = website?.slug ? `${siteBase}/sites/${website.slug}` : '';
 
-      // 2. Send the email using Resend
-      try {
-        await sendOutreachEmail({
-          to: targetEmail,
-          businessName: business.name,
-          previewUrl: publicUrl,
-          rating,
-          leadScore,
-        });
+      // ── Channel routing: email preferred, SMS fallback for phone-only leads ──
+      const targetEmail = outreach.to_email || business.email;
+      const targetPhone = business.phone;
 
-        // 3. Mark outreach as sent in the database
-        await updateOutreachStatus(outreachId, 'sent');
-
-        // 4. Schedule the 72h follow-up
-        await enqueueFollowUp(outreachId);
-
-      } catch (err) {
-        console.error(`Failed to send outreach to ${targetEmail}:`, err.message);
+      if (targetEmail) {
+        // Enforce daily email cap to protect sender reputation
+        const sentToday = await getSentTodayCount();
+        if (sentToday >= DAILY_SEND_LIMIT) {
+          console.warn(`Daily email limit reached (${sentToday}/${DAILY_SEND_LIMIT}). Releasing job back to queue.`);
+          throw new Error(`DAILY_LIMIT_REACHED: ${sentToday}/${DAILY_SEND_LIMIT}`);
+        }
+        try {
+          await sendOutreachEmail({ to: targetEmail, businessName: business.name, previewUrl: publicUrl, rating, leadScore });
+          await updateOutreachStatus(outreachId, 'sent', { channel: 'email' });
+          await enqueueFollowUp(outreachId);
+        } catch (err) {
+          console.error(`Failed to send email to ${targetEmail}:`, err.message);
+          await updateOutreachStatus(outreachId, 'failed');
+          throw err; // Re-throw to trigger BullMQ retry logic
+        }
+      } else if (targetPhone) {
+        // Phone-only lead → Twilio SMS
+        const smsToday = await getSmsSentTodayCount();
+        if (smsToday >= DAILY_SMS_LIMIT) {
+          console.warn(`Daily SMS limit reached (${smsToday}/${DAILY_SMS_LIMIT}). Releasing job back to queue.`);
+          throw new Error(`DAILY_SMS_LIMIT_REACHED: ${smsToday}/${DAILY_SMS_LIMIT}`);
+        }
+        try {
+          const res = await sendOutreachSMS({
+            to: targetPhone,
+            businessName: business.name,
+            previewUrl: publicUrl,
+            country: business.country || 'PH',
+          });
+          await updateOutreachStatus(outreachId, 'sent', { channel: 'sms' });
+          console.log(`SMS sent to ${res.to} for "${business.name}" (sid ${res.sid})`);
+          await enqueueFollowUp(outreachId);
+        } catch (err) {
+          console.error(`Failed to send SMS to ${targetPhone}:`, err.message);
+          await updateOutreachStatus(outreachId, 'failed');
+          throw err;
+        }
+      } else {
+        console.warn(`Business "${business.name}" has no email or phone. Skipping outreach.`);
         await updateOutreachStatus(outreachId, 'failed');
-        throw err; // Re-throw to trigger BullMQ retry logic
+        return;
       }
     },
     {

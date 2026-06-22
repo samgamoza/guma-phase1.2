@@ -9,7 +9,7 @@
  */
 import 'dotenv/config'
 import http from 'node:http'
-import { enqueueGenerateJob, outreachQueue } from './queue/queues.js'
+import { enqueueGenerateJob, generateQueue, outreachQueue } from './queue/queues.js'
 import { getSupabase } from './db/client.js'
 import { logger } from './utils/logger.js'
 
@@ -63,20 +63,27 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'POST' && req.url === '/jobs') {
     try {
       const body = await readBody(req)
-      const { city, industry, limit = 25, priority = 'normal', dryRun = false } = body
+      const { city, industry, priority = 'normal', dryRun = false } = body
+      // Dev credit control: clamp every batch to GENERATION_BATCH_LIMIT
+      const BATCH_CAP = parseInt(process.env.GENERATION_BATCH_LIMIT || '15', 10)
+      const limit = Math.min(parseInt(body.limit, 10) || BATCH_CAP, BATCH_CAP)
 
-      // Find businesses that don't have a website yet
-      // Note: Get all businesses, then filter out ones that have websites
+      // Find reachable businesses that don't have a website yet
       let query = supabase
         .from('businesses')
-        .select('id')
-        .limit(limit * 2)  // Get extra to account for filtering
+        .select('id, email, phone')
+        .limit(limit * 4)  // over-fetch to account for filtering
 
       if (city)     query = query.ilike('city', `%${city}%`)
       if (industry) query = query.ilike('category', `%${industry}%`)
 
-      const { data: businessIds, error } = await query
+      const { data: allBusinesses, error } = await query
       if (error) throw new Error(error.message)
+
+      // Contact gate: generate sites for businesses reachable by email OR phone
+      const reachable = (allBusinesses || []).filter(b =>
+        (b.email && b.email.trim() !== '') || (b.phone && b.phone.trim() !== '')
+      )
 
       // Filter out businesses that already have websites
       const { data: existingWebsites } = await supabase
@@ -84,7 +91,7 @@ const server = http.createServer(async (req, res) => {
         .select('business_id')
 
       const existingIds = new Set(existingWebsites?.map(w => w.business_id) || [])
-      const businessesToGenerate = businessIds?.filter(b => !existingIds.has(b.id)) || []
+      const businessesToGenerate = reachable.filter(b => !existingIds.has(b.id))
 
       const jobs = []
       for (const b of businessesToGenerate.slice(0, limit)) {
@@ -96,6 +103,39 @@ const server = http.createServer(async (req, res) => {
       return json(res, 200, { ok: true, enqueued: jobs.length, jobIds: jobs })
     } catch (err) {
       logger.error('API batch generate failed', { error: err.message })
+      return json(res, 500, { error: err.message })
+    }
+  }
+
+  // Force-batch: remove completed/failed jobs and re-queue a specific set of businesses
+  if (req.method === 'POST' && req.url === '/jobs/force-batch') {
+    try {
+      const body = await readBody(req)
+      const { businessIds } = body
+
+      if (!Array.isArray(businessIds) || businessIds.length === 0) {
+        return json(res, 400, { error: 'Missing businessIds array' })
+      }
+
+      const jobs = []
+      for (const businessId of businessIds) {
+        const jobId = `gen-${businessId}`
+        // Remove existing job in any terminal state so BullMQ allows re-queuing
+        const existing = await generateQueue.getJob(jobId)
+        if (existing) {
+          const state = await existing.getState()
+          if (state !== 'active') {
+            await existing.remove()
+          }
+        }
+        const job = await enqueueGenerateJob(businessId, { force: true })
+        jobs.push(job.id)
+      }
+
+      logger.info(`API force-batch generation: ${jobs.length} jobs re-queued (force=true)`)
+      return json(res, 200, { ok: true, enqueued: jobs.length, jobIds: jobs })
+    } catch (err) {
+      logger.error('API force-batch failed', { error: err.message })
       return json(res, 500, { error: err.message })
     }
   }

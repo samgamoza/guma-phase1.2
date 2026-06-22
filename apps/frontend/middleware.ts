@@ -41,6 +41,8 @@ export async function middleware(req: NextRequest) {
   // Define paths that *do not* require authentication
   const publicPaths = [
     '/', // Your landing page
+    '/admin',
+    '/api/admin', // Admin API routes handle their own auth internally
     '/auth/login',
     '/auth/signup',
     '/auth/signup/manual',
@@ -72,7 +74,9 @@ export async function middleware(req: NextRequest) {
   // Using getUser() instead of getSession() for better security in middleware
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user && !isPublicPath) {
+  const hasAdminSession = !!req.cookies.get('admin_session')?.value
+
+  if (!user && !hasAdminSession && !isPublicPath) {
     const redirectUrl = new URL('/auth/login', req.url)
     return NextResponse.redirect(redirectUrl)
   }

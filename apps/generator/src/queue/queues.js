@@ -22,10 +22,10 @@ export const outreachQueue = new Queue('guma-outreach', {
   },
 })
 
-export async function enqueueGenerateJob(businessId) {
+export async function enqueueGenerateJob(businessId, opts = {}) {
   const job = await generateQueue.add(
     `generate:${businessId}`,
-    { businessId },
+    { businessId, force: opts.force || false },
     { jobId: `gen-${businessId}` }
   )
   return job

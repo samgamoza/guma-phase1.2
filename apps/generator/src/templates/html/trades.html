@@ -1131,7 +1131,7 @@ footer {
   text-align: center;
   font-size: 0.75rem;
 }
-.siteforge-badge {
+.Guma AI-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -1145,11 +1145,11 @@ footer {
   text-decoration: none;
   transition: var(--transition);
 }
-.siteforge-badge:hover {
+.Guma AI-badge:hover {
   background: rgba(255,255,255,0.1);
   color: rgba(255,255,255,0.85);
 }
-.siteforge-badge .sf-icon { font-size: 0.8rem; }
+.Guma AI-badge .sf-icon { font-size: 0.8rem; }
 
 /* ─── MOBILE BOTTOM BAR ─── */
 #mobile-claim-bar {
@@ -1242,14 +1242,15 @@ body.fil-active [data-fil] { display: initial; }
 body.fil-active .inline-fil { display: inline; }
 body.fil-active .inline-en { display: none; }
 </style>
+{{PALETTE_CSS}}
 </head>
 
 <body>
 
 <!-- ─── CLAIM BANNER ─── -->
 <div id="claim-banner">
-  <span class="inline-en">This site was built for you by SiteForge — claim it free&nbsp;·&nbsp;<a href="{{CLAIM_URL}}">Claim my site →</a></span>
-  <span class="inline-fil">Itinayo ng SiteForge ang site na ito para sa iyo — i-claim nang libre&nbsp;·&nbsp;<a href="{{CLAIM_URL}}">I-claim ang aking site →</a></span>
+  <span class="inline-en">This site was built for you by Guma AI — claim it free&nbsp;·&nbsp;<a href="{{CLAIM_URL}}">Claim my site →</a></span>
+  <span class="inline-fil">Itinayo ng Guma AI ang site na ito para sa iyo — i-claim nang libre&nbsp;·&nbsp;<a href="{{CLAIM_URL}}">I-claim ang aking site →</a></span>
   <button id="claim-banner-close" aria-label="Close">✕</button>
 </div>
 
@@ -1417,7 +1418,7 @@ body.fil-active .inline-en { display: none; }
 </section>
 
 <!-- ─── GALLERY ─── -->
-<section id="gallery">
+<section id="gallery" style="{{GALLERY_SECTION_STYLE}}">
   <div class="container">
     <div class="section-header centered">
       <p class="section-label">Our Work</p>
@@ -1592,7 +1593,7 @@ body.fil-active .inline-en { display: none; }
 <section id="pricing">
   <div class="container">
     <div class="section-header centered">
-      <p class="section-label">SiteForge Plans</p>
+      <p class="section-label">Guma AI Plans</p>
       <h2 class="section-title">Your Site, Your Way</h2>
       <p class="section-desc">This professional website is already live for {{BUSINESS_NAME}}. Claim it free and unlock powerful tools to grow your business online.</p>
     </div>
@@ -1645,7 +1646,7 @@ body.fil-active .inline-en { display: none; }
             <td><span class="check-icon">✔</span></td>
           </tr>
           <tr>
-            <td>Remove SiteForge Badge <span class="pro-badge">PRO</span></td>
+            <td>Remove Guma AI Badge <span class="pro-badge">PRO</span></td>
             <td><span class="x-icon">✗</span></td>
             <td><span class="check-icon">✔</span></td>
           </tr>
@@ -1707,8 +1708,8 @@ body.fil-active .inline-en { display: none; }
     </div>
     <div class="footer-bottom">
       <span>© {{YEAR}} {{BUSINESS_NAME}} · {{ADDRESS}}</span>
-      <a href="https://siteforge.io" class="siteforge-badge" target="_blank" rel="noopener">
-        <span class="sf-icon">⚡</span> Powered by SiteForge
+      <a href="https://Guma AI.io" class="guma-badge" target="_blank" rel="noopener">
+        <span class="sf-icon">⚡</span> Powered by Guma AI
       </a>
     </div>
   </div>
@@ -1745,7 +1746,7 @@ body.fil-active .inline-en { display: none; }
   /* ── TRANSLATIONS ── */
   const translations = {
     en: {
-      banner: 'This site was built for you by SiteForge — claim it free&nbsp;·&nbsp;<a href="{{CLAIM_URL}}">Claim my site →</a>',
+      banner: 'This site was built for you by Guma AI — claim it free&nbsp;·&nbsp;<a href="{{CLAIM_URL}}">Claim my site →</a>',
       navServices: 'Services',
       navWhyUs: 'Why Us',
       navProjects: 'Projects',
@@ -1754,7 +1755,7 @@ body.fil-active .inline-en { display: none; }
       navCta: 'Get a Free Quote',
     },
     fil: {
-      banner: 'Itinayo ng SiteForge ang site na ito para sa iyo — i-claim nang libre&nbsp;·&nbsp;<a href="{{CLAIM_URL}}">I-claim ang aking site →</a>',
+      banner: 'Itinayo ng Guma AI ang site na ito para sa iyo — i-claim nang libre&nbsp;·&nbsp;<a href="{{CLAIM_URL}}">I-claim ang aking site →</a>',
       navServices: 'Serbisyo',
       navWhyUs: 'Bakit Kami',
       navProjects: 'Proyekto',

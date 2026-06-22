@@ -1381,15 +1381,16 @@ footer {
   to { transform: translateX(0); opacity: 1; }
 }
 </style>
+{{PALETTE_CSS}}
 </head>
 <body>
 
 <!-- ─── CLAIM BANNER ─── -->
 <div id="claim-banner">
-  <span class="banner-en">This site was built for you by SiteForge — claim it free ·
+  <span class="banner-en">This site was built for you by Guma AI — claim it free ·
     <a href="{{CLAIM_URL}}">Claim my site →</a>
   </span>
-  <span class="banner-fil">Itong site ay ginawa para sa inyo ng SiteForge — libre ang pag-claim ·
+  <span class="banner-fil">Itong site ay ginawa para sa inyo ng Guma AI — libre ang pag-claim ·
     <a href="{{CLAIM_URL}}">I-claim ang aking site →</a>
   </span>
   <button id="banner-close" aria-label="Dismiss banner">✕</button>
@@ -1579,7 +1580,7 @@ footer {
 </section>
 
 <!-- ─── GALLERY ─── -->
-<section id="gallery">
+<section id="gallery" style="{{GALLERY_SECTION_STYLE}}">
   <div class="section-inner">
     <div class="fade-up" style="margin-bottom:0;">
       <div class="section-label">Our Office &amp; Work</div>
@@ -1687,7 +1688,7 @@ footer {
 <section id="pricing">
   <div class="section-inner">
     <div class="pricing-header fade-up">
-      <div class="section-label" style="justify-content:center;">SiteForge Plans</div>
+      <div class="section-label" style="justify-content:center;">Guma AI Plans</div>
       <h2 class="section-title" style="text-align:center;">Your Site, <em>Your Control</em></h2>
       <p class="section-subtitle" style="text-align:center; margin:0 auto;">This site was automatically created for {{BUSINESS_NAME}}. Claim it free — or unlock the full Pro experience.</p>
     </div>
@@ -1733,7 +1734,7 @@ footer {
             <td class="col-pro-val"><span class="check">✓</span></td>
           </tr>
           <tr>
-            <td>Remove SiteForge badge</td>
+            <td>Remove Guma AI badge</td>
             <td class="col-free-val"><span class="cross">✗</span></td>
             <td class="col-pro-val"><span class="check">✓</span></td>
           </tr>
@@ -1782,7 +1783,7 @@ footer {
 // ─── TRANSLATIONS ───────────────────────────────────────
 const translations = {
   en: {
-    bannerText: "This site was built for you by SiteForge — claim it free ·",
+    bannerText: "This site was built for you by Guma AI — claim it free ·",
     bannerLink: "Claim my site →",
     navAreas: "Practice Areas",
     navAttorney: "Our Attorney",
@@ -1798,7 +1799,7 @@ const translations = {
     drawerContact: "Contact",
   },
   fil: {
-    bannerText: "Itong site ay ginawa para sa inyo ng SiteForge — libre ang pag-claim ·",
+    bannerText: "Itong site ay ginawa para sa inyo ng Guma AI — libre ang pag-claim ·",
     bannerLink: "I-claim ang aking site →",
     navAreas: "Mga Larangan",
     navAttorney: "Aming Abogado",
@@ -2070,8 +2071,8 @@ document.querySelectorAll('.fade-up').forEach(el => {
     </div>
     <div class="footer-bottom">
       <p class="footer-copyright">© {{YEAR}} {{BUSINESS_NAME}}. All rights reserved. · {{ADDRESS}}</p>
-      <a href="https://siteforge.io" class="footer-powered">
-        Built by <span>SiteForge</span> ⚡
+      <a href="https://Guma AI.io" class="footer-powered">
+        Built by <span>Guma AI</span> ⚡
       </a>
     </div>
   </div>

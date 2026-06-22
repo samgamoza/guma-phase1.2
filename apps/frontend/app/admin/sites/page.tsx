@@ -1,7 +1,8 @@
 export const dynamic = 'force-dynamic'
 import { createClient } from '@supabase/supabase-js'
 import Link from 'next/link'
-import { Globe, ExternalLink, Mail, Trash2 } from 'lucide-react'
+import { Globe, ExternalLink, Mail } from 'lucide-react'
+import { DeleteSiteButton } from './DeleteSiteButton'
 
 const STATUS_COLORS: Record<string, string> = {
   generated: 'bg-indigo-muted text-indigo',
@@ -152,17 +153,7 @@ export default async function AdminSitesPage({
                         </button>
                       </form>
                     )}
-                    <form action="/api/admin/sites/delete" method="POST" className="inline">
-                      <input type="hidden" name="website_id" value={site.id} />
-                      <button
-                        type="submit"
-                        className="btn-ghost text-xs p-1.5 text-red-400 hover:text-red-600"
-                        title="Delete site"
-                        onClick={(e) => { if (!confirm('Delete this site?')) e.preventDefault() }}
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </form>
+                    <DeleteSiteButton siteId={site.id} />
                   </div>
                 </td>
               </tr>

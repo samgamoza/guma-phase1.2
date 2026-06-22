@@ -17,7 +17,7 @@ let _client = null
 
 export function getSupabase() {
   if (!_client) {
-    const url = process.env.SUPABASE_URL
+    const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL
     const key = process.env.SUPABASE_SERVICE_KEY
     if (!url || !key) throw new Error('Missing SUPABASE_URL or SUPABASE_SERVICE_KEY')
     _client = createClient(url, key, {
@@ -94,19 +94,22 @@ export async function publishWebsite(slug) {
   if (error) throw error
 }
 
-/** Find businesses that have no website yet — used by the reconciliation sweep */
+/** Find reachable businesses that have no website yet — used by the reconciliation sweep.
+ *  A business is reachable if it has an email OR a phone (outreach routes email→Resend, phone→Twilio SMS). */
 export async function getBusinessesWithoutSites(limit = 50) {
   const { data, error } = await getSupabase()
     .from('businesses')
-    .select('id, websites(id)')
+    .select('id, email, phone, websites(id)')
     .order('id', { ascending: false })
-    .limit(limit)
+    .limit(limit * 4) // over-fetch to account for JS-level filtering
   if (error) {
     logger.error('getBusinessesWithoutSites failed', { error: error.message })
     return []
   }
   return (data || [])
+    .filter((b) => (b.email && b.email.trim() !== '') || (b.phone && b.phone.trim() !== '')) // any contact channel
     .filter((b) => !b.websites || b.websites.length === 0)
+    .slice(0, limit)
     .map((b) => b.id)
 }
 
@@ -120,11 +123,64 @@ export async function websiteExistsForBusiness(businessId) {
   return (count || 0) > 0
 }
 
-/** Insert an outreach record and enqueue it for sending */
+/**
+ * Persist a Haiku-generated content_spec to the businesses table.
+ * Called once per business — future re-renders load from DB, no Haiku call needed.
+ */
+export async function saveContentSpec(businessId, spec) {
+  const { error } = await getSupabase()
+    .from('businesses')
+    .update({ content_spec: spec })
+    .eq('id', businessId)
+  if (error) throw new Error(`Failed to save content_spec for ${businessId}: ${error.message}`)
+}
+
+/**
+ * Persist the Business Intelligence blueprint (BusinessDNA) to the businesses
+ * table. Reused across re-renders so the agent runs at most once per business.
+ * Resilient to schema drift: if the business_dna column is missing, logs and
+ * continues (generation still proceeds with the DNA in memory this run).
+ */
+export async function saveBusinessDna(businessId, dna) {
+  const { error } = await getSupabase()
+    .from('businesses')
+    .update({ business_dna: dna })
+    .eq('id', businessId)
+  if (error) {
+    logger.warn(`Failed to persist business_dna for ${businessId} (is the column present?): ${error.message}`)
+    return false
+  }
+  return true
+}
+
+/** Create a pending outreach record WITHOUT sending — used in dev / manual mode.
+ *  The lead shows up in the admin Outreach page as "pending" and is sent only
+ *  when an admin manually triggers it. Idempotent on website_id. */
+export async function createPendingOutreach(businessId, websiteId) {
+  const { data, error } = await getSupabase()
+    .from('outreach')
+    .upsert(
+      { business_id: businessId, website_id: websiteId, status: 'pending' },
+      { onConflict: 'website_id' }
+    )
+    .select('id')
+    .single()
+
+  if (error || !data) {
+    logger.warn('Failed to create pending outreach record', { error: error?.message })
+    return
+  }
+  logger.info(`Pending outreach record ready for website ${websiteId} (record: ${data.id}) — awaiting manual send`)
+}
+
+/** Insert an outreach record and enqueue it for immediate sending (full-auto mode) */
 export async function enqueueOutreach(businessId, websiteId) {
   const { data, error } = await getSupabase()
     .from('outreach')
-    .insert({ business_id: businessId, website_id: websiteId, status: 'pending' })
+    .upsert(
+      { business_id: businessId, website_id: websiteId, status: 'pending' },
+      { onConflict: 'website_id' }
+    )
     .select('id')
     .single()
 

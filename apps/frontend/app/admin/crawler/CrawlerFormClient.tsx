@@ -1,52 +1,37 @@
 'use client'
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Play, Clock } from 'lucide-react'
 
 export function CrawlerFormClient() {
-  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
-  const supabase = createClientComponentClient()
+  const [result, setResult] = useState<{ ok: boolean; message: string } | null>(null)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setIsLoading(true)
+    setResult(null)
 
     const formData = new FormData(event.currentTarget)
-    const city = (formData.get('city') as string) || 'Austin'
-    const state = (formData.get('state') as string) || 'TX'
-    const industry = (formData.get('industry') as string) || 'Restaurants'
-    const source = (formData.get('source') as string) || 'yellowpages'
-    const limit = parseInt((formData.get('limit') as string) || '100')
+    const body = {
+      category: (formData.get('industry') as string) || 'Handyman',
+      city:     (formData.get('city')     as string) || 'Austin',
+      state:    (formData.get('state')    as string) || 'TX',
+      source:   (formData.get('source')   as string) || 'serper',
+      maxPages: parseInt((formData.get('maxPages') as string) || '2'),
+    }
 
     try {
-      // Invoke the Supabase Edge Function named 'crawler'
-      const { data, error: invokeError } = await supabase.functions.invoke('crawler', {
-        body: {
-          category: industry, // Map form field 'industry' to Edge Function 'category'
-          city,
-          state,
-          // You can pass 'limit' and 'source' if your Edge Function is updated to use them
-          // limit,
-          // source,
-        },
+      const res = await fetch('/api/admin/crawler/run-now', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'run_one', ...body }),
       })
-
-      if (invokeError) {
-        console.error('Edge Function invocation error:', invokeError)
-        router.push(`/admin/crawler?error=${encodeURIComponent(invokeError.message)}`)
-      } else if (data && data.error) {
-        // Assuming the Edge Function returns { error: string } on application-level errors
-        console.error('Edge Function returned error:', data.error)
-        router.push(`/admin/crawler?error=${encodeURIComponent(data.error)}`)
-      } else {
-        router.push('/admin/crawler?success=1')
-      }
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Unknown error')
+      setResult({ ok: true, message: data.message || `Job enqueued: ${data.jobId || ''}` })
     } catch (err: any) {
-      console.error('Client-side fetch error:', err)
-      router.push(`/admin/crawler?error=${encodeURIComponent(err.message || 'Unknown error')}`)
+      setResult({ ok: false, message: err.message })
     } finally {
       setIsLoading(false)
     }
@@ -56,47 +41,46 @@ export function CrawlerFormClient() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label className="block text-xs font-medium text-warm-gray-500 mb-1">Source</label>
-        <select name="source" className="input w-full text-sm" defaultValue="yellowpages">
+        <select name="source" className="input w-full text-sm" defaultValue="serper">
+          <option value="serper">Serper.dev (Google Maps) — recommended</option>
           <option value="yellowpages">YellowPages (Playwright)</option>
           <option value="googleplaces">Google Places API</option>
-          <option value="serper">Serper.dev (Google Maps)</option>
           <option value="apify">Apify (Cloud Actor)</option>
           <option value="brightdata">Bright Data (Dataset API)</option>
         </select>
       </div>
-      <div>
-        <label className="block text-xs font-medium text-warm-gray-500 mb-1">City</label>
-        <input name="city" placeholder="e.g. Austin" className="input w-full text-sm" required />
-      </div>
-      <div>
-        <label className="block text-xs font-medium text-warm-gray-500 mb-1">State</label>
-        <input name="state" placeholder="e.g. TX" className="input w-full text-sm" />
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label className="block text-xs font-medium text-warm-gray-500 mb-1">City</label>
+          <input name="city" placeholder="e.g. Waco" className="input w-full text-sm" required />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-warm-gray-500 mb-1">State</label>
+          <input name="state" placeholder="e.g. TX" className="input w-full text-sm" maxLength={2} />
+        </div>
       </div>
       <div>
         <label className="block text-xs font-medium text-warm-gray-500 mb-1">Industry / Category</label>
-        <input name="industry" placeholder="e.g. Restaurant, Plumber, Salon" className="input w-full text-sm" />
+        <input name="industry" placeholder="e.g. Plumber, Handyman, Salon" className="input w-full text-sm" />
       </div>
       <div>
-        <label className="block text-xs font-medium text-warm-gray-500 mb-1">Max results</label>
-        <select name="limit" className="input w-full text-sm" defaultValue="100">
-          <option value="50">50</option>
-          <option value="100">100</option>
-          <option value="250">250</option>
-          <option value="500">500</option>
+        <label className="block text-xs font-medium text-warm-gray-500 mb-1">Sub-area queries (depth)</label>
+        <select name="maxPages" className="input w-full text-sm" defaultValue="2">
+          <option value="1">1 — fastest, ~10 results</option>
+          <option value="2">2 — default, ~20 results</option>
+          <option value="5">5 — deeper, ~50 results</option>
+          <option value="9">9 — max, ~90 results</option>
         </select>
       </div>
+
+      {result && (
+        <div className={`p-3 rounded-lg text-xs ${result.ok ? 'bg-mint/10 text-emerald-700' : 'bg-red-50 text-red-600'}`}>
+          {result.message}
+        </div>
+      )}
+
       <button type="submit" className="btn-primary w-full text-sm flex items-center justify-center gap-2" disabled={isLoading}>
-        {isLoading ? (
-          <>
-            <Clock className="w-4 h-4 animate-spin" />
-            Triggering...
-          </>
-        ) : (
-          <>
-            <Play className="w-4 h-4" />
-            Start Crawl
-          </>
-        )}
+        {isLoading ? <><Clock className="w-4 h-4 animate-spin" /> Triggering...</> : <><Play className="w-4 h-4" /> Start Crawl</>}
       </button>
     </form>
   )
