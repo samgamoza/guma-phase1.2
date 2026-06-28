@@ -74,15 +74,20 @@ const faqJsonLd = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <head>
+      <body suppressHydrationWarning>
+        {/*
+          Resource hints + JSON-LD are rendered in the tree (NOT a manual <head>).
+          Next.js App Router hoists <link>/<script> into <head> automatically and
+          consistently. A hand-rolled <head> alongside the Metadata API reconciles
+          differently between server and client, which triggered a document-level
+          ("<#document>") hydration mismatch and forced a full client re-render.
+        */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
-      </head>
-      <body suppressHydrationWarning>
         <AuthHashHandler />
         {children}
       </body>

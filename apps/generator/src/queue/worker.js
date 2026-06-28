@@ -5,7 +5,8 @@ import { Worker } from 'bullmq'
 await assertHealthy()
 
 import { SiteGenerator }        from '../generator/siteGenerator.js'
-import { generateFromTemplate }  from '../generator/templateEngine.js'
+import { generateFromTemplate, calculateLeadScore } from '../generator/templateEngine.js'
+import { validateAndRefine, llmRepairSpec, hasLlmFixableIssues } from '../generator/refine.js'
 import { generateContentSpec }   from '../generator/contentAgent.js'
 import { resolveCategory }       from '../templates/categories.js'
 import { runBusinessIntelligence } from '../intelligence/businessIntelligence.js'
@@ -37,6 +38,15 @@ const AUTO_GENERATE     = process.env.AUTO_GENERATE === 'true'
 const GEN_BATCH_LIMIT   = parseInt(process.env.GENERATION_BATCH_LIMIT || '15', 10)
 
 const USE_AI  = process.env.USE_AI === 'true'
+
+// Validate & Refine (post-generation QA). The heuristic pass is always on and
+// free. The optional Tier-2 LLM repair is OFF by default and only escalates for
+// high-value leads, keeping the long tail zero-cost.
+//   REFINE_LLM_ENABLED=true     → allow the paid Haiku spec-repair tier
+//   REFINE_LLM_MIN_SCORE=80     → only repair leads scoring at/above this
+const REFINE_LLM_ENABLED   = process.env.REFINE_LLM_ENABLED === 'true'
+const REFINE_LLM_MIN_SCORE = parseInt(process.env.REFINE_LLM_MIN_SCORE || '80', 10)
+
 const generator = USE_AI ? new SiteGenerator() : null
 if (USE_AI) logger.info('Generator: AI mode ON (Claude Sonnet)')
 else        logger.info('Generator: Template mode ON (Haiku content + pre-built templates)')
@@ -127,6 +137,37 @@ const worker = new Worker(
 
     await job.updateProgress(70)
 
+    // ── Stage: Validate & Refine (post-generation QA) ────────────────────────
+    // Heuristic checks + safe deterministic repairs on the rendered HTML. The
+    // optional LLM tier escalates only for high-value leads with fixable copy.
+    let quality = null
+    if (result?.html) {
+      const refined = validateAndRefine({ html: result.html, business, spec })
+      result.html = refined.html
+      quality = refined.report
+
+      // Tier 2 — gated LLM repair: rewrite weak spec fields, then re-render once.
+      const leadScore = calculateLeadScore(business)
+      if (REFINE_LLM_ENABLED && !USE_AI && leadScore >= REFINE_LLM_MIN_SCORE && hasLlmFixableIssues(quality)) {
+        logger.info(`[refine] Escalating "${business.name}" to LLM repair (lead ${leadScore}, ${quality.counts.warnings} warn)`)
+        const patchedSpec = await llmRepairSpec(business, spec, quality.issues).catch(() => null)
+        if (patchedSpec) {
+          await saveContentSpec(business.id, patchedSpec).catch(() => {})
+          const rerendered = await generateFromTemplate(business, categoryKey, categoryConfig, patchedSpec)
+          const reRefined  = validateAndRefine({ html: rerendered.html, business, spec: patchedSpec })
+          result.html = reRefined.html
+          quality = { ...reRefined.report, llm_repaired: true }
+        }
+      }
+
+      const lvl = quality.counts.critical ? 'warn' : 'info'
+      logger[lvl](`[refine] "${business.name}" — score ${quality.score} ` +
+        `(${quality.counts.critical} critical, ${quality.counts.warnings} warn, ${quality.counts.repaired} repaired)`,
+        quality.counts.critical ? { issues: quality.issues.filter(i => i.severity === 'critical') } : undefined)
+    }
+
+    await job.updateProgress(80)
+
     // ── Save to DB ───────────────────────────────────────────────────────────
     const website = await upsertWebsite({
       businessId: result.businessId,
@@ -173,6 +214,7 @@ const worker = new Worker(
       websiteId:  website.id,
       htmlBytes:  result.html?.length,
       specSource: spec ? (business.content_spec ? 'db-cached' : 'haiku-new') : 'hardcoded',
+      quality:    quality ? { score: quality.score, ...quality.counts, llm_repaired: !!quality.llm_repaired } : null,
     }
   },
   { connection: REDIS, concurrency: CONCURRENCY }

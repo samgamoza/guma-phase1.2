@@ -49,6 +49,10 @@ export const CATEGORY_CONFIG = {
       'construction', 'builder', 'renovation', 'aircon', 'welding', 'fabrication',
       'auto repair', 'mechanic', 'auto shop', 'tire', 'tyre', 'auto service',
       'remodel', 'drywall', 'masonry', 'concrete', 'paving', 'fencing',
+      // service businesses that the bare word "shop" was wrongly pulling into retail
+      'auto', 'auto electrical', 'electrical', 'electrical repair', 'auto repair shop',
+      'repair shop', 'service center', 'car repair', 'vulcanizing', 'battery shop',
+      'motor', 'motorcycle', 'engine', 'car wash', 'carwash', 'detailing',
     ],
     theme: {
       primary: '#1A5276',   // navy blue
@@ -150,6 +154,162 @@ export const CATEGORY_CONFIG = {
     cta_secondary: 'Visit Us',
     trust_signals: ['years in business', 'product categories', 'local ownership', 'return policy'],
     icon: '🛍️',
+  },
+
+  catering: {
+    label: 'Catering / Events',
+    match: [
+      'catering', 'caterer', 'events', 'banquet', 'reception', 'pakain', 'boodle',
+      'fiesta', 'corporate events', 'birthday catering', 'lechon catering',
+      'party catering', 'food catering', 'event catering', 'kasal', 'wedding catering',
+    ],
+    theme: {
+      primary: '#5D4037',
+      secondary: '#8D6E63',
+      accent: '#FFA000',
+      bg: '#FFF8F0',
+      text: '#3E2723',
+    },
+    tone: 'warm, festive, generous. Focus on memorable events, abundance, and joyful gatherings.',
+    sections: ['hero', 'packages', 'menu_highlights', 'gallery_placeholder', 'contact'],
+    cta: 'Get a Quote',
+    cta_secondary: 'View Packages',
+    trust_signals: ['years in business', 'events served', 'cuisine specialties', 'delivery area'],
+    icon: '🍱',
+  },
+
+  laundry: {
+    label: 'Laundry Services',
+    match: [
+      'laundry', 'laundromat', 'dry cleaning', 'labada', 'pressing', 'steam',
+      'wash and fold', 'laundry shop', 'laundry service', 'laundry pickup',
+      'express laundry', 'coin laundry', 'commercial laundry',
+    ],
+    theme: {
+      primary: '#0277BD',
+      secondary: '#29B6F6',
+      accent: '#B2EBF2',
+      bg: '#F0F9FF',
+      text: '#01579B',
+    },
+    tone: 'clean, efficient, reliable. Focus on freshness, convenience, and fast turnaround.',
+    sections: ['hero', 'services', 'pricing', 'hours_location', 'contact'],
+    cta: 'Drop Off Today',
+    cta_secondary: 'See Rates',
+    trust_signals: ['same-day service', 'pickup & delivery', 'years in operation', 'rating'],
+    icon: '👕',
+  },
+
+  bakeshop: {
+    label: 'Bakeshop / Panaderya',
+    match: [
+      'bakeshop', 'panaderya', 'panaderia', 'bread shop', 'bibingka', 'ensaymada',
+      'puto', 'biko', 'kakanin', 'pan de sal', 'pandesal', 'pastry shop', 'cake shop',
+      'baked goods', 'bakery shop', 'pasteleria',
+    ],
+    theme: {
+      primary: '#E65100',
+      secondary: '#FF6D00',
+      accent: '#FFE0B2',
+      bg: '#FFFAF5',
+      text: '#3E2723',
+    },
+    tone: 'warm, homey, comforting. Focus on freshness, tradition, and Filipino baking culture.',
+    sections: ['hero', 'products', 'specialty_items', 'hours_location', 'contact'],
+    cta: 'Order Now',
+    cta_secondary: 'See Products',
+    trust_signals: ['baked fresh daily', 'no preservatives', 'custom orders', 'delivery'],
+    icon: '🍞',
+  },
+
+  gym: {
+    label: 'Gym / Fitness Center',
+    match: [
+      'gym', 'fitness center', 'fitness club', 'workout', 'crossfit', 'bodybuilding',
+      'yoga studio', 'pilates', 'boxing gym', 'muay thai', 'personal training',
+      'weightlifting', 'health club', 'sports center', 'mma', 'jiu jitsu',
+      'dance studio', 'zumba', 'functional fitness',
+    ],
+    theme: {
+      primary: '#B71C1C',
+      secondary: '#E53935',
+      accent: '#FF8A65',
+      bg: '#1A1A1A',
+      text: '#FFFFFF',
+    },
+    tone: 'energetic, motivating, powerful. Focus on transformation, community, and results.',
+    sections: ['hero', 'memberships', 'classes', 'trainers_placeholder', 'contact'],
+    cta: 'Free Trial',
+    cta_secondary: 'View Membership',
+    trust_signals: ['certified trainers', 'modern equipment', 'community', 'open 7 days'],
+    icon: '💪',
+  },
+
+  photography: {
+    label: 'Photography / Studio',
+    match: [
+      'photography', 'photographer', 'photo studio', 'portrait studio', 'prenuptial',
+      'prenup', 'pictorial', 'maternity shoot', 'events photographer', 'wedding photographer',
+      'photo booth', 'studio rental', 'commercial photography', 'product photography',
+      'photo editing', 'videographer', 'videography',
+    ],
+    theme: {
+      primary: '#1A1A2E',
+      secondary: '#16213E',
+      accent: '#E94560',
+      bg: '#0F3460',
+      text: '#EAEAEA',
+    },
+    tone: 'artistic, emotional, professional. Focus on storytelling, moments, and visual artistry.',
+    sections: ['hero', 'services', 'portfolio_placeholder', 'booking_info', 'contact'],
+    cta: 'Book a Session',
+    cta_secondary: 'View Portfolio',
+    trust_signals: ['professional gear', 'fast delivery', 'portfolio', 'years of experience'],
+    icon: '📸',
+  },
+
+  petcare: {
+    label: 'Pet Care / Veterinary',
+    match: [
+      'pet', 'veterinary', 'veterinarian', 'vet clinic', 'animal clinic', 'pet grooming',
+      'petshop', 'pet shop', 'animal hospital', 'dog grooming', 'cat grooming',
+      'pet boarding', 'vet', 'animal care', 'dog training', 'pet hotel',
+    ],
+    theme: {
+      primary: '#E65100',
+      secondary: '#00897B',
+      accent: '#FFB74D',
+      bg: '#FFF9F5',
+      text: '#2C1A0E',
+    },
+    tone: 'warm, caring, trustworthy. Focus on pet welfare, gentle handling, and owner peace of mind.',
+    sections: ['hero', 'services', 'vets_placeholder', 'hours_location', 'contact'],
+    cta: 'Book Appointment',
+    cta_secondary: 'Our Services',
+    trust_signals: ['licensed vet', 'gentle handling', 'walk-ins welcome', 'rating'],
+    icon: '🐾',
+  },
+
+  gadgetrepair: {
+    label: 'Phone / Gadget Repair',
+    match: [
+      'phone repair', 'cellphone repair', 'gadget repair', 'iphone repair', 'samsung repair',
+      'tablet repair', 'laptop repair', 'cellphone shop', 'phone accessories', 'computer repair',
+      'screen repair', 'battery replacement', 'tech repair', 'gadget shop',
+    ],
+    theme: {
+      primary: '#0D47A1',
+      secondary: '#1565C0',
+      accent: '#29B6F6',
+      bg: '#0A0A1A',
+      text: '#E0E0E0',
+    },
+    tone: 'technical, efficient, trustworthy. Focus on fast repair, warranty, and genuine parts.',
+    sections: ['hero', 'services', 'pricing', 'hours_location', 'contact'],
+    cta: 'Get Repair Quote',
+    cta_secondary: 'Walk-In Welcome',
+    trust_signals: ['90-day warranty', 'genuine parts', 'same-day repair', 'rating'],
+    icon: '📱',
   },
 
   // Fallback for uncategorised businesses

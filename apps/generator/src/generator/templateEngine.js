@@ -24,13 +24,20 @@ const SITE_BASE  = process.env.SITE_BASE_URL || 'https://guma.ai'
 
 // Which template file to use per category key
 const TEMPLATE_MAP = {
-  restaurant: 'restaurant',
-  salon:      'salon',
-  trades:     'trades',
-  medical:    'medical',
-  legal:      'legal',
-  retail:     'retail',
-  generic:    'retail',   // retail is the most neutral fallback
+  restaurant:   'restaurant',
+  salon:        'salon',
+  trades:       'trades',
+  medical:      'medical',
+  legal:        'legal',
+  retail:       'retail',
+  catering:     'catering',
+  laundry:      'laundry',
+  bakeshop:     'bakeshop',
+  gym:          'gym',
+  photography:  'photography',
+  petcare:      'petcare',
+  gadgetrepair: 'gadgetrepair',
+  generic:      'generic',
 }
 
 // NOTE: CSS-injected layout variants were reverted — they added fragility
@@ -42,7 +49,7 @@ const TEMPLATE_MAP = {
  * Generate a complete website for a business using pre-built templates.
  * Returns the same shape as SiteGenerator.generate() for drop-in compatibility.
  */
-function calculateLeadScore(business) {
+export function calculateLeadScore(business) {
   let score = 0;
   const rd = business.raw_data || {};
   const reviews = parseInt(rd.review_count || 0);
@@ -83,34 +90,68 @@ export async function generateFromTemplate(business, categoryKey, categoryConfig
   // The keyword resolver can miss a business type (e.g. "Mei Sum Tea House"),
   // but Haiku reliably infers offering_type. Trust it to pick the real template
   // so food businesses stop getting the retail "Shop" layout.
+  // BI's offering_type is far more reliable than keyword matching for the
+  // product-vs-service template family. Keyword matching turns "Auto Electrical
+  // Repair Shop" into RETAIL (because of "shop") and renders a store with fake
+  // products + prices. Trust offering_type to correct gross mismatches.
   let effectiveKey    = categoryKey
   let effectiveConfig = categoryConfig
-  if (categoryKey === 'generic' && spec?.offering_type) {
-    if (spec.offering_type === 'menu')          effectiveKey = 'restaurant'
-    else if (spec.offering_type === 'products') effectiveKey = 'retail'
-    // "services" / "mixed" stay generic
+  const PRODUCT_TEMPLATES = new Set(['retail'])
+  const MENU_TEMPLATES    = new Set(['restaurant', 'bakeshop'])
+  if (spec?.offering_type) {
+    const ot = spec.offering_type
+    if (ot === 'services' && (PRODUCT_TEMPLATES.has(categoryKey) || MENU_TEMPLATES.has(categoryKey))) {
+      // A service business mis-filed onto a products/menu template — never sell
+      // "₱299 Premium Item 1" for a repair shop. Route to a services template.
+      effectiveKey = 'trades'
+    } else if (categoryKey === 'generic') {
+      if (ot === 'menu')          effectiveKey = 'restaurant'
+      else if (ot === 'products') effectiveKey = 'retail'
+      // "services" / "mixed" stay generic
+    }
     if (effectiveKey !== categoryKey) {
       effectiveConfig = CATEGORY_CONFIG[effectiveKey] || categoryConfig
-      logger.info(`[TemplateEngine] "${business.name}" reclassified generic → ${effectiveKey} (offering_type=${spec.offering_type})`)
+      logger.info(`[TemplateEngine] "${business.name}" reclassified ${categoryKey} → ${effectiveKey} (offering_type=${ot})`)
     }
   }
 
   categoryKey    = effectiveKey
   categoryConfig = effectiveConfig
-  const tmplKey  = TEMPLATE_MAP[categoryKey] || 'retail'
+  const tmplKey  = TEMPLATE_MAP[categoryKey] || 'generic'
 
-  // Always use the hero-first layout — keeps hero at top where visitors expect it
-  const variantPath = join(TMPL_DIR, `${tmplKey}-hero.html`)
-  const corePath = join(TMPL_DIR, `${tmplKey}.html`)
+  // A/B/C variant selection — deterministic per slug (same business always same variant)
+  const slugSeed   = (business.slug || '').split('').reduce((a, c) => a + c.charCodeAt(0), 0)
+  const variantIdx = slugSeed % 3
+  const variantSfx = ['', '-b', '-c'][variantIdx]
 
-  let tmplPath = corePath
-  let layoutName = 'core'
-  if (existsSync(variantPath)) {
-    tmplPath = variantPath
-    layoutName = `${tmplKey}-hero`
-  } else if (!existsSync(corePath)) {
-    throw new Error(`Template not found: ${tmplKey}`)
+  // Template cascade. The industry-specific landing page ({cat}-lp) must win over
+  // the generic variants — otherwise, since per-category -lp-b/-lp-c don't exist,
+  // any slug hashing to variant b/c fell through to generic-lp-b/c and the
+  // industry design never rendered (~2/3 of businesses). Order:
+  //   {cat}-lp-{b|c}  (category variant, if it ever exists)
+  //   {cat}-lp        (industry landing page) ← now ABOVE generic variants
+  //   generic-lp-{b|c}(only reached when there is no {cat}-lp, i.e. cat = 'generic')
+  //   {cat}-hero → {cat}
+  // For 'generic' businesses tmplKey IS 'generic', so generic-lp-{b|c} still wins
+  // first there, preserving per-business variety for the uncategorised long tail.
+  const candidates = [
+    variantSfx ? join(TMPL_DIR, `${tmplKey}-lp${variantSfx}.html`) : null,
+    join(TMPL_DIR, `${tmplKey}-lp.html`),
+    variantSfx ? join(TMPL_DIR, `generic-lp${variantSfx}.html`)    : null,
+    join(TMPL_DIR, `${tmplKey}-hero.html`),
+    join(TMPL_DIR, `${tmplKey}.html`),
+  ].filter(Boolean)
+
+  let tmplPath   = null
+  let layoutName = null
+  for (const p of candidates) {
+    if (existsSync(p)) {
+      tmplPath   = p
+      layoutName = p.replace(/.*[\\/]/, '').replace('.html', '')
+      break
+    }
   }
+  if (!tmplPath) throw new Error(`Template not found: ${tmplKey}`)
 
   const raw        = readFileSync(tmplPath, 'utf8')
   const specQueries = spec
@@ -163,9 +204,17 @@ function buildVars({ business, categoryKey, categoryConfig, images, claimUrl, si
   const country = business.country || 'US'
   const year    = new Date().getFullYear().toString()
 
-  // Rating / reviews
-  const rating      = raw.rating       || '5.0'
-  const reviewCount = raw.review_count || raw.reviewCount || '10'
+  // Rating / reviews — only surface REAL values; never fabricate social proof.
+  // hasRealRating / hasRealReviews gate the hero stat cells (see HERO_STATS).
+  const rawRating      = raw.rating
+  const rawReviewCount = raw.review_count ?? raw.reviewCount
+  const hasRealRating  = rawRating != null && String(rawRating).trim() !== '' && parseFloat(rawRating) > 0
+  const reviewNum      = parseInt(rawReviewCount, 10)
+  const hasRealReviews = Number.isFinite(reviewNum) && reviewNum > 0
+  // Legacy tokens (still consumed by older non-LP templates) keep a benign
+  // fallback; LP templates render stats via HERO_STATS, not these directly.
+  const rating      = hasRealRating  ? String(rawRating) : '5.0'
+  const reviewCount = hasRealReviews ? String(reviewNum) : '10'
 
   // Hours — use raw or sensible default
   const hours = raw.hours || 'Mon–Fri: 9am–5pm · Sat: 10am–3pm · Sun: Closed'
@@ -220,13 +269,26 @@ function buildVars({ business, categoryKey, categoryConfig, images, claimUrl, si
     : spec?.offering_type === 'mixed'          ? 'What We Offer'
     : 'Our Services'
 
-  // Trust points — specific to this business from spec
+  // Trust points — specific to this business from spec. The hardcoded fallback
+  // seeds a "{rating}★ rated" point; drop any rating-based claim when we have no
+  // real rating so a data-less business never fabricates a 5.0★ trust signal.
+  const fallbackTrust = buildTrustPoints(categoryKey, city, rating)
+    .filter(s => hasRealRating || !/★|rated/i.test(s))
   const trustPoints = spec?.trust_points?.length
     ? fmtList(spec.trust_points)
-    : fmtList(buildTrustPoints(categoryKey, city, rating))
+    : fmtList(fallbackTrust)
 
   const teamMembers = fmtList(buildTeamMembers(name))
   const serviceArea = fmtList(buildServiceArea(city))
+
+  // Always-HTML tokens for landing page templates (never JS-injected, always safe in <ul> context)
+  const servicesHtml = spec?.offerings?.length
+    ? spec.offerings.map(o => `<li><strong>${esc(o.name)}</strong>${o.desc ? ` — ${esc(o.desc)}` : ''}</li>`).join('\n')
+    : buildServices(categoryKey, categoryLabel).map(s => `<li><strong>${esc(s)}</strong></li>`).join('\n')
+
+  const trustHtml = spec?.trust_points?.length
+    ? spec.trust_points.map(s => `<li>${esc(s)}</li>`).join('\n')
+    : fallbackTrust.map(s => `<li>${esc(s)}</li>`).join('\n')
   const socialProof = (parseInt(reviewCount) > 0 ? reviewCount : '50') + '+ happy customers'
 
   // CTA overrides from spec
@@ -303,7 +365,18 @@ function buildVars({ business, categoryKey, categoryConfig, images, claimUrl, si
    a script to fade it in. If that script's selector doesn't match (it targets
    .animate-reveal but the markup uses .fade-up), the content stays invisible —
    empty sections. Force every reveal class visible. Content > animation. */
-.fade-up,.fade-in,.reveal,.reveal-up,.scroll-reveal,.animate-reveal,[data-reveal]{opacity:1!important;transform:none!important;visibility:visible!important}</style>`
+.fade-up,.fade-in,.reveal,.reveal-up,.scroll-reveal,.animate-reveal,[data-reveal]{opacity:1!important;transform:none!important;visibility:visible!important}
+/* Fallback hero-stats styling. Category LP templates define their own (later in
+   the cascade, so they win); the Tailwind generic variants rely on this. */
+.hero-stats{display:flex;gap:36px;flex-wrap:wrap;margin-top:44px;padding-top:32px;border-top:1px solid rgba(255,255,255,.15)}
+.stat-val{font-size:34px;font-weight:700;line-height:1;color:#fff}
+.stat-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;opacity:.6;margin-top:5px;color:#fff}
+/* Gallery (real Google/stock photos) — self-contained, palette-aware. */
+.guma-gallery{padding:clamp(56px,8vw,88px) clamp(20px,5vw,52px);background:#fff}
+.guma-gallery .gg-eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--color-primary,#2C3E50);margin-bottom:10px;font-weight:600}
+.guma-gallery .gg-title{font-family:Georgia,'DM Serif Display',serif;font-size:clamp(28px,4vw,48px);color:#1a1a2e;margin:0 0 40px;line-height:1.05}
+.guma-gallery .gg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.guma-gallery .gg-grid img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;display:block;background:var(--color-dark-2,#141D26)}</style>`
 
   // Decorative ambiance video band (people-free motion). Self-contained inline
   // styles; the real business photo is the poster so it shows instantly. Empty
@@ -320,6 +393,52 @@ function buildVars({ business, categoryKey, categoryConfig, images, claimUrl, si
     <a href="${claimUrl}" style="margin-top:1.5rem;display:inline-block;background:var(--color-accent,#fff);color:#111;padding:.8rem 2rem;border-radius:999px;font-weight:600;text-decoration:none;font-size:.95rem;">${esc(primaryCta)}</a>
   </div>
 </section>` : ''
+
+  // ── Hero stats — honest only. Show rating/reviews ONLY when real data exists
+  // (no more fabricated "5.0★ · 10+ reviews"), plus a truthful location anchor.
+  // Replaces the old always-on "Est. {YEAR}" cell (which misleadingly implied a
+  // founding year of the current year).
+  const REVIEW_LABELS = {
+    restaurant: 'Happy guests', salon: 'Happy clients', trades: 'Jobs done',
+    medical: 'Patients', legal: 'Clients', retail: 'Customers',
+    catering: 'Events served', laundry: 'Loads done', bakeshop: 'Orders baked',
+    gym: 'Members', photography: 'Sessions', petcare: 'Pets cared for',
+    gadgetrepair: 'Repairs done', generic: 'Reviews',
+  }
+  const statCell = (val, label) =>
+    `<div><div class="stat-val">${esc(val)}</div><div class="stat-label">${esc(label)}</div></div>`
+  const heroStatCells = []
+  if (hasRealRating)  heroStatCells.push(statCell(`${rating}★`, 'Rating'))
+  if (hasRealReviews) heroStatCells.push(statCell(`${reviewCount}+`, REVIEW_LABELS[categoryKey] || 'Reviews'))
+  heroStatCells.push(statCell(city || categoryLabel, city ? 'Proudly local' : 'Locally owned'))
+  // Keep at least two stats so the hero never looks bare.
+  if (heroStatCells.length < 2) heroStatCells.unshift(statCell(categoryLabel, 'What we do'))
+  const HERO_STATS = heroStatCells.join('\n      ')
+
+  // ── Gallery block — uses the real Google Places / stock photos the image
+  // pipeline already resolves (previously fetched then discarded by LP templates).
+  // Self-contained section; renders empty (→ no section) when no photos exist.
+  const GALLERY_TITLES = {
+    restaurant: 'A taste of what we serve', salon: 'Our work', trades: 'Recent work',
+    medical: 'Our clinic', legal: 'Our practice', retail: 'In store',
+    catering: 'From our events', laundry: 'Our shop', bakeshop: 'Fresh from our oven',
+    gym: 'Inside the gym', photography: 'Portfolio', petcare: 'Happy visitors',
+    gadgetrepair: 'Our workshop', generic: 'Gallery',
+  }
+  const galleryTitle = GALLERY_TITLES[categoryKey] || 'Gallery'
+  const GALLERY_BLOCK = hasGalleryImages ? `
+<section class="guma-gallery">
+  <div class="gg-eyebrow">GALLERY</div>
+  <h2 class="gg-title">${esc(galleryTitle)}</h2>
+  <div class="gg-grid">
+    ${galleryImages.filter(u => u && u.trim()).map(u =>
+      `<img src="${esc(u)}" alt="${esc(name)} — ${esc(categoryLabel)}" loading="lazy">`).join('\n    ')}
+  </div>
+</section>` : ''
+
+  // ── SEO meta — prefer the strategy-derived title/description from the spec. ──
+  const metaTitle = spec?.meta_title || `${name}${city ? ` | ${city}` : ''}`
+  const metaDescription = spec?.meta_description || heroSubtext || description
 
   return {
     BUSINESS_NAME:      name,
@@ -366,9 +485,15 @@ function buildVars({ business, categoryKey, categoryConfig, images, claimUrl, si
     SECONDARY_CTA:      secondaryCta,
     ICON:               categoryConfig.icon || '🏢',
     GALLERY_SECTION_STYLE: hasGalleryImages ? '' : 'display:none',
+    SERVICES_HTML:      servicesHtml,
+    TRUST_HTML:         trustHtml,
     PALETTE_CSS,
     LAYOUT_CSS:         '',   // layout variants reverted — see note above
     AMBIANCE_BLOCK,
+    HERO_STATS,
+    GALLERY_BLOCK,
+    META_TITLE:         esc(metaTitle),
+    META_DESCRIPTION:   esc(metaDescription),
   }
 }
 
@@ -376,52 +501,80 @@ function buildVars({ business, categoryKey, categoryConfig, images, claimUrl, si
 
 function buildTagline(name, categoryKey, city) {
   const map = {
-    restaurant: `Great food, great vibes${city ? ` in ${city}` : ''}`,
-    salon:      `Look & feel your best${city ? ` in ${city}` : ''}`,
-    trades:     `Reliable service${city ? ` across ${city}` : ''} — done right`,
-    medical:    `Your health is our priority`,
-    legal:      `Experienced legal counsel you can trust`,
-    retail:     `Your local favourite${city ? ` in ${city}` : ''}`,
-    generic:    `Serving ${city || 'the community'} with pride`,
+    restaurant:   `Great food, great vibes${city ? ` in ${city}` : ''}`,
+    salon:        `Look & feel your best${city ? ` in ${city}` : ''}`,
+    trades:       `Reliable service${city ? ` across ${city}` : ''} — done right`,
+    medical:      `Your health is our priority`,
+    legal:        `Experienced legal counsel you can trust`,
+    retail:       `Your local favourite${city ? ` in ${city}` : ''}`,
+    catering:     `Unforgettable flavors for every occasion`,
+    laundry:      `Fresh, clean, on time`,
+    bakeshop:     `Freshly baked every day`,
+    gym:          `Your strongest self starts here`,
+    photography:  `Capturing your story beautifully`,
+    petcare:      `Expert care for your fur babies`,
+    gadgetrepair: `Fixed fast — or it's free`,
+    generic:      `Serving ${city || 'the community'} with pride`,
   }
   return map[categoryKey] || map.generic
 }
 
 function buildServices(categoryKey, label) {
   const map = {
-    restaurant: ['Dine In', 'Takeaway', 'Catering', 'Private Events'],
-    salon:      ['Haircut & Styling', 'Colour & Highlights', 'Manicure & Pedicure', 'Facials & Skincare'],
-    trades:     ['Free Quotes', 'Emergency Callouts', 'Repairs & Maintenance', 'New Installations'],
-    medical:    ['General Consultations', 'Preventive Care', 'Specialist Referrals', 'Telehealth'],
-    legal:      ['Free Consultation', 'Contract Review', 'Dispute Resolution', 'Legal Advice'],
-    retail:     ['In-Store Shopping', 'Online Orders', 'Gift Wrapping', 'Loyalty Rewards'],
-    generic:    ['Professional Services', 'Consultations', 'Custom Solutions', 'Local Delivery'],
+    restaurant:   ['Dine In', 'Takeaway', 'Catering', 'Private Events'],
+    salon:        ['Haircut & Styling', 'Colour & Highlights', 'Manicure & Pedicure', 'Facials & Skincare'],
+    trades:       ['Free Quotes', 'Emergency Callouts', 'Repairs & Maintenance', 'New Installations'],
+    medical:      ['General Consultations', 'Preventive Care', 'Specialist Referrals', 'Telehealth'],
+    legal:        ['Free Consultation', 'Contract Review', 'Dispute Resolution', 'Legal Advice'],
+    retail:       ['In-Store Shopping', 'Online Orders', 'Gift Wrapping', 'Loyalty Rewards'],
+    catering:     ['Full Buffet Setup', 'Live Cooking Stations', 'Lechon & Roasts', 'Corkage-Free Packages'],
+    laundry:      ['Wash & Fold', 'Dry Cleaning', 'Steam Pressing', 'Pick-Up & Delivery'],
+    bakeshop:     ['Freshly Baked Pandesal', 'Specialty Cakes', 'Ensaymada & Rolls', 'Custom Birthday Cakes'],
+    gym:          ['Day Passes', 'Monthly Membership', 'Personal Training', 'Group Classes'],
+    photography:  ['Portrait Sessions', 'Events Coverage', 'Prenuptial Shoots', 'Product Photography'],
+    petcare:      ['Veterinary Consultations', 'Grooming & Bath', 'Pet Boarding', 'Vaccination'],
+    gadgetrepair: ['Screen Replacement', 'Battery Replacement', 'Water Damage Repair', 'Software Troubleshooting'],
+    generic:      ['Professional Services', 'Consultations', 'Custom Solutions', 'Local Delivery'],
   }
   return map[categoryKey] || map.generic
 }
 
 function buildMenuItems(categoryKey) {
   const map = {
-    restaurant: ['Signature Dish', 'Chef\'s Special', 'Daily Special', 'Desserts'],
-    salon:      ['Cut & Style', 'Full Colour', 'Blowout', 'Treatment'],
-    trades:     ['Standard Service', 'Emergency Call', 'Maintenance Plan', 'Full Install'],
-    medical:    ['Initial Consultation', 'Follow-up Visit', 'Health Screening', 'Specialist Review'],
-    legal:      ['Initial Consultation', 'Document Review', 'Full Representation', 'Ongoing Retainer'],
-    retail:     ['New Arrivals', 'Best Sellers', 'Sale Items', 'Gift Ideas'],
-    generic:    ['Service A', 'Service B', 'Package Deal', 'Premium Option'],
+    restaurant:   ['Signature Dish', 'Chef\'s Special', 'Daily Special', 'Desserts'],
+    salon:        ['Cut & Style', 'Full Colour', 'Blowout', 'Treatment'],
+    trades:       ['Standard Service', 'Emergency Call', 'Maintenance Plan', 'Full Install'],
+    medical:      ['Initial Consultation', 'Follow-up Visit', 'Health Screening', 'Specialist Review'],
+    legal:        ['Initial Consultation', 'Document Review', 'Full Representation', 'Ongoing Retainer'],
+    retail:       ['New Arrivals', 'Best Sellers', 'Sale Items', 'Gift Ideas'],
+    catering:     ['Boodle Fight Package', 'Birthday Party Package', 'Corporate Lunch', 'Kiddie Party'],
+    laundry:      ['Express Wash', 'Bulk Laundry', 'Dry Clean Only', 'Monthly Plan'],
+    bakeshop:     ['Pan de Sal', 'Bibingka', 'Ensaymada', 'Ube Cake'],
+    gym:          ['Day Pass', 'Monthly', 'Quarterly', 'Annual VIP'],
+    photography:  ['Portrait Session', 'Event Coverage', 'Prenup Package', 'Product Shoot'],
+    petcare:      ['Consultation', 'Full Grooming', 'Boarding (per night)', 'Vaccination Package'],
+    gadgetrepair: ['Screen Fix', 'Battery Fix', 'Full Diagnostic', 'Data Recovery'],
+    generic:      ['Service A', 'Service B', 'Package Deal', 'Premium Option'],
   }
   return map[categoryKey] || map.generic
 }
 
 function buildTrustPoints(categoryKey, city, rating) {
   const map = {
-    restaurant: [`${rating}★ rated`, `Locally owned`, `Fresh ingredients daily`, `Family friendly`],
-    salon:      [`${rating}★ rated`, `Certified stylists`, `Premium products`, `Walk-ins welcome`],
-    trades:     [`Licensed & insured`, `${city || 'Local'} based`, `Free quotes`, `Same-day service`],
-    medical:    [`Accepting new patients`, `All insurances`, `Same-day appointments`, `Caring staff`],
-    legal:      [`Free consultation`, `No win no fee`, `Confidential`, `Experienced team`],
-    retail:     [`${rating}★ rated`, `Locally owned`, `Easy returns`, `Loyalty rewards`],
-    generic:    [`${rating}★ rated`, `Locally owned`, `Trusted service`, `${city || 'Local'} based`],
+    restaurant:   [`${rating}★ rated`, `Locally owned`, `Fresh ingredients daily`, `Family friendly`],
+    salon:        [`${rating}★ rated`, `Certified stylists`, `Premium products`, `Walk-ins welcome`],
+    trades:       [`Licensed & insured`, `${city || 'Local'} based`, `Free quotes`, `Same-day service`],
+    medical:      [`Accepting new patients`, `All insurances`, `Same-day appointments`, `Caring staff`],
+    legal:        [`Free consultation`, `No win no fee`, `Confidential`, `Experienced team`],
+    retail:       [`${rating}★ rated`, `Locally owned`, `Easy returns`, `Loyalty rewards`],
+    catering:     [`${rating}★ rated`, `Serving ${city || 'the area'}`, `Flexible packages`, `Halal-friendly options`],
+    laundry:      [`Same-day turnaround`, `${city || 'Local'} pick-up`, `Hygienic process`, `Friendly staff`],
+    bakeshop:     [`Baked fresh daily`, `No preservatives`, `Custom orders`, `${city || 'Local'} delivery`],
+    gym:          [`${rating}★ rated`, `Modern equipment`, `Expert trainers`, `Open 7 days`],
+    photography:  [`${rating}★ rated`, `Professional gear`, `Fast turnaround`, `Gallery delivery`],
+    petcare:      [`Licensed vet`, `${rating}★ rated`, `Gentle handling`, `Walk-ins welcome`],
+    gadgetrepair: [`${rating}★ rated`, `90-day warranty`, `Same-day repair`, `Genuine parts`],
+    generic:      [`${rating}★ rated`, `Locally owned`, `Trusted service`, `${city || 'Local'} based`],
   }
   return map[categoryKey] || map.generic
 }
@@ -467,13 +620,20 @@ function jsSafe(str) {
 
 function buildFilTagline(categoryKey) {
   const map = {
-    restaurant: 'Masarap na pagkain para sa lahat',
-    salon:      'Maganda ka sa amin',
-    trades:     'Maaasahang serbisyo',
-    medical:    'Ang iyong kalusugan ang aming priyoridad',
-    legal:      'Ligal na tulong na mapagkakatiwalaan',
-    retail:     'Ang iyong paboritong tindahan',
-    generic:    'Naglilingkod sa komunidad',
+    restaurant:   'Masarap na pagkain para sa lahat',
+    salon:        'Maganda ka sa amin',
+    trades:       'Maaasahang serbisyo',
+    medical:      'Ang iyong kalusugan ang aming priyoridad',
+    legal:        'Ligal na tulong na mapagkakatiwalaan',
+    retail:       'Ang iyong paboritong tindahan',
+    catering:     'Masarap at memorable ang bawat okasyon',
+    laundry:      'Malinis, mabango, maaga pa',
+    bakeshop:     'Sariwang-sariwa araw-araw',
+    gym:          'Maging mas malakas simula ngayon',
+    photography:  'Bawat sandali, iniingatan',
+    petcare:      'Mahal namin ang iyong alagang hayop',
+    gadgetrepair: 'Ayos agad, garantisado',
+    generic:      'Naglilingkod sa komunidad',
   }
   return map[categoryKey] || ''
 }

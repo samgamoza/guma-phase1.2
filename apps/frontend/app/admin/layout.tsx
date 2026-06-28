@@ -11,6 +11,7 @@ const NAV = [
   { href: '/admin/businesses', icon: Building2,       label: 'Businesses' },
   { href: '/admin/sites',      icon: Globe,           label: 'Sites' },
   { href: '/admin/outreach',   icon: Mail,            label: 'Outreach' },
+  { href: '/admin/test-outreach', icon: Mail,        label: 'Test QA' },
   { href: '/admin/data',       icon: Database,        label: 'Data Import' },
 ]
 

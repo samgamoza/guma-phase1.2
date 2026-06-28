@@ -7,12 +7,18 @@ import {
   Plus, LayoutGrid, Menu, X, UserCheck, Check, TrendingUp,
   MapPin, BarChart3, RefreshCw, Globe, Target, Heart,
   MessageCircle, Tag, ShieldCheck, Lock, Download, EyeOff,
-  HelpCircle, ChevronDown, ChevronRight, Minus, Twitter,
-  Linkedin, Github, BadgeCheck, Star, Wrench, Cog, Disc,
+  HelpCircle, ChevronDown, ChevronRight, Minus, BadgeCheck,
+  Star, Wrench, Cog, Disc,
   Thermometer, Smile, Scan, Sparkles, Shield, Scissors, Palette,
   Dumbbell, Users, HeartPulse, Droplets, AlertTriangle, Flame,
   Utensils, Wine, Pizza
 } from 'lucide-react'
+// These deprecated brand icons trip Next's package-import optimizer when pulled
+// from the barrel (resolve to undefined at build → prerender crash). Import them
+// from their module paths directly to bypass the optimizer.
+import Twitter from 'lucide-react/dist/esm/icons/twitter'
+import Linkedin from 'lucide-react/dist/esm/icons/linkedin'
+import Github from 'lucide-react/dist/esm/icons/github'
 
 const FAQS = [
   { q: 'How does Guma AI know about my business?', a: 'We use publicly available business data — Google Business Profile, public directories, and other open sources.' },
@@ -114,7 +120,7 @@ export default function LandingPage() {
             <button onClick={() => showToast('Build from scratch coming soon!')} className="nav-link text-sm text-neutral-400 hover:text-white transition-colors">Build from scratch</button>
           </div>
           <div className="hidden md:flex items-center gap-3">
-            <button onClick={() => showToast('Sign in coming soon!')} className="text-sm text-neutral-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5">Sign in</button>
+            <a href="/auth/login" className="text-sm text-neutral-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5">Sign in</a>
             <button
               onClick={() => { heroSearchRef.current?.focus(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
               className="text-sm font-medium bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-xl transition-all glow-btn flex items-center gap-1.5"
@@ -133,7 +139,7 @@ export default function LandingPage() {
             ))}
             <a href="#" onClick={(e) => { e.preventDefault(); showToast('Build from scratch coming soon!'); setMobileMenuOpen(false) }} className="text-sm text-neutral-400 hover:text-white transition-colors py-2">Build from scratch</a>
             <hr className="border-white/10" />
-            <button onClick={() => { showToast('Sign in coming soon!'); setMobileMenuOpen(false) }} className="text-sm text-neutral-400 hover:text-white transition-colors py-2 text-left">Sign in</button>
+            <a href="/auth/login" onClick={() => setMobileMenuOpen(false)} className="text-sm text-neutral-400 hover:text-white transition-colors py-2">Sign in</a>
             <button
               onClick={() => { heroSearchRef.current?.focus(); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
               className="text-sm font-medium bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-xl transition-all text-center flex items-center justify-center gap-1.5"

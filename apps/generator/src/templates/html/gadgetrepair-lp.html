@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{META_TITLE}}</title>
+<meta name="description" content="{{META_DESCRIPTION}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+{{PALETTE_CSS}}
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --p:var(--color-primary,#0D47A1);
+  --p2:var(--color-secondary,#1565C0);
+  --accent:var(--color-accent,#29B6F6);
+  --dark:#0A0A1A;
+  --dark2:#0D0D20;
+  --fb:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--fb);background:var(--dark);color:#fff;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+.claim-bar{background:var(--accent);color:#000;text-align:center;padding:10px 16px;font-size:13px;font-weight:600;position:sticky;top:0;z-index:100;line-height:1.4}
+.claim-bar a{color:#000;font-weight:800;text-decoration:underline}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:22px 52px;position:absolute;top:44px;left:0;right:0;z-index:10}
+.nav-logo{font-size:19px;font-weight:900;color:#fff;max-width:60%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-0.5px}
+.nav-cta{background:var(--accent);color:#000;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0}
+
+.hero{min-height:92vh;position:relative;display:flex;align-items:flex-end;padding:80px 52px}
+.hero-bg{position:absolute;inset:0;background-image:url('{{HERO_IMAGE}}');background-size:cover;background-position:center;background-color:var(--dark2);opacity:.35}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,26,.99) 38%,rgba(10,10,26,.65) 68%,rgba(10,10,26,.2))}
+/* Circuit-board dot grid overlay */
+.hero-overlay::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(41,182,246,.15) 1px,transparent 1px);background-size:24px 24px;opacity:.5}
+.hero-content{position:relative;max-width:700px}
+.hero-eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;font-weight:600}
+.hero-title{font-size:clamp(40px,6.5vw,80px);font-weight:900;line-height:1;color:#fff;margin-bottom:22px;letter-spacing:-1.5px}
+.hero-title span{color:var(--accent)}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.65);max-width:480px;line-height:1.7;margin-bottom:40px;font-weight:300}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{background:var(--accent);color:#000;padding:15px 32px;border-radius:6px;text-decoration:none;font-size:15px;font-weight:700;transition:filter .2s}
+.btn-primary:hover{filter:brightness(1.1)}
+.btn-outline{border:1.5px solid rgba(255,255,255,.25);color:#fff;padding:15px 32px;border-radius:6px;text-decoration:none;font-size:15px;font-weight:500;transition:all .2s}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.hero-stats{display:flex;gap:40px;margin-top:52px;padding-top:36px;border-top:1px solid rgba(255,255,255,.08);flex-wrap:wrap}
+.stat-val{font-size:36px;font-weight:900;color:var(--accent);letter-spacing:-1px}
+.stat-label{font-size:11px;color:rgba(255,255,255,.35);margin-top:4px;text-transform:uppercase;letter-spacing:1.5px;font-weight:500}
+
+.strip{background:var(--p2);padding:12px 52px;display:flex;gap:28px;overflow-x:auto;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.strip-item{white-space:nowrap;font-size:11px;font-weight:600;color:#fff;letter-spacing:2px;text-transform:uppercase;opacity:.9}
+.strip-sep{color:rgba(255,255,255,.3);flex-shrink:0}
+
+.services{padding:88px 52px;background:var(--dark2)}
+.section-eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;font-weight:700}
+.section-title{font-size:clamp(28px,4vw,50px);font-weight:900;color:#fff;margin-bottom:52px;letter-spacing:-1px}
+.services-grid{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:2px;background:rgba(41,182,246,.06)}
+.services-grid li{background:var(--dark2);padding:28px 30px;border-top:2px solid var(--accent);transition:background .2s}
+.services-grid li:hover{background:rgba(41,182,246,.06)}
+.services-grid li strong{display:block;font-size:17px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.3;letter-spacing:-0.3px}
+.services-grid li{font-size:13px;color:rgba(255,255,255,.45);line-height:1.6}
+
+.trust{padding:44px 52px;background:var(--p);border-top:2px solid var(--accent)}
+.trust-list{list-style:none;display:flex;gap:36px;flex-wrap:wrap}
+.trust-list li{display:flex;align-items:center;gap:10px;font-size:14px;color:rgba(255,255,255,.82);flex:1;min-width:180px;font-weight:500}
+.trust-list li::before{content:'✓';color:var(--accent);font-size:16px;font-weight:800;flex-shrink:0}
+
+.info{display:grid;grid-template-columns:1fr 1fr;background:var(--dark)}
+.info-col{padding:60px 52px}
+.info-col+.info-col{border-left:1px solid rgba(255,255,255,.05)}
+.info-title{font-size:26px;font-weight:900;color:#fff;margin-bottom:28px;letter-spacing:-0.5px}
+.info-row{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.info-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:4px;font-weight:600}
+.info-value{font-size:15px;color:rgba(255,255,255,.82);line-height:1.5}
+
+.claim-section{background:var(--p2);padding:80px 52px;text-align:center;border-top:2px solid var(--accent)}
+.claim-section h2{font-size:clamp(28px,4.5vw,54px);font-weight:900;color:#fff;margin-bottom:14px;letter-spacing:-1px}
+.claim-section p{font-size:16px;color:rgba(255,255,255,.65);margin-bottom:36px;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.65;font-weight:300}
+.btn-claim{background:var(--accent);color:#000;padding:18px 48px;border-radius:6px;text-decoration:none;font-size:15px;font-weight:800;display:inline-block;transition:all .2s}
+.btn-claim:hover{filter:brightness(1.1);transform:translateY(-2px)}
+
+footer{background:#000;padding:28px 52px;display:flex;justify-content:space-between;align-items:center;gap:16px;border-top:1px solid rgba(255,255,255,.04)}
+.footer-brand{font-size:15px;font-weight:700;color:rgba(255,255,255,.22);letter-spacing:-0.3px}
+.footer-text{font-size:12px;color:rgba(255,255,255,.18)}
+
+@media(max-width:768px){
+  nav{padding:16px 20px}
+  .hero{padding:60px 20px 48px}
+  .strip{padding:12px 20px;gap:18px}
+  .services{padding:56px 20px}
+  .trust{padding:36px 20px}.trust-list{gap:20px}
+  .info{grid-template-columns:1fr}
+  .info-col{padding:40px 20px}
+  .info-col+.info-col{border-left:none;border-top:1px solid rgba(255,255,255,.05)}
+  .claim-section{padding:60px 20px}
+  footer{flex-direction:column;padding:24px 20px;text-align:center}
+}
+</style>
+</head>
+<body>
+<div class="claim-bar">&#128241; This site was built for {{BUSINESS_NAME}} &mdash; <a href="{{CLAIM_URL}}">Claim it free &rarr;</a></div>
+<nav>
+  <div class="nav-logo">{{BUSINESS_NAME}}</div>
+  <a href="{{CLAIM_URL}}" class="nav-cta">Claim This Site</a>
+</nav>
+<section class="hero">
+  <div class="hero-bg"></div><div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">{{CATEGORY}} &middot; {{CITY}}</div>
+    <h1 class="hero-title">{{BUSINESS_NAME}}<br><span>{{TAGLINE}}</span></h1>
+    <p class="hero-sub">{{DESCRIPTION}}</p>
+    <div class="hero-actions">
+      <a href="tel:{{PHONE}}" class="btn-primary">{{PRIMARY_CTA}}</a>
+      <a href="{{CLAIM_URL}}" class="btn-outline">Claim This Site &rarr;</a>
+    </div>
+    <div class="hero-stats">
+      {{HERO_STATS}}
+    </div>
+  </div>
+</section>
+<div class="strip">
+  <span class="strip-item">{{CATEGORY}}</span><span class="strip-sep">&middot;</span>
+  <span class="strip-item">{{CITY}}</span><span class="strip-sep">&middot;</span>
+  <span class="strip-item">{{PHONE}}</span><span class="strip-sep">&middot;</span>
+  <span class="strip-item">{{HOURS}}</span>
+</div>
+<section class="services">
+  <div class="section-eyebrow">WHAT WE FIX</div>
+  <h2 class="section-title">Our Repair Services</h2>
+  <ul class="services-grid">{{SERVICES_HTML}}</ul>
+</section>
+<div class="trust"><ul class="trust-list">{{TRUST_HTML}}</ul></div>
+<div class="info">
+  <div class="info-col">
+    <h3 class="info-title">Hours &amp; Location</h3>
+    <div class="info-row"><div class="info-label">Hours</div><div class="info-value">{{HOURS}}</div></div>
+    <div class="info-row"><div class="info-label">Address</div><div class="info-value">{{ADDRESS}}</div></div>
+  </div>
+  <div class="info-col">
+    <h3 class="info-title">Get a Quote</h3>
+    <div class="info-row"><div class="info-label">Phone</div><div class="info-value">{{PHONE}}</div></div>
+    <div class="info-row"><div class="info-label">City</div><div class="info-value">{{CITY}}, {{COUNTRY}}</div></div>
+    <div style="margin-top:28px"><a href="tel:{{PHONE}}" class="btn-primary" style="display:inline-block;padding:12px 28px;font-size:14px">Call Now</a></div>
+  </div>
+</div>
+{{GALLERY_BLOCK}}
+<section class="claim-section">
+  <h2>This site belongs to {{BUSINESS_NAME}}</h2>
+  <p>We built it for free. Claim it, add your price list and promos, and make it truly yours &mdash; no credit card needed.</p>
+  <a href="{{CLAIM_URL}}" class="btn-claim">Claim My Free Site &rarr;</a>
+</section>
+<footer>
+  <div class="footer-brand">{{BUSINESS_NAME}}</div>
+  <div class="footer-text">&copy; {{YEAR}} {{BUSINESS_NAME}} &middot; {{CITY}} &middot; Built by Guma AI</div>
+</footer>
+</body>
+</html>

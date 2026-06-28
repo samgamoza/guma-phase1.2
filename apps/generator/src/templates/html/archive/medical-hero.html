@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{BUSINESS_NAME}} — {{CITY}}</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap');
+
+:root {
+  --color-primary: #1A7A4A;
+  --color-primary-dark: #145f39;
+  --color-primary-light: #e8f5ee;
+  --color-secondary: #239B56;
+  --color-accent: #52BE80;
+  --color-accent-soft: #a9dfbf;
+  --color-gold: #F0B429;
+  --color-text: #1a1f2e;
+  --color-text-muted: #6b7280;
+  --color-text-light: #9ca3af;
+  --color-bg: #ffffff;
+  --color-bg-soft: #f8fdfb;
+  --color-bg-alt: #f0f9f4;
+  --color-border: #e5e7eb;
+  --color-white: #ffffff;
+  --font: 'DM Sans', sans-serif;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.05);
+  --shadow: 0 4px 16px rgba(0,0,0,.08), 0 1px 4px rgba(0,0,0,.05);
+  --shadow-md: 0 8px 32px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.06);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,.12), 0 4px 16px rgba(0,0,0,.08);
+  --shadow-green: 0 8px 32px rgba(26,122,74,.25);
+  --transition: 0.25s cubic-bezier(.4,0,.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: var(--font); border: none; outline: none; }
+ul { list-style: none; }
+
+/* ─── SCROLLBAR ─────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-bg-soft); }
+::-webkit-scrollbar-thumb { background: var(--color-accent-soft); border-radius: 99px; }
+
+/* ─── CLAIM BANNER ──────────────────────── */
+#claim-banner {
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  color: var(--color-white);
+  text-align: center;
+  padding: 10px 48px 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  position: relative;
+  z-index: 1000;
+}
+#claim-banner a {
+  color: var(--color-white);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
+  margin-left: 6px;
+  transition: opacity var(--transition);
+}
+#claim-banner a:hover { opacity: 0.8; }
+#claim-banner-close {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,.2);
+  border: none;
+  color: #fff;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+#claim-banner-close:hover { background: rgba(255,255,255,.35); }
+
+/* ─── NAV ───────────────────────────────── */
+#main-nav {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: rgba(255,255,255,.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 1px 0 rgba(26,122,74,.06);
+}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.nav-logo-mark {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-green);
+}
+.nav-logo-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+.nav-logo-sub {
+  font-size: 11px;
+  color: var(--color-primary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.nav-links {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  justify-content: center;
+}
+.nav-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.nav-links a:hover {
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  background: var(--color-bg-soft);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 600;
+}
+.lang-toggle button {
+  padding: 6px 10px;
+  background: transparent;
+  color: var(--color-text-muted);
+  transition: all var(--transition);
+  border: none;
+  font-weight: 600;
+  font-size: 12px;
+  font-family: var(--font);
+}
+.lang-toggle button.active {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 600;
+  transition: all var(--transition);
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+  font-family: var(--font);
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: var(--color-white);
+  box-shadow: var(--shadow-green);
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 40px rgba(26,122,74,.35);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+}
+.btn-outline:hover {
+  background: var(--color-primary-light);
+  transform: translateY(-1px);
+}
+.btn-ghost {
+  background: rgba(255,255,255,.15);
+  color: var(--color-white);
+  border: 1.5px solid rgba(255,255,255,.4);
+  backdrop-filter: blur(8px);
+}
+.btn-ghost:hover {
+  background: rgba(255,255,255,.25);
+  transform: translateY(-1px);
+}
+.btn-lg {
+  padding: 16px 32px;
+  font-size: 16px;
+  border-radius: 14px;
+}
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--color-text);
+  border-radius: 2px;
+  transition: all var(--transition);
+}
+
+/* ─── MOBILE MENU ───────────────────────── */
+#mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(26,31,46,.7);
+  z-index: 9998;
+  backdrop-filter: blur(4px);
+}
+#mobile-menu.open { display: block; }
+.mobile-menu-panel {
+  position: absolute;
+  top: 0; right: 0;
+  width: min(320px, 90vw);
+  height: 100%;
+  background: var(--color-white);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: var(--shadow-lg);
+}
+.mobile-menu-close {
+  align-self: flex-end;
+  background: var(--color-bg-soft);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.mobile-menu-panel a {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text);
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  transition: all var(--transition);
+}
+.mobile-menu-panel a:hover {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+.mobile-menu-panel .btn { width: 100%; margin-top: 8px; justify-content: center; }
+
+/* ─── PULSE ANIMATION ───────────────────── */
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(26,122,74,.4), var(--shadow-green); }
+  70% { box-shadow: 0 0 0 12px rgba(26,122,74,0), var(--shadow-green); }
+  100% { box-shadow: 0 0 0 0 rgba(26,122,74,0), var(--shadow-green); }
+}
+.btn-pulse { animation: pulse-ring 2.5s cubic-bezier(.455,.03,.515,.955) infinite; }
+
+/* ─── MARQUEE TICKER ────────────────────── */
+.ticker-wrap {
+  background: var(--color-primary-light);
+  border-bottom: 1px solid var(--color-accent-soft);
+  overflow: hidden;
+  padding: 10px 0;
+}
+.ticker-inner {
+  display: flex;
+  gap: 0;
+  white-space: nowrap;
+  animation: ticker-scroll 30s linear infinite;
+}
+.ticker-inner:hover { animation-play-state: paused; }
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-primary);
+}
+.ticker-item::after {
+  content: '✦';
+  color: var(--color-accent);
+  font-size: 8px;
+}
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ─── HERO ──────────────────────────────── */
+.hero {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('{{HERO_IMAGE}}');
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.04);
+  transition: transform 8s ease-out;
+}
+.hero-bg.loaded { transform: scale(1); }
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(10, 50, 30, 0.78) 0%,
+    rgba(26, 122, 74, 0.5) 50%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+.hero-overlay-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 20% 80%, rgba(82,190,128,.15) 0%, transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(26,122,74,.1) 0%, transparent 40%);
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px 60px;
+  width: 100%;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.2);
+  color: rgba(255,255,255,.9);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 8px 16px;
+  border-radius: 99px;
+  margin-bottom: 24px;
+}
+.hero-badge span { color: var(--color-accent); }
+.hero-title {
+  font-size: clamp(32px, 6vw, 72px);
+  font-weight: 700;
+  color: var(--color-white);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  max-width: 700px;
+}
+.hero-title em {
+  font-style: normal;
+  background: linear-gradient(135deg, #7DCEA0, #52BE80);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-tagline {
+  font-size: clamp(16px, 2.5vw, 20px);
+  color: rgba(255,255,255,.8);
+  font-weight: 300;
+  max-width: 500px;
+  margin-bottom: 36px;
+  line-height: 1.6;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 48px;
+}
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.hero-stat-num {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-white);
+  line-height: 1;
+}
+.hero-stat-label {
+  font-size: 12px;
+  color: rgba(255,255,255,.6);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.hero-stars {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.stars {
+  display: flex;
+  gap: 2px;
+}
+.star { color: var(--color-gold); font-size: 16px; }
+.hero-rating-text {
+  font-size: 14px;
+  color: rgba(255,255,255,.75);
+  font-weight: 500;
+}
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,.5);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  animation: bounce 2s ease-in-out infinite;
+  z-index: 2;
+}
+.hero-scroll-hint svg { width: 20px; height: 20px; stroke: currentColor; fill: none; }
+@keyframes bounce {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+/* ─── SECTION COMMONS ───────────────────── */
+section { padding: 80px 0; }
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+  padding: 6px 14px;
+  border-radius: 99px;
+  margin-bottom: 16px;
+}
+.section-title {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--color-text);
+  margin-bottom: 12px;
+}
+.section-sub {
+  font-size: 17px;
+  color: var(--color-text-muted);
+  font-weight: 400;
+  max-width: 560px;
+  line-height: 1.7;
+}
+.text-center { text-align: center; }
+.text-center .section-sub { margin: 0 auto; }
+
+/* ─── SERVICES ──────────────────────────── */
+.services-section { background: var(--color-bg); }
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 48px;
+}
+.service-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.service-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--color-primary), var(--color-accent));
+  border-radius: 2px 0 0 2px;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+.service-card:hover {
+  border-color: var(--color-accent-soft);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.service-card:hover::before { opacity: 1; }
+.service-icon {
+  width: 52px;
+  height: 52px;
+  background: var(--color-primary-light);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+  transition: all var(--transition);
+}
+.service-card:hover .service-icon {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  transform: scale(1.05);
+}
+.service-body { flex: 1; }
+.service-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.service-desc {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+.service-tag {
+  display: inline-block;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: 99px;
+  margin-top: 10px;
+}
+
+/* ─── INSURANCE ─────────────────────────── */
+.insurance-section {
+  background: var(--color-bg-soft);
+  padding: 60px 0;
+}
+.insurance-logos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 40px;
+}
+.insurance-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 16px 24px;
+  min-width: 130px;
+  text-align: center;
+  transition: all var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.insurance-card:hover {
+  border-color: var(--color-accent-soft);
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+.insurance-logo-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-bg-alt));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.insurance-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.insurance-type {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+.insurance-note {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+.insurance-note a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ─── DOCTOR ────────────────────────────── */
+.doctor-section { background: var(--color-bg); }
+.doctor-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.doctor-image-wrap {
+  position: relative;
+}
+.doctor-image {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+}
+.doctor-image-placeholder {
+  width: 100%;
+  aspect-ratio: 4/5;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, var(--color-bg-alt) 0%, var(--color-primary-light) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  box-shadow: var(--shadow-lg);
+  border: 2px dashed var(--color-accent-soft);
+}
+.doctor-image-placeholder svg {
+  width: 80px;
+  height: 80px;
+  stroke: var(--color-accent);
+  fill: none;
+  opacity: 0.5;
+}
+.doctor-image-placeholder p {
+  color: var(--color-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+.doctor-credentials-badge {
+  position: absolute;
+  bottom: 24px;
+  right: -8px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.doctor-cred-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.doctor-cred-text strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+.doctor-cred-text span {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+.doctor-experience-badge {
+  position: absolute;
+  top: 24px;
+  left: -8px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: var(--color-white);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  box-shadow: var(--shadow-green);
+  text-align: center;
+}
+.doctor-experience-badge strong {
+  display: block;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+}
+.doctor-experience-badge span {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+}
+.doctor-body { display: flex; flex-direction: column; gap: 20px; }
+.doctor-name {
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.doctor-specialty {
+  font-size: 16px;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+.doctor-bio {
+  font-size: 16px;
+  color: var(--color-text-muted);
+  line-height: 1.8;
+}
+.doctor-credentials-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.doctor-cred-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 99px;
+}
+.doctor-cred-pill::before { content: '✓'; }
+
+/* ─── TESTIMONIALS ──────────────────────── */
+.testimonials-section {
+  background: var(--color-bg-alt);
+  position: relative;
+  overflow: hidden;
+}
+.testimonials-section::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(82,190,128,.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-top: 48px;
+}
+.testimonial-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all var(--transition);
+  position: relative;
+}
+.testimonial-card::after {
+  content: '"';
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-size: 80px;
+  line-height: 1;
+  color: var(--color-primary-light);
+  font-family: Georgia, serif;
+  pointer-events: none;
+}
+.testimonial-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--color-accent-soft);
+}
+.testimonial-stars { display: flex; gap: 3px; }
+.testimonial-text {
+  font-size: 15px;
+  color: var(--color-text);
+  line-height: 1.7;
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+}
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+}
+.testimonial-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-white);
+  flex-shrink: 0;
+}
+.testimonial-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+.testimonial-meta {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+.testimonial-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--color-primary);
+  font-weight: 600;
+  background: var(--color-primary-light);
+  padding: 3px 8px;
+  border-radius: 99px;
+}
+.overall-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  text-align: center;
+  margin-top: 40px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: var(--shadow);
+}
+.overall-rating-num {
+  font-size: 64px;
+  font-weight: 800;
+  color: var(--color-text);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.overall-rating-label {
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+/* ─── CONTACT ───────────────────────────── */
+.contact-section {
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-secondary) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.contact-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 10% 90%, rgba(255,255,255,.06) 0%, transparent 40%),
+    radial-gradient(circle at 90% 10%, rgba(255,255,255,.04) 0%, transparent 40%);
+  pointer-events: none;
+}
+.contact-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  position: relative;
+  z-index: 1;
+}
+.contact-info {
+  color: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.contact-info .section-eyebrow {
+  background: rgba(255,255,255,.15);
+  color: rgba(255,255,255,.9);
+}
+.contact-info .section-title { color: var(--color-white); }
+.contact-info .section-sub { color: rgba(255,255,255,.75); max-width: 440px; }
+.contact-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.contact-detail-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.contact-detail-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,.55);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.contact-detail-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-white);
+  line-height: 1.4;
+}
+.contact-form-wrap {
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  padding: 36px;
+  box-shadow: var(--shadow-lg);
+}
+.contact-form-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+.contact-form-sub {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin-bottom: 24px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-family: var(--font);
+  color: var(--color-text);
+  background: var(--color-bg);
+  transition: all var(--transition);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(26,122,74,.12);
+}
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+}
+.form-submit {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: var(--radius);
+  margin-top: 8px;
+}
+.form-privacy {
+  text-align: center;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 10px;
+}
+.form-privacy a { color: var(--color-primary); text-decoration: underline; text-underline-offset: 2px; }
+
+/* ─── TRUST POINTS ──────────────────────── */
+.trust-bar {
+  background: var(--color-bg-soft);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: 24px 0;
+}
+.trust-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.trust-item-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--color-primary-light);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+}
+
+/* ─── FREE vs PRO TABLE ─────────────────── */
+.pricing-section { background: var(--color-bg); }
+.pricing-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-top: 48px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.pricing-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1.5px solid var(--color-border);
+  transition: all var(--transition);
+}
+.pricing-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.pricing-card.featured {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(26,122,74,.15), var(--shadow-md);
+}
+.pricing-header {
+  padding: 24px 28px;
+  background: var(--color-bg-soft);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pricing-card.featured .pricing-header {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+}
+.pricing-plan {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-text);
+}
+.pricing-card.featured .pricing-plan { color: var(--color-white); }
+.pricing-price {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+.pricing-card.featured .pricing-price { color: var(--color-white); }
+.pricing-price span {
+  font-size: 14px;
+  font-weight: 400;
+  opacity: 0.7;
+}
+.pricing-body { padding: 24px 28px; }
+.pricing-feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 14px;
+  color: var(--color-text);
+}
+.pricing-feature:last-child { border-bottom: none; }
+.feat-check {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.feat-check.yes {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+.feat-check.no {
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+.pricing-badge {
+  background: var(--color-gold);
+  color: #7B4F00;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 99px;
+}
+.pricing-cta {
+  padding: 24px 28px 28px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+}
+.social-proof-nudge {
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.nudge-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  animation: blink 1.5s ease-in-out infinite;
+}
+@keyframes blink {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(.8); }
+}
+
+/* ─── FOOTER ────────────────────────────── */
+footer {
+  background: var(--color-text);
+  color: rgba(255,255,255,.7);
+  padding: 48px 0 32px;
+}
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px;
+}
+.footer-brand { display: flex; flex-direction: column; gap: 12px; }
+.footer-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer-logo-mark {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+}
+.footer-brand-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-white);
+}
+.footer-brand-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  max-width: 280px;
+}
+.footer-nav-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,.4);
+  margin-bottom: 14px;
+}
+.footer-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.footer-nav-links a {
+  font-size: 14px;
+  color: rgba(255,255,255,.65);
+  transition: color var(--transition);
+}
+.footer-nav-links a:hover { color: var(--color-white); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.08);
+  margin-top: 36px;
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  text-align: center;
+}
+.footer-bottom-text { font-size: 13px; }
+.powered-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 99px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: rgba(255,255,255,.5);
+  transition: all var(--transition);
+}
+.powered-badge:hover {
+  background: rgba(255,255,255,.1);
+  color: rgba(255,255,255,.8);
+}
+.powered-badge strong { color: var(--color-accent); }
+
+/* ─── STICKY MOBILE BAR ─────────────────── */
+.mobile-claim-bar {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: var(--color-white);
+  z-index: 9900;
+  padding: 12px 20px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 -4px 20px rgba(26,122,74,.3);
+}
+.mobile-claim-bar a { color: var(--color-white); text-decoration: underline; text-underline-offset: 2px; }
+
+/* ─── RESPONSIVE ────────────────────────── */
+@media (max-width: 767px) {
+  .mobile-claim-bar { display: block; }
+  body { padding-bottom: 56px; }
+  .nav-links { display: none; }
+  .nav-cta-desktop { display: none; }
+}
+
+@media (min-width: 768px) {
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+  .pricing-cards { grid-template-columns: repeat(2, 1fr); }
+  .footer-inner { grid-template-columns: 2fr 1fr 1fr; }
+  .form-row { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: flex; }
+  .hamburger { display: none; }
+  .contact-inner { grid-template-columns: 1fr 1fr; }
+  .doctor-inner { grid-template-columns: 1fr 1fr; }
+}
+
+@media (min-width: 1024px) {
+  .services-grid { grid-template-columns: repeat(3, 1fr); }
+  .testimonials-grid { grid-template-columns: repeat(3, 1fr); }
+  .doctor-credentials-badge { right: -16px; }
+  .doctor-experience-badge { left: -16px; }
+}
+
+/* ─── GALLERY ───────────────────────────── */
+.gallery-section { background: var(--color-bg-soft); padding: 80px 0; }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 40px;
+}
+@media (min-width: 480px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 768px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+.gallery-item {
+  position: relative;
+  aspect-ratio: 4/3;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+}
+.gallery-item:hover img { transform: scale(1.06); }
+.gallery-item-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,50,30,.7) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity var(--transition);
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+}
+.gallery-item:hover .gallery-item-overlay { opacity: 1; }
+.gallery-item-overlay span {
+  color: var(--color-white);
+  font-size: 14px;
+  font-weight: 600;
+}
+.gallery-item:nth-child(1) { grid-row: span 1; }
+@media (min-width: 768px) {
+  .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+}
+
+/* ─── ANIMATION UTILS ───────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s cubic-bezier(.4,0,.2,1), transform 0.6s cubic-bezier(.4,0,.2,1);
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-up:nth-child(2) { transition-delay: 0.1s; }
+.fade-up:nth-child(3) { transition-delay: 0.2s; }
+.fade-up:nth-child(4) { transition-delay: 0.3s; }
+.fade-up:nth-child(5) { transition-delay: 0.4s; }
+.fade-up:nth-child(6) { transition-delay: 0.5s; }
+
+/* ─── SUCCESS MESSAGE ───────────────────── */
+.form-success {
+  display: none;
+  background: var(--color-primary-light);
+  border: 1.5px solid var(--color-accent-soft);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  color: var(--color-primary);
+  font-weight: 600;
+  margin-top: 16px;
+}
+</style>
+</head>
+<body>
+
+<!-- ── CLAIM BANNER ──────────────────────────── -->
+<div id="claim-banner" role="banner">
+  <span data-en="🏥 This site was built for you by SiteForge — claim it free &nbsp;·&nbsp;" data-fil="🏥 Ang site na ito ay ginawa para sa inyo ng SiteForge — i-claim nang libre &nbsp;·&nbsp;">🏥 This site was built for you by SiteForge — claim it free &nbsp;·&nbsp;</span><a href="{{CLAIM_URL}}" data-en="Claim my site →" data-fil="I-claim ang aking site →">Claim my site →</a>
+  <button id="claim-banner-close" aria-label="Close banner">✕</button>
+</div>
+
+<!-- ── STICKY NAV ────────────────────────────── -->
+<nav id="main-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-mark">🏥</div>
+      <div>
+        <div class="nav-logo-text">{{BUSINESS_NAME}}</div>
+        <div class="nav-logo-sub">{{CATEGORY}} · {{CITY}}</div>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <a href="#services" data-en="Services" data-fil="Mga Serbisyo">Services</a>
+      <a href="#doctor" data-en="Our Doctor" data-fil="Aming Doktor">Our Doctor</a>
+      <a href="#gallery" data-en="Gallery" data-fil="Galeria">Gallery</a>
+      <a href="#testimonials" data-en="Reviews" data-fil="Mga Review">Reviews</a>
+      <a href="#contact" data-en="Contact" data-fil="Makipag-ugnayan">Contact</a>
+    </div>
+
+    <div class="nav-right">
+      <div class="lang-toggle">
+        <button id="lang-en" class="active" onclick="setLang('en')">EN</button>
+        <button id="lang-fil" onclick="setLang('fil')">FIL</button>
+      </div>
+      <a href="#contact" class="btn btn-primary nav-cta-desktop btn-pulse" data-en="Book Appointment" data-fil="{{FIL_CTA}}">Book Appointment</a>
+      <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── MOBILE MENU ───────────────────────────── -->
+<div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile menu">
+  <div class="mobile-menu-panel">
+    <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">✕</button>
+    <a href="#services" data-en="Services" data-fil="Mga Serbisyo">Services</a>
+    <a href="#doctor" data-en="Our Doctor" data-fil="Aming Doktor">Our Doctor</a>
+    <a href="#gallery" data-en="Gallery" data-fil="Galeria">Gallery</a>
+    <a href="#testimonials" data-en="Reviews" data-fil="Mga Review">Reviews</a>
+    <a href="#contact" data-en="Contact" data-fil="Makipag-ugnayan">Contact</a>
+    <a href="#contact" class="btn btn-primary btn-pulse" data-en="Book Appointment" data-fil="{{FIL_CTA}}">Book Appointment</a>
+    <a href="#contact" class="btn btn-outline" data-en="New Patient Info" data-fil="Impormasyon para sa Bagong Pasyente">New Patient Info</a>
+  </div>
+</div>
+
+<!-- ── MARQUEE TICKER ────────────────────────── -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-inner" id="ticker-inner">
+    <!-- JS fills this -->
+  </div>
+</div>
+
+<!-- ── HERO ──────────────────────────────────── -->
+<section class="hero" aria-label="Hero">
+  <div class="hero-bg" id="hero-bg" style="background-image:url('{{HERO_IMAGE}}')"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-overlay-pattern"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span>🏥</span>
+      <span data-en="{{CATEGORY}} · {{CITY}}, {{COUNTRY}}" data-fil="{{CATEGORY}} · {{CITY}}, {{COUNTRY}}">{{CATEGORY}} · {{CITY}}, {{COUNTRY}}</span>
+    </div>
+
+    <div class="hero-stars">
+      <div class="stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <span class="hero-rating-text"><strong>{{RATING}}</strong> · {{REVIEW_COUNT}} verified reviews</span>
+    </div>
+
+    <h1 class="hero-title">
+      <span data-en="Your Health,<br><em>Our Priority</em>" data-fil="Ang Inyong Kalusugan,<br><em>Aming Prayoridad</em>">Your Health,<br><em>Our Priority</em></span>
+    </h1>
+    <p class="hero-tagline" data-en="{{TAGLINE}}" data-fil="{{FIL_TAGLINE}}">{{TAGLINE}}</p>
+
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-primary btn-lg btn-pulse" data-en="📅 Book Appointment" data-fil="📅 {{FIL_CTA}}">📅 Book Appointment</a>
+      <a href="#doctor" class="btn btn-ghost btn-lg" data-en="New Patient Info" data-fil="Impormasyon para sa Bagong Pasyente">New Patient Info</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num">{{RATING}}</span>
+        <span class="hero-stat-label" data-en="Patient Rating" data-fil="Rating ng Pasyente">Patient Rating</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">{{REVIEW_COUNT}}+</span>
+        <span class="hero-stat-label" data-en="Happy Patients" data-fil="Masasayang Pasyente">Happy Patients</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">15+</span>
+        <span class="hero-stat-label" data-en="Years of Care" data-fil="Taon ng Pag-aalaga">Years of Care</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <svg viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+    <span data-en="Scroll" data-fil="Mag-scroll">Scroll</span>
+  </div>
+</section>
+
+<!-- ── TRUST BAR ─────────────────────────────── -->
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-items" id="trust-items">
+      <!-- JS fills this -->
+    </div>
+  </div>
+</div>
+
+<!-- ── SERVICES / TREATMENTS ─────────────────── -->
+<section class="services-section" id="services" aria-label="Services and Treatments">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="section-eyebrow">🩺 <span data-en="What We Treat" data-fil="Aming Itinatrato">What We Treat</span></div>
+      <h2 class="section-title" data-en="Comprehensive Healthcare<br>Services" data-fil="Komprehensibong Serbisyong<br>Pangkalusugan">Comprehensive Healthcare<br>Services</h2>
+      <p class="section-sub" data-en="{{DESCRIPTION}}" data-fil="{{DESCRIPTION}}">{{DESCRIPTION}}</p>
+    </div>
+    <div class="services-grid" id="services-grid">
+      <!-- JS fills this from {{TREATMENTS}} -->
+    </div>
+  </div>
+</section>
+
+<!-- ── INSURANCE ACCEPTED ─────────────────────── -->
+<section class="insurance-section" id="insurance" aria-label="Insurance Networks">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="section-eyebrow">🛡️ <span data-en="Insurance" data-fil="Seguro">Insurance</span></div>
+      <h2 class="section-title" data-en="We Accept Your Insurance" data-fil="Tinatanggap Namin ang Inyong Seguro">We Accept Your Insurance</h2>
+      <p class="section-sub" data-en="Don't let insurance stand in the way of your health. We're partnered with major networks in the Philippines." data-fil="Huwag hayaang hadlangan ng seguro ang inyong kalusugan. Nakipagtulungan kami sa mga pangunahing network sa Pilipinas.">Don't let insurance stand in the way of your health. We're partnered with major networks in the Philippines.</p>
+    </div>
+    <div class="insurance-logos" id="insurance-logos">
+      <!-- JS fills this from {{INSURANCE_NETWORKS}} -->
+    </div>
+    <p class="insurance-note">
+      <span data-en="Don't see your provider? " data-fil="Hindi nakikita ang inyong provider? ">Don't see your provider? </span>
+      <a href="#contact" data-en="Call us to verify your coverage →" data-fil="Tawagan kami upang i-verify ang inyong coverage →">Call us to verify your coverage →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ── MEET THE DOCTOR ────────────────────────── -->
+<section class="doctor-section" id="doctor" aria-label="Meet the Doctor">
+  <div class="container">
+    <div class="doctor-inner">
+      <div class="doctor-image-wrap fade-up">
+        <div class="doctor-image-placeholder">
+          <svg viewBox="0 0 24 24" stroke-width="1"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><path stroke-linecap="round" d="M12 14v3m-1.5-1.5h3"/></svg>
+          <p>{{DOCTOR_NAME}}</p>
+        </div>
+        <div class="doctor-experience-badge">
+          <strong>15+</strong>
+          <span data-en="Years Exp." data-fil="Taon ng Exp.">Years Exp.</span>
+        </div>
+        <div class="doctor-credentials-badge">
+          <div class="doctor-cred-icon">🎓</div>
+          <div class="doctor-cred-text">
+            <strong data-en="Board Certified" data-fil="Board Certified">Board Certified</strong>
+            <span data-en="PRC Licensed" data-fil="PRC Licensed">PRC Licensed</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="doctor-body fade-up">
+        <div>
+          <div class="section-eyebrow">👨‍⚕️ <span data-en="Meet Your Doctor" data-fil="Kilalanin ang Inyong Doktor">Meet Your Doctor</span></div>
+          <h2 class="doctor-name">{{DOCTOR_NAME}}</h2>
+          <p class="doctor-specialty" data-en="{{CATEGORY}} Specialist · {{CITY}}" data-fil="{{CATEGORY}} Espesyalista · {{CITY}}">{{CATEGORY}} Specialist · {{CITY}}</p>
+        </div>
+        <p class="doctor-bio" data-en="With over 15 years of dedicated practice, {{DOCTOR_NAME}} brings compassionate, evidence-based care to every patient. Trained at the Philippines' top medical institutions, they are committed to your long-term health and wellbeing." data-fil="Sa mahigit 15 taon ng dedikadong pagsasanay, si {{DOCTOR_NAME}} ay nagdadala ng maawain at nakabatay sa ebidensyang pag-aalaga sa bawat pasyente.">With over 15 years of dedicated practice, {{DOCTOR_NAME}} brings compassionate, evidence-based care to every patient. Trained at the Philippines' top medical institutions, they are committed to your long-term health and wellbeing.</p>
+        <div class="doctor-credentials-list">
+          <span class="doctor-cred-pill" data-en="Board Certified" data-fil="Board Certified">Board Certified</span>
+          <span class="doctor-cred-pill" data-en="PRC Licensed" data-fil="PRC Licensed">PRC Licensed</span>
+          <span class="doctor-cred-pill" data-en="15+ Years Exp." data-fil="15+ Taon ng Karanasan">15+ Years Exp.</span>
+          <span class="doctor-cred-pill" data-en="Accepting New Patients" data-fil="Tumatanggap ng Bagong Pasyente">Accepting New Patients</span>
+        </div>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary" data-en="📅 Book with {{DOCTOR_NAME}}" data-fil="📅 Mag-book kay {{DOCTOR_NAME}}">📅 Book with {{DOCTOR_NAME}}</a>
+          <a href="#contact" class="btn btn-outline" data-en="New Patient Info" data-fil="Impormasyon para sa Bagong Pasyente">New Patient Info</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── GALLERY ────────────────────────────────── -->
+<section class="gallery-section" id="gallery" aria-label="Photo Gallery">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="section-eyebrow">📸 <span data-en="Our Clinic" data-fil="Aming Klinika">Our Clinic</span></div>
+      <h2 class="section-title" data-en="A Space Designed for Comfort" data-fil="Isang Espasyong Dinisenyo para sa Kaginhawahan">A Space Designed for Comfort</h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="{{GALLERY_1}}" alt="Clinic interior" loading="lazy" onerror="this.style.background='var(--color-bg-alt)'; this.removeAttribute('src')">
+        <div class="gallery-item-overlay"><span>Reception & Waiting Area</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="{{GALLERY_2}}" alt="Treatment room" loading="lazy" onerror="this.style.background='var(--color-primary-light)'; this.removeAttribute('src')">
+        <div class="gallery-item-overlay"><span>Treatment Room</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="{{GALLERY_3}}" alt="Consultation" loading="lazy" onerror="this.style.background='var(--color-bg-soft)'; this.removeAttribute('src')">
+        <div class="gallery-item-overlay"><span>Consultation Room</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="{{GALLERY_4}}" alt="Equipment" loading="lazy" onerror="this.style.background='var(--color-bg-alt)'; this.removeAttribute('src')">
+        <div class="gallery-item-overlay"><span>Modern Equipment</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="{{GALLERY_5}}" alt="Pharmacy" loading="lazy" onerror="this.style.background='var(--color-primary-light)'; this.removeAttribute('src')">
+        <div class="gallery-item-overlay"><span>In-house Pharmacy</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="{{GALLERY_6}}" alt="Team" loading="lazy" onerror="this.style.background='var(--color-bg-soft)'; this.removeAttribute('src')">
+        <div class="gallery-item-overlay"><span>Our Care Team</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ───────────────────────────── -->
+<section class="testimonials-section" id="testimonials" aria-label="Patient Testimonials">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="section-eyebrow">💬 <span data-en="Patient Stories" data-fil="Mga Kwento ng Pasyente">Patient Stories</span></div>
+      <h2 class="section-title" data-en="Trusted by Patients<br>Across {{CITY}}" data-fil="Pinagkakatiwalaan ng mga Pasyente<br>sa Buong {{CITY}}">Trusted by Patients<br>Across {{CITY}}</h2>
+      <p class="section-sub" data-en="Real experiences from real patients — their words mean everything to us." data-fil="Tunay na karanasan mula sa tunay na mga pasyente — ang kanilang mga salita ay mahalaga sa amin.">Real experiences from real patients — their words mean everything to us.</p>
+    </div>
+
+    <div class="testimonials-grid" id="testimonials-grid">
+      <div class="testimonial-card fade-up">
+        <div class="testimonial-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testimonial-text">"The care I received at {{BUSINESS_NAME}} was truly exceptional. The staff was warm, the doctor was thorough, and I felt genuinely listened to. This is what good healthcare looks like."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">MR</div>
+          <div>
+            <div class="testimonial-name">Maria R.</div>
+            <div class="testimonial-meta">Patient · {{CITY}}</div>
+          </div>
+          <span class="testimonial-verified" style="margin-left:auto">✓ Verified</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card fade-up">
+        <div class="testimonial-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testimonial-text">"Finally a clinic where the doctor takes their time with you. {{DOCTOR_NAME}} explained everything clearly and the whole team made me feel at ease from start to finish."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">JD</div>
+          <div>
+            <div class="testimonial-name">Jose D.</div>
+            <div class="testimonial-meta">Patient · {{CITY}}</div>
+          </div>
+          <span class="testimonial-verified" style="margin-left:auto">✓ Verified</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card fade-up">
+        <div class="testimonial-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testimonial-text">"I've been bringing my whole family here for years. The clinic is clean, modern, and the appointment scheduling is so easy. Highly recommend to anyone in {{CITY}}."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">AL</div>
+          <div>
+            <div class="testimonial-name">Ana L.</div>
+            <div class="testimonial-meta">Patient · {{CITY}}</div>
+          </div>
+          <span class="testimonial-verified" style="margin-left:auto">✓ Verified</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="overall-rating fade-up">
+      <div class="stars">
+        <span class="star" style="font-size:22px">★</span>
+        <span class="star" style="font-size:22px">★</span>
+        <span class="star" style="font-size:22px">★</span>
+        <span class="star" style="font-size:22px">★</span>
+        <span class="star" style="font-size:22px">★</span>
+      </div>
+      <div class="overall-rating-num">{{RATING}}</div>
+      <div class="overall-rating-label" data-en="Based on {{REVIEW_COUNT}} verified patient reviews" data-fil="Batay sa {{REVIEW_COUNT}} na na-verify na review ng pasyente">Based on {{REVIEW_COUNT}} verified patient reviews</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT & APPOINTMENT ──────────────────── -->
+<section class="contact-section" id="contact" aria-label="Contact and Book Appointment">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="contact-info">
+        <div>
+          <div class="section-eyebrow" data-en="📍 Find Us" data-fil="📍 Hanapin Kami">📍 Find Us</div>
+          <h2 class="section-title" data-en="Visit Us or Book<br>an Appointment" data-fil="Bisitahin Kami o Mag-book<br>ng Appointment">Visit Us or Book<br>an Appointment</h2>
+          <p class="section-sub" data-en="We're here for you. Walk-ins welcome, or schedule ahead for minimal wait time." data-fil="Nandito kami para sa inyo. Tinatanggap ang walk-ins, o mag-iskedyul nang maaga para sa minimal na oras ng paghihintay.">We're here for you. Walk-ins welcome, or schedule ahead for minimal wait time.</p>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📞</div>
+          <div>
+            <div class="contact-detail-label" data-en="Phone / Hotline" data-fil="Telepono / Hotline">Phone / Hotline</div>
+            <div class="contact-detail-value">{{PHONE}}</div>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📍</div>
+          <div>
+            <div class="contact-detail-label" data-en="Address" data-fil="Address">Address</div>
+            <div class="contact-detail-value">{{ADDRESS}}</div>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-detail-icon">🕐</div>
+          <div>
+            <div class="contact-detail-label" data-en="Clinic Hours" data-fil="Oras ng Klinika">Clinic Hours</div>
+            <div class="contact-detail-value">{{HOURS}}</div>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-detail-icon">🏙️</div>
+          <div>
+            <div class="contact-detail-label" data-en="Location" data-fil="Lokasyon">Location</div>
+            <div class="contact-detail-value">{{CITY}}, {{COUNTRY}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-wrap">
+        <div class="contact-form-title" data-en="Book Your Appointment" data-fil="Mag-book ng Inyong Appointment">Book Your Appointment</div>
+        <div class="contact-form-sub" data-en="Fill in the form and we'll confirm within 24 hours." data-fil="Punan ang form at iko-confirm namin sa loob ng 24 na oras.">Fill in the form and we'll confirm within 24 hours.</div>
+        <form id="appointment-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="f-first" data-en="First Name" data-fil="Unang Pangalan">First Name</label>
+              <input class="form-input" id="f-first" type="text" placeholder="Maria" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-last" data-en="Last Name" data-fil="Apelyido">Last Name</label>
+              <input class="form-input" id="f-last" type="text" placeholder="Reyes" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="f-phone" data-en="Phone Number" data-fil="Numero ng Telepono">Phone Number</label>
+              <input class="form-input" id="f-phone" type="tel" placeholder="+63 912 345 6789" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-email" data-en="Email Address" data-fil="Email Address">Email Address</label>
+              <input class="form-input" id="f-email" type="email" placeholder="maria@email.com">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="f-date" data-en="Preferred Date" data-fil="Gustong Petsa">Preferred Date</label>
+              <input class="form-input" id="f-date" type="date" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-service" data-en="Service Needed" data-fil="Kinakailangang Serbisyo">Service Needed</label>
+              <select class="form-select" id="f-service">
+                <option value="" data-en="Select a service..." data-fil="Pumili ng serbisyo...">Select a service...</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:14px">
+            <label class="form-label" for="f-message" data-en="Brief Description of Concern" data-fil="Maikling Paglalarawan ng Alalahanin">Brief Description of Concern</label>
+            <textarea class="form-textarea" id="f-message" placeholder="Describe your symptoms or reason for visit..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary form-submit" data-en="📅 Confirm Appointment Request" data-fil="📅 Kumpirmahin ang Kahilingan sa Appointment">📅 Confirm Appointment Request</button>
+          <p class="form-privacy" data-en="🔒 Your information is private and secure." data-fil="🔒 Ang inyong impormasyon ay pribado at ligtas.">🔒 Your information is private and secure.</p>
+        </form>
+        <div class="form-success" id="form-success">
+          ✅ Thank you! We'll confirm your appointment within 24 hours. See you soon!
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FREE vs PRO ────────────────────────────── -->
+<section class="pricing-section" id="pricing" aria-label="Free vs Pro Plans">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="section-eyebrow">🚀 <span data-en="SiteForge Plans" data-fil="Mga Plano ng SiteForge">SiteForge Plans</span></div>
+      <h2 class="section-title" data-en="Your Site is Live — Make It Yours" data-fil="Live Na ang Inyong Site — Gawin Itong Inyo">Your Site is Live — Make It Yours</h2>
+      <p class="section-sub" data-en="This site was built by SiteForge. Claim it free or upgrade to Pro for full control." data-fil="Ang site na ito ay ginawa ng SiteForge. I-claim nang libre o mag-upgrade sa Pro para sa buong kontrol.">This site was built by SiteForge. Claim it free or upgrade to Pro for full control.</p>
+    </div>
+
+    <div class="pricing-cards">
+      <div class="pricing-card fade-up">
+        <div class="pricing-header">
+          <div class="pricing-plan" data-en="Free Forever" data-fil="Libre Magpakailanman">Free Forever</div>
+          <div class="pricing-price">₱0 <span data-en="/mo" data-fil="/buwan">/mo</span></div>
+        </div>
+        <div class="pricing-body">
+          <div class="pricing-feature">
+            <div class="feat-check yes">✓</div>
+            <span data-en="Professional clinic website" data-fil="Propesyonal na website ng klinika">Professional clinic website</span>
+          </div>
+          <div class="pricing-feature">
+            <div class="feat-check yes">✓</div>
+            <span data-en="Google-indexed business listing" data-fil="Google-indexed na listahan ng negosyo">Google-indexed business listing</span>
+          </div>
+          <div class="pricing-feature">
+            <div class="feat-check yes">✓</div>
+            <span data-en="Contact form & phone CTA" data-fil="Form ng contact at phone CTA">Contact form & phone CTA</span>
+          </div>
+          <div class="pricing-feature">
+            <div class="feat-check no">✗</div>
+            <span data-en="Custom domain (yourname.com)" data-fil="Custom domain (yourname.com)" style="color:var(--color-text-muted)">Custom domain (yourname.com)</span>
+          </div>
+          <div class="pricing-feature">
+            <div class="feat-check no">✗</div>
+            <span data-en="Drag-and-drop editor" data-fil="Drag-and-drop editor" style="color:var(--color-text-muted)">Drag-and-drop editor</span>
+          </div>
+          <div class="pricing-feature">
+            <div class="feat-check no">✗</div>
+            <span data-en="Online booking form" data-fil="Online booking form" style="color:var(--color-text-muted)">Online booking form</span>
+          </div>
+          <div class="pricing-feature">
+            <div class="feat-check no">✗</div>
+            <span data-en="Remove SiteForge badge" data-fil="Alisin ang SiteForge badge" style="color:var(--color-text-muted)">Remove SiteForge badge</span>
+          </div>
+          <div class="pricing-feature">
+            <div class="feat-check no">✗</div>
+            <span data-en="Priority support" data-fil="Priority support" style="color:var(--color-text-muted)">Priority support</span>
+          </div>
+        </div>
+        <div class="pricing-cta">
+          <a href="{{CLAIM_URL}}" class="btn btn-outline" data-en="Claim Free Site →" data-fil="I-claim ang Libreng Site →">Claim Free Site →</a>
+        </div>
+      </div>
+
+      <div class="pricing-card featured fade-up">
+        <div class="pricing-header">
+          <div class="pricing-plan" data-en="Pro" data-fil="Pro">Pro</div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div class="pricing-price">₱1,499 <span data-en="/mo" data-fil="/buwan">/mo</span></div>
+            <span class="pricing-badge" data-en="POPULAR" data-fil="SIKAT">POPULAR</span>
+          </div>
+        </div>
+        <div class="pricing-body">
+          <div class="pricing-feature">
+            <div class="feat-check yes">✓</div>
+            <span data-en="Everything in Free" data-fil="Lahat ng nasa Free">Everything in Free</span>
+          </div>
+          <div class="pricing-feature">
+            <div class="feat-check yes">✓</div>
+            <span data-en="Custom domain (yourname.com)" data-fil="Custom domain (yourname.com)">Custom domain (yourname.com)</span>
+          </div>
+          <div class="pricing-feature">
+            <div class="feat-check yes">✓</div>
+            <span data-en="Drag-and-drop site editor" data-fil="Drag-and-drop site editor">Drag-and-drop site editor</span>
+          </div>
+          <div class="pricing-feature">
+            <div class="feat-check yes">✓</div>
+            <span data-en="Online appointment booking form" data-fil="Online appointment booking form">Online appointment booking form</span>
+          </div>
+          <div class="pricing-feature">
+            <div class="feat-check yes">✓</div>
+            <span data-en="Remove SiteForge badge" data-fil="Alisin ang SiteForge badge">Remove SiteForge badge</span>
+          </div>
+          <div class="pricing-feature">
+            <div class="feat-check yes">✓</div>
+            <span data-en="Priority 24/7 support" data-fil="Priority 24/7 support">Priority 24/7 support</span>
+          </div>
+          <div class="pricing-feature">
+            <div class="feat-check yes">✓</div>
+            <span data-en="Analytics & patient insights" data-fil="Analytics at patient insights">Analytics & patient insights</span>
+          </div>
+          <div class="pricing-feature">
+            <div class="feat-check yes">✓</div>
+            <span data-en="Google Ads integration" data-fil="Google Ads integration">Google Ads integration</span>
+          </div>
+        </div>
+        <div class="pricing-cta">
+          <a href="{{CLAIM_URL}}" class="btn btn-primary btn-pulse" data-en="🚀 Upgrade to Pro →" data-fil="🚀 Mag-upgrade sa Pro →">🚀 Upgrade to Pro →</a>
+          <p style="font-size:12px;color:var(--color-text-muted);text-align:center" data-en="30-day free trial · No credit card required" data-fil="30-araw na libreng pagsubok · Walang kinakailangang credit card">30-day free trial · No credit card required</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="social-proof-nudge">
+      <div class="nudge-dot"></div>
+      <span id="social-proof-text" data-en="{{SOCIAL_PROOF_COUNT}} businesses claimed their site this week" data-fil="{{SOCIAL_PROOF_COUNT}} mga negosyo ang nag-claim ng kanilang site ngayong linggo">{{SOCIAL_PROOF_COUNT}} businesses claimed their site this week</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────── -->
+<footer aria-label="Footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-brand-logo">
+          <div class="footer-logo-mark">🏥</div>
+          <span class="footer-brand-name">{{BUSINESS_NAME}}</span>
+        </div>
+        <p class="footer-brand-desc" data-en="Quality healthcare for {{CITY}} and surrounding areas. Book an appointment today." data-fil="Kalidad na pangangalagang pangkalusugan para sa {{CITY}} at mga kalapit na lugar.">Quality healthcare for {{CITY}} and surrounding areas. Book an appointment today.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px">
+          <a href="tel:{{PHONE}}" class="btn btn-outline" style="font-size:13px;padding:8px 14px">📞 {{PHONE}}</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-nav-title" data-en="Quick Links" data-fil="Mabilis na Mga Link">Quick Links</div>
+        <div class="footer-nav-links">
+          <a href="#services" data-en="Our Services" data-fil="Aming Mga Serbisyo">Our Services</a>
+          <a href="#doctor" data-en="Meet the Doctor" data-fil="Kilalanin ang Doktor">Meet the Doctor</a>
+          <a href="#insurance" data-en="Insurance" data-fil="Seguro">Insurance</a>
+          <a href="#testimonials" data-en="Patient Reviews" data-fil="Mga Review ng Pasyente">Patient Reviews</a>
+          <a href="#contact" data-en="Book Appointment" data-fil="Mag-book ng Appointment">Book Appointment</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-nav-title" data-en="SiteForge" data-fil="SiteForge">SiteForge</div>
+        <div class="footer-nav-links">
+          <a href="{{CLAIM_URL}}" data-en="Claim This Site" data-fil="I-claim ang Site na Ito">Claim This Site</a>
+          <a href="{{CLAIM_URL}}" data-en="Upgrade to Pro" data-fil="Mag-upgrade sa Pro">Upgrade to Pro</a>
+          <a href="{{SITE_URL}}/privacy" data-en="Privacy Policy" data-fil="Patakaran sa Privacy">Privacy Policy</a>
+          <a href="{{SITE_URL}}/terms" data-en="Terms of Service" data-fil="Mga Tuntunin ng Serbisyo">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-bottom-text">© {{YEAR}} {{BUSINESS_NAME}} · {{ADDRESS}} · {{PHONE}}</p>
+      <a href="{{SITE_URL}}" class="powered-badge">
+        Powered by <strong>SiteForge</strong> &nbsp;·&nbsp; <span data-en="Build your site free →" data-fil="I-build ang inyong site nang libre →">Build your site free →</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- ── MOBILE STICKY CLAIM BAR ────────────────── -->
+<div class="mobile-claim-bar" role="complementary">
+  <span data-en="Is this your business? " data-fil="Ang negosyo ba ito ninyo? ">Is this your business? </span>
+  <a href="{{CLAIM_URL}}" data-en="Claim it free →" data-fil="I-claim nang libre →">Claim it free →</a>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ── TRANSLATIONS ────────────────────────── */
+  const T = {
+    en: {
+      banner: '🏥 This site was built for you by SiteForge — claim it free &nbsp;·&nbsp;',
+      bannerLink: 'Claim my site →',
+      navServices: 'Services',
+      navDoctor: 'Our Doctor',
+      navGallery: 'Gallery',
+      navReviews: 'Reviews',
+      navContact: 'Contact',
+      ctaBook: 'Book Appointment',
+      ctaNewPatient: 'New Patient Info',
+      heroTitle: 'Your Health,<br><em>Our Priority</em>',
+      mobileClaimText: 'Is this your business? ',
+      mobileClaimLink: 'Claim it free →',
+    },
+    fil: {
+      banner: '🏥 Ang site na ito ay ginawa para sa inyo ng SiteForge — i-claim nang libre &nbsp;·&nbsp;',
+      bannerLink: 'I-claim ang aking site →',
+      navServices: 'Mga Serbisyo',
+      navDoctor: 'Aming Doktor',
+      navGallery: 'Galeria',
+      navReviews: 'Mga Review',
+      navContact: 'Makipag-ugnayan',
+      ctaBook: '{{FIL_CTA}}',
+      ctaNewPatient: 'Impormasyon para sa Bagong Pasyente',
+      heroTitle: 'Ang Inyong Kalusugan,<br><em>Aming Prayoridad</em>',
+      mobileClaimText: 'Ang negosyo ba ito ninyo? ',
+      mobileClaimLink: 'I-claim nang libre →',
+    }
+  };
+
+  let currentLang = 'en';
+
+  window.setLang = function(lang) {
+    currentLang = lang;
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const val = el.getAttribute('data-' + lang);
+      if (!val) return;
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = val;
+      } else {
+        el.innerHTML = val;
+      }
+    });
+    document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+    document.getElementById('lang-fil').classList.toggle('active', lang === 'fil');
+  };
+
+  /* ── TREATMENTS / SERVICES ───────────────── */
+  const treatmentIcons = ['🩺','🦷','👁️','🩸','💉','🫀','🧠','🦴','🤱','🏃','💊','🔬','🩻','🫁','👂'];
+  const treatmentDescs = [
+    'Comprehensive evaluation and care for your overall health and wellness.',
+    'Expert treatment using the latest evidence-based clinical protocols.',
+    'Preventive care and early detection for better health outcomes.',
+    'Gentle, patient-centred approach with minimal wait times.',
+    'Advanced diagnostic tools and accurate treatment planning.',
+  ];
+  const treatmentTags = ['Most Popular','Available Today','New Patients Welcome','Walk-ins OK','By Appointment'];
+
+  function buildServices() {
+    const raw = '{{TREATMENTS}}';
+    const items = raw.includes('|') ? raw.split('|') : ['General Consultation','Preventive Care','Diagnostic Services','Minor Surgery','Vaccinations','Lab Testing'];
+    const grid = document.getElementById('services-grid');
+    if (!grid) return;
+    grid.innerHTML = items.map((item, i) => `
+      <div class="service-card fade-up">
+        <div class="service-icon">${treatmentIcons[i % treatmentIcons.length]}</div>
+        <div class="service-body">
+          <div class="service-name">${item.trim()}</div>
+          <div class="service-desc">${treatmentDescs[i % treatmentDescs.length]}</div>
+          <span class="service-tag">${treatmentTags[i % treatmentTags.length]}</span>
+        </div>
+      </div>
+    `).join('');
+
+    // also fill the select dropdown
+    const sel = document.getElementById('f-service');
+    if (sel) {
+      items.forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item.trim();
+        opt.textContent = item.trim();
+        sel.appendChild(opt);
+      });
+    }
+  }
+
+  /* ── INSURANCE ───────────────────────────── */
+  const insuranceIcons = ['🏥','💙','🛡️','⚕️','❤️','🔵','🟢','🏦'];
+  const insuranceTypes = ['HMO','Health Plan','Group Plan','Government','Private','Cooperative','Corporate','Mutual'];
+
+  function buildInsurance() {
+    const raw = '{{INSURANCE_NETWORKS}}';
+    const items = raw.includes('|') ? raw.split('|') : ['PhilHealth','Maxicare','Medicard','Intellicare','Caritas Health Shield','Pacific Cross','ValueCare','AXA Health'];
+    const wrap = document.getElementById('insurance-logos');
+    if (!wrap) return;
+    wrap.innerHTML = items.map((item, i) => `
+      <div class="insurance-card fade-up">
+        <div class="insurance-logo-icon">${insuranceIcons[i % insuranceIcons.length]}</div>
+        <div class="insurance-name">${item.trim()}</div>
+        <div class="insurance-type">${insuranceTypes[i % insuranceTypes.length]}</div>
+      </div>
+    `).join('');
+  }
+
+  /* ── TICKER ──────────────────────────────── */
+  function buildTicker() {
+    const raw = '{{MENU_ITEMS}}';
+    const items = raw.includes('|') ? raw.split('|') : [
+      'Now Accepting New Patients','Walk-ins Welcome','PhilHealth Accredited','Open 6 Days a Week',
+      'Experienced Medical Team','Same-Day Appointments Available','Bilingual Staff',
+      'Modern Equipment','Compassionate Care','Convenient Location'
+    ];
+    const ticker = document.getElementById('ticker-inner');
+    if (!ticker) return;
+    const doubled = [...items, ...items];
+    ticker.innerHTML = doubled.map(item => `<span class="ticker-item">${item.trim()}</span>`).join('');
+  }
+
+  /* ── TRUST POINTS ────────────────────────── */
+  const trustIcons = ['✅','🎓','🏥','💊','🛡️','⏱️','👨‍⚕️','📋'];
+
+  function buildTrustBar() {
+    const raw = '{{TRUST_POINTS}}';
+    const items = raw.includes('|') ? raw.split('|') : [
+      'Licensed & Insured','PRC Certified Doctors','PhilHealth Accredited','Free Consultations','10+ Years Experience','Walk-ins Welcome'
+    ];
+    const wrap = document.getElementById('trust-items');
+    if (!wrap) return;
+    wrap.innerHTML = items.map((item, i) => `
+      <div class="trust-item">
+        <div class="trust-item-icon">${trustIcons[i % trustIcons.length]}</div>
+        <span>${item.trim()}</span>
+      </div>
+    `).join('');
+  }
+
+  /* ── CLAIM BANNER DISMISS ────────────────── */
+  const banner = document.getElementById('claim-banner');
+  const bannerClose = document.getElementById('claim-banner-close');
+  if (bannerClose && banner) {
+    bannerClose.addEventListener('click', () => {
+      banner.style.transition = 'height .3s ease, opacity .3s ease, padding .3s ease';
+      banner.style.overflow = 'hidden';
+      banner.style.height = banner.offsetHeight + 'px';
+      requestAnimationFrame(() => {
+        banner.style.height = '0';
+        banner.style.opacity = '0';
+        banner.style.padding = '0';
+      });
+      setTimeout(() => banner.remove(), 350);
+    });
+  }
+
+  /* ── MOBILE MENU ─────────────────────────── */
+  const hamburger = document.getElementById('hamburger-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileClose = document.getElementById('mobile-menu-close');
+
+  function openMenu() {
+    mobileMenu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  if (hamburger) hamburger.addEventListener('click', openMenu);
+  if (mobileClose) mobileClose.addEventListener('click', closeMenu);
+  if (mobileMenu) {
+    mobileMenu.addEventListener('click', e => {
+      if (e.target === mobileMenu) closeMenu();
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  }
+
+  /* ── HERO BG LAZY ────────────────────────── */
+  const heroBg = document.getElementById('hero-bg');
+  if (heroBg) {
+    const img = new Image();
+    img.src = '{{HERO_IMAGE}}';
+    img.onload = () => heroBg.classList.add('loaded');
+  }
+
+  /* ── SCROLL ANIMATIONS ───────────────────── */
+  function initObserver() {
+    const els = document.querySelectorAll('.fade-up');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(el => el.classList.add('visible'));
+      return;
+    }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(el => io.observe(el));
+  }
+
+  /* ── FORM SUBMIT ─────────────────────────── */
+  const form = document.getElementById('appointment-form');
+  const successMsg = document.getElementById('form-success');
+  if (form && successMsg) {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const first = document.getElementById('f-first').value.trim();
+      const phone = document.getElementById('f-phone').value.trim();
+      if (!first || !phone) {
+        alert(currentLang === 'fil' ? 'Mangyaring punan ang lahat ng kinakailangang field.' : 'Please fill in all required fields.');
+        return;
+      }
+      form.style.display = 'none';
+      successMsg.style.display = 'block';
+      successMsg.innerHTML = currentLang === 'fil'
+        ? `✅ Salamat, ${first}! Iko-confirm namin ang inyong appointment sa loob ng 24 na oras. Hanggang sa muli!`
+        : `✅ Thank you, ${first}! We'll confirm your appointment within 24 hours. See you soon!`;
+    });
+  }
+
+  /* ── MIN DATE FOR CALENDAR ───────────────── */
+  const dateInput = document.getElementById('f-date');
+  if (dateInput) {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate() + 1).padStart(2, '0');
+    dateInput.min = `${yyyy}-${mm}-${dd}`;
+  }
+
+  /* ── STICKY NAV SHADOW ───────────────────── */
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    if (nav) {
+      nav.style.boxShadow = window.scrollY > 10
+        ? '0 4px 24px rgba(0,0,0,.08)'
+        : '0 1px 0 rgba(26,122,74,.06)';
+    }
+  }, { passive: true });
+
+  /* ── SMOOTH SCROLL ───────────────────────── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href').slice(1);
+      const target = document.getElementById(id);
+      if (target) {
+        e.preventDefault();
+        const navH = (nav ? nav.offsetHeight : 68) + 8;
+        const top = target.getBoundingClientRect().top + window.scrollY - navH;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+
+  /* ── INIT ────────────────────────────────── */
+  buildTicker();
+  buildServices();
+  buildInsurance();
+  buildTrustBar();
+  initObserver();
+
+})();
+</script>
+</body>
+</html>

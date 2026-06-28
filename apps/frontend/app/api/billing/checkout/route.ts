@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { getSiteUrl } from '@/lib/site-url'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
@@ -17,7 +18,7 @@ export async function POST(request: NextRequest) {
   const { plan, priceId } = await request.json()
   if (!priceId) return NextResponse.json({ error: 'Missing priceId' }, { status: 400 })
 
-  const origin = request.headers.get('origin') || 'https://Guma AI.io'
+  const origin = request.headers.get('origin') || getSiteUrl()
 
   const session = await stripe.checkout.sessions.create({
     mode: 'subscription',

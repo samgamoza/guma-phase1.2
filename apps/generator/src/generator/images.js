@@ -84,6 +84,20 @@ const GALLERY_QUERIES = {
     'independent shop front signage detail',
     'local business interior modern clean',
   ],
+  barbershop: [
+    'barbershop interior vintage chairs mirrors',
+    'barber clippers scissors tools flatlay',
+    'mens grooming pomade products shelf detail',
+    'barber chair leather classic interior',
+    'barbershop station counter tools closeup',
+  ],
+  auto: [
+    'auto repair garage interior lift empty',
+    'car engine bay mechanic tools closeup',
+    'tire workshop garage interior detail',
+    'auto service bay clean professional interior',
+    'car parts tools workbench garage',
+  ],
 }
 
 const HERO_QUERIES = {
@@ -94,6 +108,8 @@ const HERO_QUERIES = {
   legal:      'law office interior bookshelf professional',
   retail:     'boutique retail store interior display',
   generic:    'charming local shop storefront interior',
+  barbershop: 'barbershop interior vintage chairs mirrors',
+  auto:       'auto repair garage interior clean professional',
 }
 
 // People-free, atmospheric video queries for the decorative ambiance band.
@@ -106,6 +122,8 @@ const VIDEO_QUERIES = {
   legal:      'city skyline buildings timelapse',
   retail:     'boutique products display interior',
   generic:    'city street lights ambiance evening',
+  barbershop: 'barbershop interior chair grooming ambiance',
+  auto:       'auto garage mechanic workshop ambiance',
 }
 
 // ── Hardcoded fallback pool ───────────────────────────────────────────────────
@@ -262,14 +280,25 @@ const BARBER_KEYWORDS       = ['barber', 'barbershop', 'shave', 'grooming']
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-function pickStaticBank(categoryKey, business) {
+/**
+ * Resolve the IMAGE pool key for a business. The keyword category (resolveCategory)
+ * buckets barbershops under "salon" and often mis-files auto shops under "retail",
+ * which yields wrong photos (nail art on a barbershop, boutiques on an auto shop).
+ * Here we detect the true subject from the business text and override, so the
+ * LIVE Unsplash/Pexels queries (not just the static fallback) pull relevant imagery.
+ */
+function imageKeyFor(categoryKey, business) {
   const haystack = [business.name, business.category, business.raw_data?.description || '']
     .join(' ').toLowerCase()
+  if (AUTO_KEYWORDS.some(kw => haystack.includes(kw)))         return 'auto'
+  if (CONSTRUCTION_KEYWORDS.some(kw => haystack.includes(kw))) return 'trades'
+  if (BARBER_KEYWORDS.some(kw => haystack.includes(kw)))       return 'barbershop'
+  return categoryKey
+}
 
-  if (AUTO_KEYWORDS.some(kw => haystack.includes(kw)))   return STATIC_POOL.auto
-  if (CONSTRUCTION_KEYWORDS.some(kw => haystack.includes(kw))) return STATIC_POOL.trades
-  if (BARBER_KEYWORDS.some(kw => haystack.includes(kw))) return STATIC_POOL.barbershop
-  return STATIC_POOL[categoryKey] || STATIC_POOL.generic
+function pickStaticBank(categoryKey, business) {
+  const key = imageKeyFor(categoryKey, business)
+  return STATIC_POOL[key] || STATIC_POOL[categoryKey] || STATIC_POOL.generic
 }
 
 function slugSeed(slug) {
@@ -335,7 +364,8 @@ const SPECIFIC_QUERIES = [
 // risks the wrong nationality on stock). Real/local imagery comes from the
 // business's own Google photos; stock is the safe, people-free fallback.
 function pickGalleryQuery(categoryKey, business, seed) {
-  const queries = GALLERY_QUERIES[categoryKey] || GALLERY_QUERIES.generic
+  const key = imageKeyFor(categoryKey, business)
+  const queries = GALLERY_QUERIES[key] || GALLERY_QUERIES[categoryKey] || GALLERY_QUERIES.generic
   return queries[seed % queries.length]
 }
 
@@ -574,9 +604,10 @@ export async function resolveImages(categoryKey, business, specQueries = null) {
     }
   }
 
-  // Stock fallback hero — people-free category query (never the free-form spec query).
+  // Stock fallback hero — people-free, subject-correct query (barber/auto override).
   if (!heroUrl && hasImageApi) {
-    const q = HERO_QUERIES[categoryKey] || HERO_QUERIES.generic
+    const heroKey = imageKeyFor(categoryKey, business)
+    const q = HERO_QUERIES[heroKey] || HERO_QUERIES[categoryKey] || HERO_QUERIES.generic
     const results = await fetchAnyGallery(q, 2, seed)
     heroUrl = results?.[0] || null
     if (heroUrl) { heroSource = 'stock'; logger.info(`[Images] Hero via people-free stock for "${business.name}" — "${q}"`) }
@@ -614,7 +645,8 @@ export async function resolveImages(categoryKey, business, specQueries = null) {
   }
 
   // Decorative ambiance video (people-free, atmospheric — never the hero).
-  const videoUrl = await fetchPexelsVideo(VIDEO_QUERIES[categoryKey] || VIDEO_QUERIES.generic, seed)
+  const videoKey = imageKeyFor(categoryKey, business)
+  const videoUrl = await fetchPexelsVideo(VIDEO_QUERIES[videoKey] || VIDEO_QUERIES[categoryKey] || VIDEO_QUERIES.generic, seed)
   if (videoUrl) logger.info(`[Images] Ambiance video for "${business.name}"`)
 
   return {
