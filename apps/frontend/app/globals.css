@@ -322,5 +322,5 @@
 
 .orb { position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none }
 
-.logo-img     { height:32px;width:auto;object-fit:contain;filter:brightness(0) invert(1) }
-.logo-img-nav { height:28px;width:auto;object-fit:contain;filter:brightness(0) invert(1) }
+.logo-img     { height:40px;width:auto;object-fit:contain;filter:brightness(0) invert(1) }
+.logo-img-nav { height:32px;width:auto;object-fit:contain;filter:brightness(0) invert(1) }

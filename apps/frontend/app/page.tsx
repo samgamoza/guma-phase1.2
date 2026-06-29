@@ -101,8 +101,8 @@ export default function LandingPage() {
       <div className="beta-bar fixed top-0 left-0 right-0 z-[60] py-2.5 px-4">
         <div className="max-w-6xl mx-auto flex items-center justify-center gap-3 text-center">
           <span className="text-[10px] font-semibold bg-indigo-500 text-white rounded-full px-2.5 py-0.5 tracking-wider uppercase shrink-0">Beta</span>
-          <p className="text-xs sm:text-sm text-neutral-300 font-light">
-            Thousands of businesses already built and ready to <span className="text-indigo-400 font-medium">CLAIM!</span>
+          <p className="text-xs sm:text-sm text-white font-light">
+            Thousands of businesses already built and ready to <span className="text-indigo-300 font-medium">CLAIM!</span>
           </p>
         </div>
       </div>
@@ -115,12 +115,12 @@ export default function LandingPage() {
           </a>
           <div className="hidden md:flex items-center gap-8">
             {[['#how-it-works','How It Works'],['#examples','Industries'],['#pricing','Pricing'],['#faq','FAQ']].map(([href, label]) => (
-              <a key={href} href={href} className="nav-link text-sm text-neutral-400 hover:text-white transition-colors">{label}</a>
+              <a key={href} href={href} className="nav-link text-sm text-neutral-300 hover:text-white transition-colors font-medium">{label}</a>
             ))}
-            <button onClick={() => showToast('Build from scratch coming soon!')} className="nav-link text-sm text-neutral-400 hover:text-white transition-colors">Build from scratch</button>
+            <button onClick={() => showToast('Build from scratch coming soon!')} className="nav-link text-sm text-neutral-300 hover:text-white transition-colors font-medium">Build from scratch</button>
           </div>
           <div className="hidden md:flex items-center gap-3">
-            <a href="/auth/login" className="text-sm text-neutral-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5">Sign in</a>
+            <a href="/auth/login" className="text-sm text-neutral-300 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5 font-medium">Sign in</a>
             <button
               onClick={() => { heroSearchRef.current?.focus(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
               className="text-sm font-medium bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-xl transition-all glow-btn flex items-center gap-1.5"
@@ -156,14 +156,14 @@ export default function LandingPage() {
           <div className="animate-fade-in-up opacity-0 mb-10">
             <Image src="/guma-logo.png" alt="Guma AI" width={1054} height={262} className="logo-img mx-auto" />
           </div>
-          <h1 className="animate-fade-in-up opacity-0 text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-7xl font-semibold tracking-tight leading-[1.08] mb-4" style={{ animationDelay: '0.1s' }}>
+          <h1 className="animate-fade-in-up opacity-0 text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-7xl font-bold tracking-tight leading-[1.08] mb-4" style={{ animationDelay: '0.1s' }}>
             Your business website<br />
             <span className="shimmer">already exists.</span>
           </h1>
-          <h2 className="animate-fade-in-up opacity-0 text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-tight leading-[1.1] mb-8" style={{ animationDelay: '0.2s' }}>
+          <h2 className="animate-fade-in-up opacity-0 text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight leading-[1.1] mb-8" style={{ animationDelay: '0.2s' }}>
             <span className="gradient-text">Claim it in minutes.</span>
           </h2>
-          <p className="animate-fade-in-up opacity-0 text-base sm:text-lg text-neutral-400 font-light max-w-2xl mx-auto mb-10 leading-relaxed" style={{ animationDelay: '0.2s' }}>
+          <p className="animate-fade-in-up opacity-0 text-lg sm:text-xl text-neutral-200 font-light max-w-2xl mx-auto mb-10 leading-relaxed" style={{ animationDelay: '0.2s' }}>
             We&apos;ve already built a professional website for your local business — powered by AI, optimized for search, and ready to grow with you.
           </p>
 
@@ -173,7 +173,7 @@ export default function LandingPage() {
               <span className="corner tl" /><span className="corner tr" /><span className="corner bl" /><span className="corner br" />
               <div className="scan-line" />
               <div className="flex items-center gap-3 flex-1 px-4">
-                <Search className="w-5 h-5 text-neutral-500 shrink-0" />
+                <Search className="w-5 h-5 text-neutral-400 shrink-0" />
                 <input
                   ref={heroSearchRef}
                   id="hero-search"
@@ -182,7 +182,7 @@ export default function LandingPage() {
                   onChange={e => setSearchQuery(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleSearch()}
                   placeholder="Enter your business name..."
-                  className="search-input w-full bg-transparent text-white text-base placeholder:text-neutral-500 py-3 border-none outline-none"
+                  className="search-input w-full bg-transparent text-white text-base placeholder:text-neutral-300 py-3 border-none outline-none font-medium"
                 />
               </div>
               <button onClick={handleSearch} className="shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm px-6 py-3.5 rounded-xl transition-all glow-btn flex items-center gap-2">
@@ -199,9 +199,9 @@ export default function LandingPage() {
               [Smartphone, 'Mobile friendly'],
               [Zap, 'Live in minutes'],
             ].map(([Icon, label]) => (
-              <div key={label as string} className="trust-tag glass rounded-full px-3.5 py-1.5 flex items-center gap-2 cursor-default">
+              <div key={label as string} className="trust-tag glass rounded-full px-3.5 py-1.5 flex items-center gap-2 cursor-default border border-green-400/30">
                 {(() => { const I = Icon as React.ElementType; return <I className="w-3.5 h-3.5 text-green-400" /> })()}
-                <span className="text-xs text-neutral-300">{label as string}</span>
+                <span className="text-xs text-white font-medium">{label as string}</span>
               </div>
             ))}
           </div>
@@ -215,10 +215,10 @@ export default function LandingPage() {
 
           {/* Alt actions */}
           <div className="animate-fade-in-up opacity-0 flex flex-col sm:flex-row items-center justify-center gap-3" style={{ animationDelay: '0.5s' }}>
-            <button onClick={() => showToast('Build from scratch coming soon!')} className="text-sm text-neutral-400 hover:text-white transition-colors px-5 py-2.5 rounded-xl border border-white/10 hover:border-white/20 hover:bg-white/[0.03] flex items-center gap-2">
+            <button onClick={() => showToast('Build from scratch coming soon!')} className="text-sm text-white font-medium hover:text-indigo-200 transition-colors px-5 py-2.5 rounded-xl border border-white/20 hover:border-white/40 hover:bg-white/[0.08] flex items-center gap-2">
               <Plus className="w-4 h-4" /> Build your website from scratch
             </button>
-            <button onClick={() => document.getElementById('examples')?.scrollIntoView({ behavior: 'smooth' })} className="text-sm text-neutral-400 hover:text-white transition-colors px-5 py-2.5 rounded-xl border border-white/10 hover:border-white/20 hover:bg-white/[0.03] flex items-center gap-2">
+            <button onClick={() => document.getElementById('examples')?.scrollIntoView({ behavior: 'smooth' })} className="text-sm text-white font-medium hover:text-indigo-200 transition-colors px-5 py-2.5 rounded-xl border border-white/20 hover:border-white/40 hover:bg-white/[0.08] flex items-center gap-2">
               <LayoutGrid className="w-4 h-4" /> Browse by industry
             </button>
           </div>
@@ -233,8 +233,8 @@ export default function LandingPage() {
             <div className="scan-line" />
             {[['10,000+','Sites Generated'],['3 min','Avg. Claim Time'],['4.9★','Owner Rating'],['47%','More Traffic']].map(([val, label]) => (
               <div key={label} className="stat-item text-center p-3 rounded-xl">
-                <div className="stat-value text-3xl sm:text-4xl font-semibold gradient-text-accent mb-1">{val}</div>
-                <div className="text-xs text-neutral-500 tracking-wide uppercase">{label}</div>
+                <div className="stat-value text-3xl sm:text-4xl font-bold gradient-text-accent mb-1">{val}</div>
+                <div className="text-xs text-neutral-400 tracking-wide uppercase font-semibold">{label}</div>
               </div>
             ))}
           </div>
