@@ -78,8 +78,8 @@ export default function ClaimPage() {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center px-6">
         <div className="card p-10 max-w-md text-center">
-          <h2 className="text-xl font-semibold text-ink mb-2">Site not found</h2>
-          <p className="text-warm-gray-500 text-sm mb-6">
+          <h2 className="text-2xl font-bold text-ink mb-2">Site not found</h2>
+          <p className="text-warm-gray-600 text-base font-medium mb-6">
             This business hasn't been crawled yet, or the link has expired.
           </p>
           <a href="/" className="btn-primary text-sm">Back to Guma AI</a>
@@ -96,10 +96,10 @@ export default function ClaimPage() {
             <Mail size={24} className="text-indigo" />
           </div>
           <div>
-            <h2 className="text-xl font-semibold text-ink mb-2">Check your inbox</h2>
-            <p className="text-warm-gray-500 text-sm">
+            <h2 className="text-2xl font-bold text-ink mb-2">Check your inbox</h2>
+            <p className="text-warm-gray-600 text-base font-medium">
               We sent a verification link to{' '}
-              <span className="font-medium text-ink">{email}</span>.
+              <span className="font-bold text-ink">{email}</span>.
               Click it to claim your site.
             </p>
             {isSandbox && magicLink && (
@@ -129,12 +129,12 @@ export default function ClaimPage() {
           <div className="w-14 h-14 rounded-2xl bg-mint/15 flex items-center justify-center mx-auto mb-5">
             <CheckCircle2 size={26} className="text-mint" />
           </div>
-          <h2 className="text-xl font-semibold text-ink mb-2">
+          <h2 className="text-2xl font-bold text-ink mb-2">
             {site?.businessName} is yours!
           </h2>
-          <p className="text-warm-gray-500 text-sm mb-8">
+          <p className="text-warm-gray-600 text-base font-medium mb-8">
             Your site is live at{' '}
-            <span className="text-indigo font-medium">
+            <span className="text-indigo font-bold">
               guma.ai/sites/{slug}
             </span>
           </p>
@@ -175,7 +175,7 @@ export default function ClaimPage() {
             <h1 className="text-3xl font-bold text-ink mb-2">
               {site?.businessName}
             </h1>
-            <div className="flex flex-wrap gap-3 text-sm text-warm-gray-500 mb-8">
+            <div className="flex flex-wrap gap-3 text-base text-warm-gray-600 font-medium mb-8">
               {site?.businessCategory && (
                 <span className="badge bg-indigo-muted text-indigo">{site.businessCategory}</span>
               )}

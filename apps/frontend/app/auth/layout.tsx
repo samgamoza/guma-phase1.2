@@ -29,12 +29,12 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             <Globe size={14} className="text-indigo" />
             <span className="text-xs font-semibold tracking-widest uppercase text-indigo">Free websites for local businesses</span>
           </div>
-          <h2 className="text-3xl font-bold text-white leading-snug mb-6">
+          <h2 className="text-4xl font-bold text-white leading-snug mb-6">
             Your site is already<br />built. Claim it now.
           </h2>
           <ul className="space-y-3">
             {PROOF_POINTS.map(p => (
-              <li key={p} className="flex items-center gap-2.5 text-sm text-white/70">
+              <li key={p} className="flex items-center gap-2.5 text-sm text-white/85 font-medium">
                 <CheckCircle2 size={14} className="text-mint flex-shrink-0" />
                 {p}
               </li>

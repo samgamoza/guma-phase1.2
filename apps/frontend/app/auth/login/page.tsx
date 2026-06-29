@@ -52,9 +52,9 @@ export default function LoginPage() {
         <div className="w-14 h-14 rounded-2xl bg-indigo-muted flex items-center justify-center mx-auto mb-5">
           <Mail size={24} className="text-indigo" />
         </div>
-        <h2 className="text-xl font-semibold text-ink mb-2">Check your inbox</h2>
-        <p className="text-warm-gray-500 text-sm mb-6">
-          We sent a magic link to <span className="font-medium text-ink">{email}</span>.
+        <h2 className="text-2xl font-bold text-ink mb-2">Check your inbox</h2>
+        <p className="text-warm-gray-600 text-base mb-6 font-medium">
+          We sent a magic link to <span className="font-bold text-ink">{email}</span>.
           Click it to sign in — no password needed.
         </p>
         <button
@@ -69,10 +69,10 @@ export default function LoginPage() {
 
   return (
     <div className="card p-8">
-      <h1 className="text-2xl font-bold text-ink mb-1">Sign in</h1>
-      <p className="text-warm-gray-500 text-sm mb-8">
+      <h1 className="text-3xl font-bold text-ink mb-2">Sign in</h1>
+      <p className="text-warm-gray-600 text-base font-medium mb-8">
         No account yet?{' '}
-        <Link href="/auth/signup" className="text-indigo hover:underline">
+        <Link href="/auth/signup" className="text-indigo font-bold hover:underline">
           Claim your free site →
         </Link>
       </p>

@@ -37,8 +37,8 @@ function ScannerScreen({ status }: { status: string }) {
       </div>
 
       <div className="space-y-2 max-w-xs">
-        <h2 className="text-xl font-bold text-ink">Scanning the web...</h2>
-        <p className="text-xs text-warm-gray-400 animate-pulse leading-relaxed">{status}</p>
+        <h2 className="text-2xl font-bold text-ink">Scanning the web...</h2>
+        <p className="text-sm text-warm-gray-600 animate-pulse leading-relaxed font-medium">{status}</p>
       </div>
 
       {/* Fake progress ticks */}
@@ -68,13 +68,13 @@ function MagicLinkSentScreen({
         <Mail size={28} className="text-indigo" />
       </div>
       <div>
-        <h2 className="text-xl font-bold text-ink mb-1">Check your inbox</h2>
-        <p className="text-sm text-warm-gray-500 max-w-xs leading-relaxed font-sans">
-          We sent a magic link to <span className="font-semibold text-ink">{email}</span>.
+        <h2 className="text-2xl font-bold text-ink mb-2">Check your inbox</h2>
+        <p className="text-base text-warm-gray-600 max-w-xs leading-relaxed font-medium">
+          We sent a magic link to <span className="font-bold text-ink">{email}</span>.
           Click it to verify and proceed.
         </p>
       </div>
-      <button onClick={onBack} className="text-xs text-indigo hover:underline font-semibold">
+      <button onClick={onBack} className="text-sm text-indigo hover:underline font-bold">
         Use a different email
       </button>
     </div>
@@ -151,8 +151,8 @@ function ClaimSignupScreen({
 
       <div>
         <span className="text-xs font-bold text-indigo uppercase tracking-wider">Step 2 — Sign Up &amp; Claim</span>
-        <h1 className="text-2xl font-bold text-ink mt-1">Claim {biz.name}</h1>
-        <p className="text-warm-gray-500 text-sm mt-1">
+        <h1 className="text-3xl font-bold text-ink mt-2">Claim {biz.name}</h1>
+        <p className="text-warm-gray-600 text-base font-medium mt-2">
           Enter your email to verify ownership and activate your website.
         </p>
       </div>
@@ -238,8 +238,8 @@ function ManualSignupScreen({ onBack, prefillName }: { onBack: () => void; prefi
 
       <div>
         <span className="text-xs font-bold text-indigo uppercase tracking-wider">Step 2 — Create Account</span>
-        <h1 className="text-2xl font-bold text-ink mt-1">Get your website built</h1>
-        <p className="text-warm-gray-500 text-sm mt-1">
+        <h1 className="text-3xl font-bold text-ink mt-2">Get your website built</h1>
+        <p className="text-warm-gray-600 text-base font-medium mt-2">
           Sign up and we'll walk you through a quick 3-step setup to generate your site instantly.
         </p>
       </div>
