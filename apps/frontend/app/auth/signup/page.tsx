@@ -128,9 +128,9 @@ function ClaimSignupScreen({
   if (sent) return <MagicLinkSentScreen email={email} onBack={() => setSent(false)} />
 
   return (
-    <div className="card p-8 space-y-6">
-      <button onClick={onBack} className="inline-flex items-center gap-1 text-xs text-warm-gray-400 hover:text-ink">
-        <ArrowLeft size={12} /> Back to results
+    <div className="bg-white rounded-3xl shadow-xl border border-gray-200 p-9 space-y-7">
+      <button onClick={onBack} className="inline-flex items-center gap-1 text-sm font-bold text-indigo hover:text-ink">
+        <ArrowLeft size={14} /> Back to results
       </button>
 
       {/* Business Preview Card */}
@@ -223,9 +223,9 @@ function ManualSignupScreen({ onBack, prefillName }: { onBack: () => void; prefi
   if (sent) return <MagicLinkSentScreen email={email} onBack={() => setSent(false)} />
 
   return (
-    <div className="card p-8 space-y-6">
-      <button onClick={onBack} className="inline-flex items-center gap-1 text-xs text-warm-gray-400 hover:text-ink">
-        <ArrowLeft size={12} /> Back to search
+    <div className="bg-white rounded-3xl shadow-xl border border-gray-200 p-9 space-y-7">
+      <button onClick={onBack} className="inline-flex items-center gap-1 text-sm font-bold text-indigo hover:text-ink">
+        <ArrowLeft size={14} /> Back to search
       </button>
 
       {/* "Not found" context */}

@@ -48,7 +48,7 @@ export default function LoginPage() {
 
   if (sent) {
     return (
-      <div className="card p-8 text-center">
+      <div className="bg-white rounded-3xl shadow-xl border border-gray-200 p-9 text-center">
         <div className="w-14 h-14 rounded-2xl bg-indigo-muted flex items-center justify-center mx-auto mb-5">
           <Mail size={24} className="text-indigo" />
         </div>
@@ -59,7 +59,7 @@ export default function LoginPage() {
         </p>
         <button
           onClick={() => setSent(false)}
-          className="btn-ghost text-sm"
+          className="text-indigo font-bold hover:underline text-sm"
         >
           Use a different email
         </button>
@@ -68,7 +68,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="card p-8">
+    <div className="bg-white rounded-3xl shadow-xl border border-gray-200 p-9">
       <h1 className="text-3xl font-bold text-ink mb-2">Sign in</h1>
       <p className="text-warm-gray-600 text-base font-medium mb-8">
         No account yet?{' '}
