@@ -30,23 +30,55 @@ export async function POST(req: Request) {
   // action === 'run_one' — manual one-off crawl from the form
   if (body.action === 'run_one') {
     const crawlerApiUrl = process.env.CRAWLER_API_URL || 'http://localhost:3001'
-    const res = await fetch(`${crawlerApiUrl}/jobs`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-admin-secret': process.env.ADMIN_API_SECRET || '',
-      },
-      body: JSON.stringify({
-        category: body.category,
-        city: body.city,
-        state: body.state,
-        source: body.source || 'serper',
-        maxPages: body.maxPages || 2,
-      }),
-    })
-    const data = await res.json()
-    if (!res.ok) return NextResponse.json({ error: data.error || data.message }, { status: 500 })
-    return NextResponse.json({ ok: true, jobId: data.jobId, message: `Crawl enqueued for ${body.category} / ${body.city}, ${body.state}` })
+
+    // Check if it's a custom URL crawl or standard source crawl
+    if (body.customUrl) {
+      // Custom directory URL mode
+      const res = await fetch(`${crawlerApiUrl}/jobs`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-secret': process.env.ADMIN_API_SECRET || '',
+        },
+        body: JSON.stringify({
+          source: 'custom',
+          customUrl: body.customUrl,
+          category: body.category,
+          location: body.location,
+          country: body.country,
+          state: body.state,
+          scopeType: body.scopeType || 'limited',
+          scopeLimit: body.scopeLimit || 100,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) return NextResponse.json({ error: data.error || data.message }, { status: 500 })
+      return NextResponse.json({
+        ok: true,
+        jobId: data.jobId,
+        message: `Crawl enqueued for ${body.category} from ${new URL(body.customUrl).hostname}`
+      })
+    } else {
+      // Standard sources mode
+      const res = await fetch(`${crawlerApiUrl}/jobs`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-secret': process.env.ADMIN_API_SECRET || '',
+        },
+        body: JSON.stringify({
+          category: body.category,
+          city: body.city,
+          state: body.state,
+          country: body.country,
+          source: body.source || 'serper',
+          maxPages: body.maxPages || 2,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) return NextResponse.json({ error: data.error || data.message }, { status: 500 })
+      return NextResponse.json({ ok: true, jobId: data.jobId, message: `Crawl enqueued for ${body.category} / ${body.city}, ${body.state}` })
+    }
   }
 
   // action === 'run' or default — trigger immediate batch
